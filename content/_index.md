@@ -1,29 +1,32 @@
 ---
-title: 🪴 Quartz 3.
+title: Harry dB notes
 enableToc: false
 ---
 
-Host your second brain and [digital garden](https://jzhao.xyz/posts/networked-thought) for free. Quartz features
+# Topics
+## FM radio
 
-some custom text here
+- [[20220301 fm - Loop the loop.md]]
+- [[20220319 fm -  We have a lock.md]]
+- [[20220322 - Look at that Bode.md]]
+- [[20220428 FM v2 bringup.md]]
+- [[20220529 positive phaseshift.md]]
+- [[20220617 XOR.md]]
+- [[20220701 Inductance measurements.md]]
+- [[20220710 Reference loop filter.md]]
+- [[20220711 Diff amp FET Follower.md]]
+- [[20220809 NAND is better than XOR.md]]
 
-1. Extremely fast natural-language [[notes/search]]
-2. Customizable and hackable design based on [Hugo](https://gohugo.io/)
-3. Automatically generated backlinks, link previews, and local graph
-4. Built-in [[notes/CJK + Latex Support (测试) | CJK + Latex Support]] and [[notes/callouts | Admonition-style callouts]]
-5. Support for both Markdown Links and Wikilinks
+## Blindar
+- [[20220816 Blindar.md]]
+- [[20220902_blindar_cancellation.md]]
+- [[20220918 I2S woes.md]]
+- [[20220923 blindar prototype notes.md]]
+- [[20221009 Lidar+imu.md]]
 
-Check out some of the [amazing gardens that community members](notes/showcase.md) have published with Quartz or read about [why I made Quartz](notes/philosophy.md) to begin with.
-
-## Get Started
-> 📚 Step 1: [Setup your own digital garden using Quartz](notes/setup.md)
-
-Returning user? Figure out how to [[notes/updating|update]] your existing Quartz garden.
-
-If you prefer browsing the contents of this site through a list instead of a graph, you see a list of all [setup-related notes](/tags/setup).
-
-### Troubleshooting
-- 🚧 [Troubleshooting and FAQ](notes/troubleshooting.md)
-- 🐛 [Submit an Issue](https://github.com/jackyzha0/quartz/issues)
-- 👀 [Discord Community](https://discord.gg/cRFFHYye7t)
-
+## Misc
+- [[20220412 Advantech debugging.md]]
+- [[20220421 Cross polarized microscopy.md]]
+- [[20220825 microwave tesla coil.md]]
+- [[20220310 Fox hunt notes.md]]
+- [[20220402 mouse measurements.md]]
