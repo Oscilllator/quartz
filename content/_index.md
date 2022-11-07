@@ -16,6 +16,10 @@ enableToc: false
 - [[20220710 Reference loop filter.md]]
 - [[20220711 Diff amp FET Follower.md]]
 - [[20220809 NAND is better than XOR.md]]
+- [[20221015 FM V3 bringup.md]]
+- [[20221025 antenna tuning.md]]
+- [[20221103 915MHz brrr.md]]
+
 
 ## Blindar
 - [[20220816 Blindar.md]]
