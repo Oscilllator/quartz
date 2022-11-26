@@ -1,0 +1,148 @@
+{
+  "main": {
+    "id": "f28f1c3d23445f50",
+    "type": "split",
+    "children": [
+      {
+        "id": "503599c33d593235",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7bd7c5d7dd67b651",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "afc9346821313344",
+    "type": "split",
+    "children": [
+      {
+        "id": "0b6f1df9f0b90e78",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ff678314ccc83655",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "5a42210fc5a6cb3f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "2f4194d4b3aa4938",
+            "type": "leaf",
+            "state": {
+              "type": "starred",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "right": {
+    "id": "357415d8f79d8b29",
+    "type": "split",
+    "children": [
+      {
+        "id": "874fd12b70079b35",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1cc2455b24ca4362",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "b4d032986c036939",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "82ab89b6947cd69a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "69498ec19bfc8c7c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "ribbon": {
+    "mostRecentAction": ""
+  },
+  "active": "ff678314ccc83655",
+  "lastOpenFiles": [
+    "20220701 Inductance measurements.md",
+    "20220617 XOR.md",
+    "20220710 Reference loop filter.md",
+    "20220421 Cross polarized microscopy.md",
+    "20220322 - Look at that Bode.md",
+    "20220902_blindar_cancellation.md",
+    "20220918 I2S woes.md",
+    "20220809 NAND is better than XOR.md",
+    "20220923 blindar prototype notes.md",
+    "20220825 microwave tesla coil.md"
+  ]
+}
