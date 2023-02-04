@@ -2,6 +2,7 @@ The FM4V pcbs have arrived. This time I used the jlcpcb assembly service. The PC
 ![[Pasted image 20230115192501.png]]
 
 The oscillator comes up without any prompting thankfully. The first thing that I want to look at is the 915MHz amplifier.
+In order not to cook the spectrum analyzer I am going to use the attenuator from [[20230115 attenuator]].
 
 ## Assembly problems
 ![[Pasted image 20230115193957.png]]
