@@ -27,3 +27,13 @@ This oscillation seems dependent on the ambient light level and also the supply 
 
 ## Wait
 Actually this whole idea is dumb. Since I have my own test setup I can just point the light from one side of the propeller to the other. Or stick a retroreflector on the ceiling, or something.
+
+# PCB setup
+Here is what I came up with:
+![[Pasted image 20230304131630.png]]
+![[Pasted image 20230304132013.png]]
+Tad bit of trouble getting things up and running but it's going nicely now. The photodiode is the rectangle being shielded by the copper tape from the light coming from the LED.
+Results are looking good. Pretty hard to photograph. Quick calcs about how long to make the pulse. let's say we want 0.1mm of blurring. Prop radius = 80mm => circumference 500mm. Prop goes past every 8ms. so we want an exposure time of 0.1 / 500 * 8 = 1.6us. That's pretty short! I have the fpga emitting a 5us pulse and that results in this waveform:
+![[Pasted image 20230304165516.png]]
+yellow = MOSFET drain, Pink = optical propeller detector, Blue = MOSFET gate, Green = FPGA trigger out.
+So unless I want to mess about with the driving circuit this is about as good as it's going to get I think. Should keep an eye on the Yuge spike in the supply voltage too.
