@@ -37,3 +37,5 @@ Results are looking good. Pretty hard to photograph. Quick calcs about how long 
 ![[Pasted image 20230304165516.png]]
 yellow = MOSFET drain, Pink = optical propeller detector, Blue = MOSFET gate, Green = FPGA trigger out.
 So unless I want to mess about with the driving circuit this is about as good as it's going to get I think. Should keep an eye on the Yuge spike in the supply voltage too.
+
+![[output 1.mp4]]
