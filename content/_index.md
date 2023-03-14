@@ -56,6 +56,7 @@ enableToc: false
 - [[20220310 Fox hunt notes.md]]
 - [[20220816 Blindar.md]]
 - [[20220529 positive phaseshift.md]]
+- [[20230311 Astable multivibrator.md]]
 - [[20220421 Cross polarized microscopy.md]]
 - [[20230115 FMV4 bringup.md]]
 - [[20220617 XOR.md]]

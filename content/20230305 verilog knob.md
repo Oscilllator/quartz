@@ -80,6 +80,35 @@ All I did was hook it up to a counter like so:
 ```
 the interaction between the two modules is through the usr_knob_period variable. So I thought that if I could mutate the variable in between the two modules, then they wouldn't be hooked up directly any more and wouldn't interact directly. Adding 1 to the `usr_knob_period` doesn't help, but multiplying it does! not enough to solve the problem, but a fair bit.
 
-### Move them apart
-I notice on the layout that two of the pins I am using come out near each other:
-![[Pasted image 20230307201408.png]]
+## Metastability??
+Apparently this is a thing, and it affects fpgas and me in particular. When sampling an incoming signal that is not synchronous with the clock you must sync it up first. [handy diagram](https://nandland.com/lesson-13-metastability/):
+![[Pasted image 20230313210816.png]]
+The adjusted code:
+```
+...
+    assign gpio_meas = (state == MEASURING) ? 1'bz      : 1'b0;
+    wire in_meas_raw = (state == MEASURING)     ? gpio_meas : 1'b0;
+    assign gpio_drv = (state == MEASURING)  ? 1'b1      : 1'bz;
+    wire in_drv_raw = (state == MEASURING)      ? 1'b1      : gpio_drv;
+
+    reg in_meas_metastable;
+    reg in_drv_metastable;
+    reg in_meas;
+    reg in_drv;
+    always @(posedge clk) begin
+        in_meas_metastable <= in_meas_raw;
+        in_drv_metastable <= in_drv_raw;
+        in_meas <= in_meas_metastable;
+        in_drv <= in_drv_metastable;
+...cont
+```
+This should just delay things by a couple clock cycles but not affect the program otherwise.
+Here is a histogram of when the edges occur for the default user knob with nothing attached to it (blue), the knob with an output attached (orange, and the aforementioned high jitter), and a knob with an output attached and also input latching (green):
+![[Pasted image 20230313213623.png]]
+Looks like adding in the metastability stuff didn't have much effect other than slowing down the period. I am surprised that it was slowed down by that much, but there you go.
+
+### TL;DR
+Just like ESD and reinterpret_casts, you don't need to worry about metastability.
+
+
+
