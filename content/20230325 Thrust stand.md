@@ -13,6 +13,7 @@ The thrust stand is very simple and looks like this:
 A regular 1kg load cell attached to one of those HX711 things attached to a esp8266 that spews out the raw load cell data.
 ## Current measurement
 The only way I could rig up current (and thus power) measurement was to query my Hantek PPS2320A. Unfortunately the serial interface is utter trash. The serial link is 9600 baud only and drops packets all the time. The current measurement updates at like 1Hz and takes several seconds to settle. So the resulting data has to be heavily filtered to remove all the jank.
+I have ordered some current sensors which should help out a lot when they arrive.
 
 # Calibration
 The 24 bit ADC in the strain gauge measurement chip has no calibration or notion of any weight, so I had to do that bit myself. Pretty easy though, just put a bunch of weights on a kitchen scale across the strain gauge range. Results looks like this:
