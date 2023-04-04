@@ -44,6 +44,7 @@ enableToc: false
 - [[20220809 NAND is better than XOR.md]]
 - [[20220701 Inductance measurements.md]]
 - [[20220710 Reference loop filter.md]]
+- [[20230403 Laser googles.md]]
 - [[20230122 Pneumatic resin valves.md]]
 - [[20220923 blindar prototype notes.md]]
 - [[20221009 Lidar+imu.md]]
