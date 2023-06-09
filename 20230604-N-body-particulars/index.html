@@ -1,0 +1,259 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=description content="N body simulation: Basics We all know this, $F = GM_1M_2/r^2$ right? Here it is implemented in pytorch in a batched fashion:"><title>Harry dB notes</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" type=image/png href=https://Oscilllator.github.io/quartz//icon.png><link href=https://Oscilllator.github.io/quartz/styles.708c2658f93e3a9d323a1f9fded8f4b2.min.css rel=stylesheet><link href=https://Oscilllator.github.io/quartz/styles/_light_syntax.86a48a52faebeaaf42158b72922b1c90.min.css rel=stylesheet id=theme-link><script src=https://Oscilllator.github.io/quartz/js/darkmode.9b46d81b9b161bfac149d66dfa6b3812.min.js></script>
+<script src=https://Oscilllator.github.io/quartz/js/util.9825137f5e7825e8553c68ce39ac9e44.min.js></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/copy-tex.min.js integrity=sha384-ww/583aHhxWkz5DEVn6OKtNiIaLi2iBRNZXfJRiY1Ai7tnJ9UXpEsyvOITVpTl4A crossorigin=anonymous></script>
+<script src=https://unpkg.com/@floating-ui/core@0.7.3></script>
+<script src=https://unpkg.com/@floating-ui/dom@0.5.4></script>
+<script src=https://Oscilllator.github.io/quartz/js/popover.9b72b70bd35617d0635e9d15463662b2.min.js></script>
+<script src=https://Oscilllator.github.io/quartz/js/code-title.b35124ad8db0ba37162b886afb711cbc.min.js></script>
+<script src=https://Oscilllator.github.io/quartz/js/clipboard.c20857734e53a3fb733b7443879efa61.min.js></script>
+<script src=https://Oscilllator.github.io/quartz/js/callouts.7723cac461d613d118ee8bb8216b9838.min.js></script>
+<script>const BASE_URL="https://Oscilllator.github.io/quartz/",fetchData=Promise.all([fetch("https://Oscilllator.github.io/quartz/indices/linkIndex.384b3b24604c0dd61c9a6a9c515f7817.min.json").then(e=>e.json()).then(e=>({index:e.index,links:e.links})),fetch("https://Oscilllator.github.io/quartz/indices/contentIndex.3220f58eacb9d6aebc6d526f9fd68af6.min.json").then(e=>e.json())]).then(([{index:e,links:t},n])=>({index:e,links:t,content:n})),render=()=>{const e=new URL(BASE_URL),t=e.pathname,n=window.location.pathname,s=t==n;addCopyButtons(),addTitleToCodeBlocks(),addCollapsibleCallouts(),initPopover("https://Oscilllator.github.io/quartz",!0,!0);const o=document.getElementById("footer");if(o){const e=document.getElementById("graph-container");if(!e)return requestAnimationFrame(render);e.textContent="";const t=s&&!1;drawGraph("https://Oscilllator.github.io/quartz",t,[{"/moc":"#4388cc"}],t?{centerForce:1,depth:-1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.5,linkDistance:1,opacityScale:3,repelForce:1,scale:1.4}:{centerForce:1,depth:1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.6,linkDistance:1,opacityScale:3,repelForce:2,scale:1.2})}},init=(e=document)=>{addCopyButtons(),addTitleToCodeBlocks(),renderMathInElement(e.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}],macros:{'’':"'"},throwOnError:!1})}</script><script type=module>
+    import { attachSPARouting } from "https:\/\/Oscilllator.github.io\/quartz\/js\/router.9d4974281069e9ebb189f642ae1e3ca2.min.js"
+    attachSPARouting(init, render)
+  </script></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-XYFD95KB4J"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-XYFD95KB4J",{anonymize_ip:!1})}</script><body><div id=search-container><div id=search-space><input autocomplete=off id=search-bar name=search type=text aria-label=Search placeholder="Search for something..."><div id=results-container></div></div></div><script src=https://cdn.jsdelivr.net/npm/flexsearch@0.7.21/dist/flexsearch.bundle.js integrity="sha256-i3A0NZGkhsKjVMzFxv3ksk0DZh3aXqu0l49Bbh0MdjE=" crossorigin=anonymous defer></script>
+<script defer src=https://Oscilllator.github.io/quartz/js/full-text-search.24827f874defbbc6d529926cbfcfb493.min.js></script><div class=singlePage><header><h1 id=page-title><a href=https://Oscilllator.github.io/quartz/>Harry dB notes</a></h1><div class=spacer></div><div id=search-icon><p>Search</p><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">Icon to open search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg></div><div class=darkmode><input class=toggle id=darkmode-toggle type=checkbox tabindex=-1>
+<label id=toggle-label-light for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="dayIcon" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35"><title>Light Mode</title><path d="M6 17.5C6 16.672 5.328 16 4.5 16h-3C.672 16 0 16.672.0 17.5S.672 19 1.5 19h3C5.328 19 6 18.328 6 17.5zM7.5 26c-.414.0-.789.168-1.061.439l-2 2C4.168 28.711 4 29.086 4 29.5 4 30.328 4.671 31 5.5 31c.414.0.789-.168 1.06-.44l2-2C8.832 28.289 9 27.914 9 27.5 9 26.672 8.329 26 7.5 26zm10-20C18.329 6 19 5.328 19 4.5v-3C19 .672 18.329.0 17.5.0S16 .672 16 1.5v3C16 5.328 16.671 6 17.5 6zm10 3c.414.0.789-.168 1.06-.439l2-2C30.832 6.289 31 5.914 31 5.5 31 4.672 30.329 4 29.5 4c-.414.0-.789.168-1.061.44l-2 2C26.168 6.711 26 7.086 26 7.5 26 8.328 26.671 9 27.5 9zM6.439 8.561C6.711 8.832 7.086 9 7.5 9 8.328 9 9 8.328 9 7.5c0-.414-.168-.789-.439-1.061l-2-2C6.289 4.168 5.914 4 5.5 4 4.672 4 4 4.672 4 5.5c0 .414.168.789.439 1.06l2 2.001zM33.5 16h-3c-.828.0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h3c.828.0 1.5-.672 1.5-1.5S34.328 16 33.5 16zM28.561 26.439C28.289 26.168 27.914 26 27.5 26c-.828.0-1.5.672-1.5 1.5.0.414.168.789.439 1.06l2 2C28.711 30.832 29.086 31 29.5 31c.828.0 1.5-.672 1.5-1.5.0-.414-.168-.789-.439-1.061l-2-2zM17.5 29c-.829.0-1.5.672-1.5 1.5v3c0 .828.671 1.5 1.5 1.5s1.5-.672 1.5-1.5v-3C19 29.672 18.329 29 17.5 29zm0-22C11.71 7 7 11.71 7 17.5S11.71 28 17.5 28 28 23.29 28 17.5 23.29 7 17.5 7zm0 18c-4.136.0-7.5-3.364-7.5-7.5s3.364-7.5 7.5-7.5 7.5 3.364 7.5 7.5S21.636 25 17.5 25z"/></svg></label><label id=toggle-label-dark for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="nightIcon" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'"><title>Dark Mode</title><path d="M96.76 66.458c-.853-.852-2.15-1.064-3.23-.534-6.063 2.991-12.858 4.571-19.655 4.571C62.022 70.495 50.88 65.88 42.5 57.5 29.043 44.043 25.658 23.536 34.076 6.47c.532-1.08.318-2.379-.534-3.23-.851-.852-2.15-1.064-3.23-.534-4.918 2.427-9.375 5.619-13.246 9.491-9.447 9.447-14.65 22.008-14.65 35.369.0 13.36 5.203 25.921 14.65 35.368s22.008 14.65 35.368 14.65c13.361.0 25.921-5.203 35.369-14.65 3.872-3.871 7.064-8.328 9.491-13.246C97.826 68.608 97.611 67.309 96.76 66.458z"/></svg></label></div></header><article><p class=meta>Last updated
+Unknown
+<a href=https://github.com/jackyzha0/quartz/tree/hugo/content/20230604%20N%20body%20particulars.md rel=noopener>Edit Source</a></p><ul class=tags></ul><aside class=mainTOC><details><summary>Table of Contents</summary><nav id=TableOfContents><ol><li><a href=#results>Results</a><ol><li><a href=#small-aside-fiddling-with-this-made-the-simulation-look-a-lot-better>Small aside: fiddling with this made the simulation look a lot better:</a></li></ol></li><li><a href=#noisy-noisy-results>Noisy noisy results</a></li><li><a href=#predicting-logacceleration>Predicting log(acceleration)</a></li><li><a href=#sanity-check-cheat>Sanity check: Cheat</a></li><li><a href=#quick-experiment-maybe-we-just-need-more-flops>&ldquo;Quick&rdquo; experiment: maybe we just need more flops?</a></li><li><a href=#quick-aside-loss-functions-that-go-up-again>Quick aside: Loss functions that go up again:</a></li></ol></nav></details></aside><a href=#n-body-simulation-basics><h1 id=n-body-simulation-basics><span class=hanchor arialabel=Anchor># </span>N body simulation: Basics</h1></a><p>We all know this, $F = GM_1M_2/r^2$ right? Here it is implemented in pytorch in a batched fashion:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># def n_body_step(state: torch.Tensor, G: float = 6.674e-11, dt: float = 1e-3):</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>n_body_step</span><span class=p>(</span><span class=n>state</span><span class=p>:</span> <span class=n>torch</span><span class=o>.</span><span class=n>Tensor</span><span class=p>,</span> <span class=n>G</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=mi>10</span><span class=p>,</span> <span class=n>dt</span><span class=p>:</span> <span class=nb>float</span> <span class=o>=</span> <span class=n>TIMESTEP</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>add_batch_dim</span> <span class=o>=</span> <span class=kc>True</span> <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>state</span><span class=o>.</span><span class=n>shape</span><span class=p>)</span> <span class=o>==</span> <span class=mi>2</span> <span class=k>else</span> <span class=kc>False</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>add_batch_dim</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>state</span> <span class=o>=</span> <span class=n>state</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>assert</span> <span class=nb>len</span><span class=p>(</span><span class=n>state</span><span class=o>.</span><span class=n>shape</span><span class=p>)</span> <span class=o>==</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl>    <span class=k>assert</span> <span class=n>state</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>==</span> <span class=n>NUM_STATES</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># state is a B * N * 5 batched tensor of masses, positions, and velocities.</span>
+</span></span><span class=line><span class=cl>    <span class=c1># dt is the time step</span>
+</span></span><span class=line><span class=cl>    <span class=n>N</span> <span class=o>=</span> <span class=n>state</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>x_diff</span> <span class=o>=</span> <span class=p>(</span><span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=n>X_IDX</span><span class=p>]</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=o>-</span><span class=mi>2</span><span class=p>)</span> <span class=o>-</span> <span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=n>X_IDX</span><span class=p>]</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>))</span>  <span class=c1># B * N * N</span>
+</span></span><span class=line><span class=cl>    <span class=n>y_diff</span> <span class=o>=</span> <span class=p>(</span><span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=n>Y_IDX</span><span class=p>]</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=o>-</span><span class=mi>2</span><span class=p>)</span> <span class=o>-</span> <span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=n>Y_IDX</span><span class=p>]</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>))</span>  <span class=c1># B * N * N</span>
+</span></span><span class=line><span class=cl>    <span class=n>x_diff_sq</span> <span class=o>=</span> <span class=n>x_diff</span> <span class=o>**</span> <span class=mi>2</span> <span class=c1># B * N * N</span>
+</span></span><span class=line><span class=cl>    <span class=n>y_diff_sq</span> <span class=o>=</span> <span class=n>y_diff</span> <span class=o>**</span> <span class=mi>2</span> <span class=c1># B * N * N</span>
+</span></span><span class=line><span class=cl>    <span class=n>range_</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>sqrt</span><span class=p>(</span><span class=n>x_diff_sq</span> <span class=o>+</span> <span class=n>y_diff_sq</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>inv_range_sq</span> <span class=o>=</span> <span class=mi>1</span> <span class=o>/</span> <span class=p>(</span><span class=n>x_diff_sq</span> <span class=o>+</span> <span class=n>y_diff_sq</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># mask out self-interactions without using multiplication because that gives nans:</span>
+</span></span><span class=line><span class=cl>    <span class=n>inv_range_sq</span> <span class=o>=</span> <span class=n>inv_range_sq</span><span class=o>.</span><span class=n>masked_fill</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>eye</span><span class=p>(</span><span class=n>N</span><span class=p>,</span> <span class=n>dtype</span><span class=o>=</span><span class=n>torch</span><span class=o>.</span><span class=n>bool</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>accel_mag</span> <span class=o>=</span> <span class=mf>0.5</span> <span class=o>*</span> <span class=n>G</span> <span class=o>*</span> <span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=n>M_IDX</span><span class=p>]</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span> <span class=o>*</span> <span class=n>inv_range_sq</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># We need to find the direction of the acceleration:</span>
+</span></span><span class=line><span class=cl>    <span class=n>direction_vec</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>stack</span><span class=p>([</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=n>x_diff</span> <span class=o>/</span> <span class=n>range_</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=n>y_diff</span> <span class=o>/</span> <span class=n>range_</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=p>],</span> <span class=n>dim</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>  <span class=c1># 2 * N * N</span>
+</span></span><span class=line><span class=cl>    <span class=n>direction_vec</span> <span class=o>=</span> <span class=n>direction_vec</span><span class=o>.</span><span class=n>masked_fill</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>eye</span><span class=p>(</span><span class=n>N</span><span class=p>,</span> <span class=n>dtype</span><span class=o>=</span><span class=n>torch</span><span class=o>.</span><span class=n>bool</span><span class=p>)</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>accel</span> <span class=o>=</span> <span class=n>accel_mag</span><span class=o>.</span><span class=n>unsqueeze</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span> <span class=o>*</span> <span class=n>direction_vec</span>
+</span></span><span class=line><span class=cl>    <span class=n>accel</span> <span class=o>=</span> <span class=n>accel</span><span class=o>.</span><span class=n>sum</span><span class=p>(</span><span class=n>dim</span><span class=o>=-</span><span class=mi>2</span><span class=p>)</span>  <span class=c1># B * 2 * N</span>
+</span></span><span class=line><span class=cl>    <span class=n>accel</span> <span class=o>=</span> <span class=o>-</span><span class=n>accel</span><span class=o>.</span><span class=n>transpose</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>2</span><span class=p>)</span>  <span class=c1># B * N * 2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># update velocities:</span>
+</span></span><span class=line><span class=cl>    <span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=mi>3</span><span class=p>:</span><span class=mi>5</span><span class=p>]</span> <span class=o>+=</span> <span class=n>dt</span> <span class=o>*</span> <span class=n>accel</span>
+</span></span><span class=line><span class=cl>    <span class=c1># update positions:</span>
+</span></span><span class=line><span class=cl>    <span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=mi>1</span><span class=p>:</span><span class=mi>3</span><span class=p>]</span> <span class=o>+=</span> <span class=n>dt</span> <span class=o>*</span> <span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=mi>3</span><span class=p>:</span><span class=mi>5</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>state</span><span class=p>[:,</span> <span class=p>:,</span> <span class=mi>5</span><span class=p>:</span><span class=mi>7</span><span class=p>]</span> <span class=o>=</span> <span class=n>accel</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>add_batch_dim</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>state</span> <span class=o>=</span> <span class=n>state</span><span class=o>.</span><span class=n>squeeze</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span>  <span class=n>state</span>
+</span></span></code></pre></td></tr></table></div></div><p>This works pretty well, apart from the one small problem that when two objects are close together terrible floating point things happen and they fly off. I figure instead of doing this they should seamlessly pass through each other when interacting. To do this I calculate whether or not the distance from one object to another is comparable to the amount that it would be accelerated by in one timestep. If it is, then the acceleration should be 0 instead. Here is the accelleration code:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl>    <span class=c1># Derate the acceleration if the objects are too close:</span>
+</span></span><span class=line><span class=cl>    <span class=n>expected_movement</span> <span class=o>=</span> <span class=p>(</span><span class=mf>0.5</span> <span class=o>*</span> <span class=n>accel_mag</span> <span class=o>*</span> <span class=n>dt</span> <span class=o>**</span> <span class=mi>2</span><span class=p>)</span> <span class=o>/</span> <span class=p>(</span><span class=mf>1e-9</span> <span class=o>+</span> <span class=n>range_</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>accel_derating</span> <span class=o>=</span> <span class=mi>1</span><span class=o>/</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>exp</span><span class=p>((</span><span class=mi>100</span> <span class=o>*</span> <span class=n>expected_movement</span><span class=p>)</span><span class=o>**</span><span class=mi>2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>accel_mag</span> <span class=o>*=</span> <span class=n>accel_derating</span>
+</span></span></code></pre></td></tr></table></div></div><p>Which looks like this if you plot it:
+<img src="/quartz/Pasted image 20230604181515.png" width=auto></p><a href=#results><h2 id=results><span class=hanchor arialabel=Anchor># </span>Results</h2></a><p>Here is a visualisation (Thanks ChatGPT) of what the population statistics look like before this derating is put in:
+<img src="/quartz/Pasted image 20230604181713.png" width=auto>
+And after:
+<img src="/quartz/Pasted image 20230604181802.png" width=auto>
+Rather dramatic, wouldn&rsquo;t you say?
+This seems to have a fairly large effect on training, especially if you use something like a mean <em>squared</em> error loss, like I was.</p><a href=#small-aside-fiddling-with-this-made-the-simulation-look-a-lot-better><h3 id=small-aside-fiddling-with-this-made-the-simulation-look-a-lot-better><span class=hanchor arialabel=Anchor># </span>Small aside: fiddling with this made the simulation look a lot better:</h3></a><p><img src="/quartz/Screencast from 06-04-2023 06:56:02 PM.webm" width=auto></p><a href=#noisy-noisy-results><h2 id=noisy-noisy-results><span class=hanchor arialabel=Anchor># </span>Noisy noisy results</h2></a><p>Here are the results trianing for a bit with a batch size of 1, using L1 loss:
+<img src="/quartz/Pasted image 20230604182419.png" width=auto>
+2+ orders of magnitude differences in the error rates seems kinda high, no? When I use a batch size of 1000, I get this:
+<img src="/quartz/Pasted image 20230604182649.png" width=auto>
+Which looks significantly more intelligble to me. There is a
+<a href=https://arxiv.org/abs/2002.09405 rel=noopener>paper</a> which I have read all the way through and downloaded the source code for etc, and one of the things that they did was actually train the net to predict only the accelerations, then use a simple $x_{t+1} = x_t + v\Delta t + 1/2 a\Delta t^2$ to actually calculate the positions. This intuitively makes sense here because it is indeed the forces on the particles that we are actually trying to calculate, but it also does not make sense to me because if you look at the statistics of the accelerations above, the acceleration is extremely high variance. Maybe we should try and predict the log of the acceleration?
+Here is the training loss predicting acceleration with L1 loss (note x axis):
+<img src="/quartz/Pasted image 20230604183224.png" width=auto>
+&mldr;Not very good, as you might think.</p><a href=#predicting-logacceleration><h2 id=predicting-logacceleration><span class=hanchor arialabel=Anchor># </span>Predicting log(acceleration)</h2></a><p>Let&rsquo;s make the net try to predict log2(accel.abs() + 1).
+The augmentation looks like this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl>        <span class=n>timesteps</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>randint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>num_timesteps</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=p>(</span><span class=n>batch_size</span><span class=p>,))</span>
+</span></span><span class=line><span class=cl>        <span class=n>trajectories</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>randint</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>num_trajectories</span><span class=p>,</span> <span class=p>(</span><span class=n>batch_size</span><span class=p>,))</span>
+</span></span><span class=line><span class=cl>        <span class=n>data_start</span> <span class=o>=</span> <span class=n>dataset</span><span class=p>[</span><span class=n>timesteps</span><span class=p>,</span> <span class=n>trajectories</span><span class=p>,</span> <span class=p>:,</span> <span class=p>:]</span><span class=o>.</span><span class=n>squeeze</span><span class=p>()</span><span class=o>.</span><span class=n>clone</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=n>data_end</span> <span class=o>=</span> <span class=n>dataset</span><span class=p>[</span><span class=n>timesteps</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span> <span class=n>trajectories</span><span class=p>,</span> <span class=p>:,</span> <span class=p>:]</span><span class=o>.</span><span class=n>squeeze</span><span class=p>()</span><span class=o>.</span><span class=n>clone</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=n>data_start</span><span class=p>[:,</span> <span class=p>:,</span> <span class=o>-</span><span class=mi>2</span><span class=p>:]</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>log2</span><span class=p>(</span><span class=n>data_start</span><span class=p>[:,</span> <span class=p>:,</span> <span class=o>-</span><span class=mi>2</span><span class=p>:]</span><span class=o>.</span><span class=n>abs</span><span class=p>()</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>data_end</span><span class=p>[:,</span> <span class=p>:,</span> <span class=o>-</span><span class=mi>2</span><span class=p>:]</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>log2</span><span class=p>(</span><span class=n>data_end</span><span class=p>[:,</span> <span class=p>:,</span> <span class=o>-</span><span class=mi>2</span><span class=p>:]</span><span class=o>.</span><span class=n>abs</span><span class=p>()</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>out</span> <span class=o>=</span> <span class=n>model</span><span class=p>(</span><span class=n>data_start</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>loss</span> <span class=o>=</span> <span class=n>F</span><span class=o>.</span><span class=n>l1_loss</span><span class=p>(</span><span class=n>out</span><span class=p>[</span><span class=o>-</span><span class=mi>2</span><span class=p>:],</span> <span class=n>data_end</span><span class=p>[</span><span class=o>-</span><span class=mi>2</span><span class=p>:])</span>
+</span></span></code></pre></td></tr></table></div></div><p>The histogram looks like this:
+<img src="/quartz/Pasted image 20230604183752.png" width=auto>
+Which seems wayyyy nicer.
+The results looks like this:
+<img src="/quartz/Pasted image 20230604184342.png" width=auto>
+&mldr;Which seems a bit better, maybe? It obviously trained a bunch more but we are kinda taking the log of the loss here, so I&rsquo;m not that impressed. It does seem to be learning though so bumping up the batch size to 10k we get this:
+<img src="/quartz/Pasted image 20230604184238.png" width=auto>
+&mldr;Doesn&rsquo;t seem to be much gain from increasing the batch size 10x.</p><a href=#sanity-check-cheat><h2 id=sanity-check-cheat><span class=hanchor arialabel=Anchor># </span>Sanity check: Cheat</h2></a><p>Perhaps the reason this is all going so poorly is there is some kind of horrific bug. Perhaps I have forgotten to torch.zero_grad? or switched the desired and predicted in the loss? So to see if that is the case, I concatenated the desired state as an input to the net to see if it could learn to do a passthrough OK.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>orig_shape</span> <span class=o>=</span> <span class=n>x</span><span class=o>.</span><span class=n>shape</span>
+</span></span><span class=line><span class=cl>    <span class=n>x_next</span> <span class=o>=</span> <span class=n>nbody</span><span class=o>.</span><span class=n>n_body_step</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>  <span class=c1># calculate the desired state</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=n>x</span><span class=o>.</span><span class=n>reshape</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>x_next</span> <span class=o>=</span> <span class=n>x_next</span><span class=o>.</span><span class=n>reshape</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>shape</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>cat</span><span class=p>([</span><span class=n>x</span><span class=p>,</span> <span class=n>x_next</span><span class=p>],</span> <span class=n>dim</span><span class=o>=-</span><span class=mi>1</span><span class=p>)</span>  <span class=c1># Add the desired output to input</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>act</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>input_conv</span><span class=p>(</span><span class=n>x</span><span class=p>))</span>  <span class=c1># All this nonsens just has to do a passthrough.</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>act</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hidden_conv1</span><span class=p>(</span><span class=n>x</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>act</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hidden_conv2</span><span class=p>(</span><span class=n>x</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>x</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>output_conv</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>x</span><span class=o>.</span><span class=n>reshape</span><span class=p>(</span><span class=n>orig_shape</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src="/quartz/Pasted image 20230604185129.png" width=auto>
+&mldr;So that&rsquo;s not the problem, then.</p><a href=#quick-experiment-maybe-we-just-need-more-flops><h2 id=quick-experiment-maybe-we-just-need-more-flops><span class=hanchor arialabel=Anchor># </span>&ldquo;Quick&rdquo; experiment: maybe we just need more flops?</h2></a><p>Everyone knows that nets take lots of compute to train. So I trained this net:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=k>class</span> <span class=nc>NbodyManual</span><span class=p>(</span><span class=n>torch</span><span class=o>.</span><span class=n>nn</span><span class=o>.</span><span class=n>Module</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>num_features</span><span class=p>:</span> <span class=nb>int</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=nb>super</span><span class=p>()</span><span class=o>.</span><span class=fm>__init__</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=n>hidden_size</span> <span class=o>=</span> <span class=mi>100</span>
+</span></span><span class=line><span class=cl>        <span class=n>expansion</span> <span class=o>=</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>input_conv</span> <span class=o>=</span> <span class=n>Linear</span><span class=p>(</span><span class=n>num_features</span> <span class=o>*</span> <span class=n>expansion</span><span class=p>,</span> <span class=n>hidden_size</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>hidden_conv1</span> <span class=o>=</span> <span class=n>Linear</span><span class=p>(</span><span class=n>hidden_size</span><span class=p>,</span> <span class=n>hidden_size</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>hidden_conv2</span> <span class=o>=</span> <span class=n>Linear</span><span class=p>(</span><span class=n>hidden_size</span><span class=p>,</span> <span class=n>hidden_size</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>output_conv</span> <span class=o>=</span> <span class=n>Linear</span><span class=p>(</span><span class=n>hidden_size</span><span class=p>,</span> <span class=n>num_features</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>act</span> <span class=o>=</span> <span class=n>ReLU</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>forward</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>orig_shape</span> <span class=o>=</span> <span class=n>x</span><span class=o>.</span><span class=n>shape</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>x</span><span class=o>.</span><span class=n>ndim</span> <span class=o>==</span> <span class=mi>2</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>x_next</span> <span class=o>=</span> <span class=n>nbody</span><span class=o>.</span><span class=n>n_body_step</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>clone</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>            <span class=n>x</span> <span class=o>=</span> <span class=n>x</span><span class=o>.</span><span class=n>flatten</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=n>x_next</span> <span class=o>=</span> <span class=n>x_next</span><span class=o>.</span><span class=n>reshape</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>shape</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>x_next</span> <span class=o>=</span> <span class=n>nbody</span><span class=o>.</span><span class=n>n_body_step</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>clone</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>            <span class=n>x</span> <span class=o>=</span> <span class=n>x</span><span class=o>.</span><span class=n>reshape</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>x_next</span> <span class=o>=</span> <span class=n>x_next</span><span class=o>.</span><span class=n>reshape</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>shape</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span> <span class=o>=</span> <span class=n>torch</span><span class=o>.</span><span class=n>cat</span><span class=p>([</span><span class=n>x</span><span class=p>,</span> <span class=n>x_next</span><span class=p>],</span> <span class=n>dim</span><span class=o>=-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>act</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>input_conv</span><span class=p>(</span><span class=n>x</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>act</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hidden_conv1</span><span class=p>(</span><span class=n>x</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>act</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>hidden_conv2</span><span class=p>(</span><span class=n>x</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=n>x</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>output_conv</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>x</span><span class=o>.</span><span class=n>reshape</span><span class=p>(</span><span class=n>orig_shape</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>For a bit over a day and got 25e6 epoches with a batch size of 1000. So 1e10 forwards passes of the net, which took about 24 hours. Learning rate of 3-e4, naturally. Here is what the loss function looks like:
+<img src="/quartz/Pasted image 20230605211957.png" width=auto>
+So it was still improving the whole time!
+That&rsquo;s impressive and noteworthy. Notice something about the model though? I concatenated the expected output onto the input, so all it had to do was learn to pass it through, and it didn&rsquo;t even seem to be that good at doing that!
+Here is what it looks like against the ground truth:
+<img src="/quartz/Screencast from 06-05-2023 09:25:03 PM.webm" width=auto>
+I can&rsquo;t escape the feeling that something is subtly wrong here. There&rsquo;s no way that this can be that bad, I must be missing something. Recalling
+<a href=http://karpathy.github.io/2019/04/25/recipe/ rel=noopener>this blog post</a> neural net bugs often look like performance that&rsquo;s just a little bit worse. But that&rsquo;s why I did <a href=/quartz/20230604-Simulate-trivialities rel=noopener class=internal-link data-src=/quartz/20230604-Simulate-trivialities>this</a>, so that I could verify that I had no such obvious bugs.</p><a href=#quick-aside-loss-functions-that-go-up-again><h2 id=quick-aside-loss-functions-that-go-up-again><span class=hanchor arialabel=Anchor># </span>Quick aside: Loss functions that go up again:</h2></a><p>Here is the result of training the net on an input of [x, x_next] so all it has to learn is to do a passthrough of the second half of the net:
+<img src="/quartz/Pasted image 20230607080848.png" width=auto>
+Why does the loss function jump up to such a high result after a while???? what&rsquo;s going on here? This seems important. I hear that the adam optimiser has some momentum, maybe that caused it to overshoot and then for some reason it can&rsquo;t get back again? so weird.
+This is what happens when I decrease the learning rate by a factor of 10 to 3e-5:
+<img src="/quartz/Pasted image 20230607081129.png" width=auto>
+So it doesn&rsquo;t looks like a learning rate problem.</p><a href=#loss-statistics><h1 id=loss-statistics><span class=hanchor arialabel=Anchor># </span>Loss statistics</h1></a><p>We have looked at the <a href=/quartz/20230604-N-body-particulars#results rel=noopener class=internal-link data-src=/quartz/20230604-N-body-particulars>state statistics</a> before, but what about the loss statistics? Here are the L1 and mse losses for a single step of the simulation:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl>    <span class=n>states</span> <span class=o>=</span> <span class=n>states</span><span class=o>.</span><span class=n>re</span><span class=err>`</span><span class=n>shape</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=n>states</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=o>-</span><span class=mi>2</span><span class=p>],</span> <span class=n>states</span><span class=o>.</span><span class=n>shape</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>    <span class=n>states_next</span> <span class=o>=</span> <span class=n>nbody</span><span class=o>.</span><span class=n>n_body_step</span><span class=p>(</span><span class=n>states</span><span class=o>.</span><span class=n>clone</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>    <span class=n>l1</span> <span class=o>=</span> <span class=p>(</span><span class=n>states</span> <span class=o>-</span> <span class=n>states_next</span><span class=p>)</span><span class=o>.</span><span class=n>abs</span><span class=p>()</span><span class=o>.</span><span class=n>mean</span><span class=p>(</span><span class=n>dim</span><span class=o>=</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>2</span><span class=p>))</span><span class=o>.</span><span class=n>cpu</span><span class=p>()</span><span class=o>.</span><span class=n>detach</span><span class=p>()</span><span class=o>.</span><span class=n>numpy</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>mse</span> <span class=o>=</span> <span class=p>((</span><span class=n>states</span> <span class=o>-</span> <span class=n>states_next</span><span class=p>)</span><span class=o>**</span><span class=mi>2</span><span class=p>)</span><span class=o>.</span><span class=n>mean</span><span class=p>(</span><span class=n>dim</span><span class=o>=</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>2</span><span class=p>))</span><span class=o>.</span><span class=n>cpu</span><span class=p>()</span><span class=o>.</span><span class=n>detach</span><span class=p>()</span><span class=o>.</span><span class=n>numpy</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>l1</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>log10</span><span class=p>(</span><span class=n>l1</span><span class=p>);</span> <span class=n>mse</span> <span class=o>=</span> <span class=n>np</span><span class=o>.</span><span class=n>log10</span><span class=p>(</span><span class=n>mse</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src="/quartz/Pasted image 20230607083155.png" width=auto>
+And if you don&rsquo;t include the acceleration:
+<img src="/quartz/Pasted image 20230607083334.png" width=auto></p></article><hr><div class=page-end id=footer><div class=backlinks-container><h3>Backlinks</h3><ul class=backlinks><li><a href=/quartz// data-ctx="20230604 N body particulars.md" data-src=/ class=internal-link>Harry dB notes</a></li><li><a href=/quartz/20230604-N-body-particulars/ data-ctx="state statistics" data-src=/20230604-N-body-particulars class=internal-link></a></li><li><a href=/quartz/20230608-Learning-rate/ data-ctx="N body simulation" data-src=/20230608-Learning-rate class=internal-link></a></li></ul></div><div><script src=https://cdn.jsdelivr.net/npm/d3@6.7.0/dist/d3.min.js integrity="sha256-+7jaYCp29O1JusNWHaYtgUn6EhuP0VaFuswhNV06MyI=" crossorigin=anonymous></script><h3>Interactive Graph</h3><div id=graph-container></div><style>:root{--g-node:var(--secondary);--g-node-active:var(--primary);--g-node-inactive:var(--visited);--g-link:var(--outlinegray);--g-link-active:#5a7282}</style><script src=https://Oscilllator.github.io/quartz/js/graph.abd4bc2af3869a96524d7d23b76152c7.js></script></div></div><div id=contact_buttons><footer><p>Made by Harry dB using <a href=https://github.com/jackyzha0/quartz>Quartz</a>, © 2023</p><ul><li><a href=https://Oscilllator.github.io/quartz/>Home</a></li></ul></footer></div></div></body></html>
