@@ -13,6 +13,8 @@ You'll need buckets of data for this I suspect, but that's exactly what a system
 ## Problem: splitting recordings 
 What gets recorded will of course be N streams of audio from the N microphones. This needs to be split into discrete chunks around bird calls. Undoubtedly this will require piles and piles of disgusting heuristics but once again our multiple receivers will help here. 
 A proposal: find a loud identifiable bit of the recording via a simple threshold or something.  With all the microphones you can then locate this recording in space _and create a synthetic microphone that listens only to that point in space_. This is very cool but also understandably makes it much easier to tell when the call started and stopped since it solves the problem of the end of one call overlapping with the start of another that you don't really have any way to solve with a single microphone.
+#### 20230703 note
+Maybe what we want here is "contrastive" learning?
 
 ## Problem: $crow_t == crow_{t+1}$ ??
 The above notes show how to locate, separate and label a call that happens at a certain time by a certain bird. But it does not give insight as to how a bird that calls on two separate occasions gets  labelled the same thing both times. I do not know how to solve this. I think that with a sufficient number of examples it's pretty likely that different occurrences of the same call will end up in similar places in the embedding space, so maybe a traditional clustering algorithm could be used?
