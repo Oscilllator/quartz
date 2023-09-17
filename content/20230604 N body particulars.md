@@ -63,7 +63,7 @@ Rather dramatic, wouldn't you say?
 This seems to have a fairly large effect on training, especially if you use something like a mean _squared_ error loss, like I was.
 
 ### Small aside: fiddling with this made the simulation look a lot better:
-![[Screencast from 06-04-2023 06:56:02 PM.webm]]
+![[Screencast from 06-04-2023 065602 PM.webm]]
 
 ## Noisy noisy results
 Here are the results trianing for a bit with a batch size of 1, using L1 loss:
@@ -153,7 +153,7 @@ For a bit over a day and got 25e6 epoches with a batch size of 1000. So 1e10 for
 So it was still improving the whole time!
 That's impressive and noteworthy. Notice something about the model though? I concatenated the expected output onto the input, so all it had to do was learn to pass it through, and it didn't even seem to be that good at doing that!
 Here is what it looks like against the ground truth:
-![[Screencast from 06-05-2023 09:25:03 PM.webm]]
+![[Screencast from 06-05-2023 092503 PM.webm]]
 I can't escape the feeling that something is subtly wrong here. There's no way that this can be that bad, I must be missing something. Recalling [this blog post](http://karpathy.github.io/2019/04/25/recipe/) neural net bugs often look like performance that's just a little bit worse. But that's why I did [[20230604 Simulate trivialities|this]], so that I could verify that I had no such obvious bugs.
 
 ## Quick aside: Loss functions that go up again:

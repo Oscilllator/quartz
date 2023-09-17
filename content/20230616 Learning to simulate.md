@@ -47,7 +47,7 @@ Here is the result of training on a single trajectory with two hidden layers:
 ![[Pasted image 20230617191225.png]]
 Absolutely textbook.
 And here is what it looks like when the model does projection:
-![[Screencast from 06-18-2023 08:52:42 AM.webm]]
+![[Screencast from 06-18-2023 085242 AM.webm]]
 I am stunned. The model was trained to predict the positions at t+1 from time t but here I made the model predict all 1000 sequential steps in succession, so the divergence here is the accumulated error. This is an _astoundingly_ easy problem compared to what I was dealing with before.
 
 ## Losses between timesteps:

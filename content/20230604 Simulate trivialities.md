@@ -1,7 +1,7 @@
 # n body is not so trivial
 [[20230507 Simulation|Before]] I said that an n body simulation would be trivial. But it turns out that it might be quite so much as I had thought. I wrote a simple n body simulation: 
 
-![[Screencast from 06-04-2023 07:50:12 AM.webm]]
+![[Screencast from 06-04-2023 075012 AM.webm]]
 That whilst not particularly accurate because of floating point shenanigans, nonetheless behaves in a predictable way. 
 
 ## State
@@ -93,7 +93,7 @@ class NbodyManual(torch.nn.Module):
 ```
 
 Here is what it looks like:
-![[Screencast from 06-04-2023 08:07:21 AM.webm]]
+![[Screencast from 06-04-2023 080721 AM.webm]]
 Yuck. 
 The way that I trained things was by generating 10e3 trajectories of 1e3 timesteps each, and then randomly sampling from these at training time. For the MLP I also used a batch size of 1000 and learning rate of 3e-4. I messed about for many of these parameters but nothing changed anything. Even having fewer layers didn't.
 

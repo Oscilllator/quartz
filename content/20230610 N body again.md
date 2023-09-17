@@ -1,4 +1,4 @@
-[[20230610 inv(x**2) a deep dive|Previously, on NN adventures:]] I figured out that optimising the ratio of the input to the output was what was needed. Let's use that information and go back to training N body simulations. Taking the [[20230610 inv(x**2) a deep dive#Different loss function?|Exact same]] loss function and whacking it into the N body training loop (the one where we are just trying to pass the input to the output), the loss looks like this:
+[[20230610 inv x squared a deep dive|Previously, on NN adventures:]] I figured out that optimising the ratio of the input to the output was what was needed. Let's use that information and go back to training N body simulations. Taking the [[20230610 inv x squared a deep dive#Different loss function?|Exact same]] loss function and whacking it into the N body training loop (the one where we are just trying to pass the input to the output), the loss looks like this:
 ![[Pasted image 20230610094721.png]]
 Not great. Stuff just flies around in the sim as per usual, too. Looks like the learning rate is too high though. 
 Changing things so there is only one hidden layer and reducing the learning rate to 3e-5 and I get this:
@@ -19,7 +19,7 @@ Boom. 2 OOM improvement in the loss with 1/6 the training time. Noice.
 In the simulation we can actually see that the bodies kind of interact with each other. I noticed in the above graph things kinda slowed down a bunch at the end there, so trained for 10x longer with the same scheduler. And I got this:
 ![[Pasted image 20230610100902.png]]
 HMMMMMM. That is some nice perfectly scheduled learning right there (I think). Another 3 OOM improvement. Let's take a look in the simulator:
-![[Screencast from 06-10-2023 10:11:07 AM.webm]]
+![[Screencast from 06-10-2023 101107 AM.webm]]
 !!!
 Finally. Some modicum of success. Time to remove the output from the input lol.
 ### A note on training speed.
@@ -42,7 +42,7 @@ Here is the loss function:
 Gyarbage! We know from above that you need like 1e-6->1e-8 loss to get good results, this isn't even close to that. I'm getting pretty strong "dataset is high variance and that's why it isn't training" vibes from that loss function too. 
 ## Next steps
 So from here I can:
-- Fudge the N body simulation so that it's smoother, akin to having an epsilon of 1e-2 [[20230610 inv(x**2) a deep dive#Background#Experiments varying epsilon| like this]] to see if it makes things easier to train. This will verify that it's the spikyness that is what's causing the issue.
+- Fudge the N body simulation so that it's smoother, akin to having an epsilon of 1e-2 [[20230610 inv x squared a deep dive#Background#Experiments varying epsilon| like this]] to see if it makes things easier to train. This will verify that it's the spikyness that is what's causing the issue.
 - Try to find a better loss function, since I got such great improvements from that route already
 - Train on a tiny subset of the data to try to overfit, and then generalize from there.
 
@@ -55,13 +55,13 @@ So that seems somewhat reasonable. Let's bump it up to 10 trajectories each with
 So we can see that already that's enough to cook the loss!
 
 ## Train with a different fitness function. 
-I updated the fitness function to the one [[20230610 inv(x**2) a deep dive#Going deeper|here]], and then trained it on the 128 wide 10 deep architecture from before for about 8 hours with a learning rate decaying from 3e-3 to 2e-6. 
+I updated the fitness function to the one [[20230610 inv x squared a deep dive#Going deeper|here]], and then trained it on the 128 wide 10 deep architecture from before for about 8 hours with a learning rate decaying from 3e-3 to 2e-6. 
 Dataset was _two_ bodies this time, 50e3 trajectories of 1000 timesteps each.
 Here are the results:
 ![[Pasted image 20230612172952.png]]
 well, it seems to have converged on something...
 Let's check it out in the sim:
-![[Screencast from 06-12-2023 05:32:02 PM.webm]]
+![[Screencast from 06-12-2023 053202 PM.webm]]
 It verks!
 Incredible. It doesn't work that well, but it does recognisably solve the problem. Amazing. Only took like a month. Now to do the same thing, but with _three_ bodies. 
 And here are the results for that:
@@ -78,7 +78,7 @@ for epoch in range(num_epochs):
 	if(curr_loss > prev_loss * 10): continue
 ```
 This might be a good idea but I think it is also papering over the issue. Before I go and do something like that we should go and understand in great and excruciating detail why it is that everything is so profoundly fat tailed. I think that this is most likely a lesson that will translate well into future efforts.
-For example if our ground truth is a simulation, maybe we can gradually  increase the 'peakiness' of the training data as a function of time (i.e. gradually decrease epsilon [[20230610 inv(x**2) a deep dive|like I did here]]) which might make things train faster. That seems like something that could generalise well. It also seems like something that could paint you into a corner where you could only train on data that could be smoothed in this way too.
+For example if our ground truth is a simulation, maybe we can gradually  increase the 'peakiness' of the training data as a function of time (i.e. gradually decrease epsilon [[20230610 inv x squared a deep dive|like I did here]]) which might make things train faster. That seems like something that could generalise well. It also seems like something that could paint you into a corner where you could only train on data that could be smoothed in this way too.
 GPT tells me that this kind of thing is called 'Curriculum learning'.
 ### Quick experiment: batch normalisation.
 Here is the result of the same 10 layer network, only the first 7 layers are batch norm:
@@ -88,7 +88,7 @@ basically exactly the same (take note of x axis).
 I set a breakpoint in vscode for when the error went up by more than a factor of 100, and got a breakpoint around 300e3. Here is what the ratio losses look like across the batch size of 8000:
 ![[Pasted image 20230613205906.png]]
 What kind of absolutely atrocious distribution is that?
-Here are what things look like for the fitness function before that, the [[20230610 inv(x**2) a deep dive#^381054|two sided log]]:
+Here are what things look like for the fitness function before that, the [[20230610 inv x squared a deep dive#^381054|two sided log]]:
 ![[Pasted image 20230613210249.png]]
 well I'm not going to say that's great, but it looks much better than the previous one. It's clear with this too though that the loss is dominated by these outliers. inspecting them, they seem to be important as this is where the n bodies are undergoing high accelerations. Maybe if we optimised for the 0->95th percentile of losses this would work out better though and even though we would not be training on such extreme cases the model would still learn better. So many experiments!
 
@@ -124,7 +124,7 @@ so that it would train on all the dataset for the last half of the training set.
 ![[Pasted image 20230614080045.png]]
 So the final loss here is actually quite a bit better than the no-curriculum alternative, it looks like.
 The results in the simulation are a bit interesting, they looks like this:
-![[Screencast from 06-14-2023 08:02:36 AM.webm]]
+![[Screencast from 06-14-2023 080236 AM.webm]]
 ## What if we did the opposite?
 Maybe the problem is not that the datset is super fat tailed, making it difficult to train on. Maybe the problem is that the training data is 99% "objects in motion stay in motion" and 1% "actual gravitation".
 So what if we trained the net on a dataset where the bodies where experiencing high accelerations?

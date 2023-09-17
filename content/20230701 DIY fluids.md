@@ -83,6 +83,6 @@ def fluid_step(state: torch.Tensor):
     return state.reshape(orig_shape)
 ```
 
-![[Screencast from 07-01-2023 01:56:28 PM.webm]]
+![[Screencast from 07-01-2023 015628 PM.webm]]
 ta-da!
 OK it's not that great. main thing missing is the fact the particles pass through each other, and the lack of viscous forces to slow stuff down. Given that particles passing through each other means that there might be a /0 somewhere in the sim and this is the thing  that killed the N body simulation as a learning tool I feel that I may be repeating myself.
