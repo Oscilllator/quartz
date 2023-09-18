@@ -18,4 +18,12 @@ Where you can see the regular grid pattern of the infill and my manual support l
 which increased its weight to like 25g (ouch). I don't think that I placed the reinforcement particularly well here, though.
 ## Failure modes
 The new drone definitely performs better - hovering requires about 5.5/6 amps, as opposed to about 7.5 with the previous iteration. Not bad, but not stunning either.
+I'm using [Samsung 40T](https://www.18650batterystore.com/en-au/products/samsung-40t) batteries at the moment (4Ah capacity), which gives me a flight time of like 40 minutes. They have a great discharge rate of 35A, but I don't really need that I think. Something like the [Samsung 50S](https://www.18650batterystore.com/products/samsung-50s-21700-5000mah-25a-battery) which has a 5Ah rating seems more appropriate. I don't know if I'll bother to buy some just yet, though. I still think the propellers warrant some more attention.
 
+## Impact resistance
+I flew the new version of the drone for a total of about half an hour of air time before it died.
+I hit some foliage going sideways slowly at an altitude of about 1.5m. Interestingly the failure mode was that the screw holding in the dovetail joint tore out - I did not expect this!
+You can see here though that the slicer got a bit excited and decided to turn one of my reinforcing bits into a notch:
+![[Pasted image 20230917140825.png]]
+which I am sure did not help its strength. 
+Something to note for the next version, then.
