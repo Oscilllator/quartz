@@ -28,11 +28,14 @@ The antenna on that AIO is 32mm long and made of 0.4mm enameled wire.
 
 ## The resolution
 After some more debugging where I measured the FETs of the half bridge (diode drops and resistance) and found them to be  totally normal I did the obvious thing that I should have done ages ago and swapped the motor to a different ESC. Turns out it was the motor.
+
 I had no idea it was possible for a visually perfect, no grinding when spinning, even resistance between phases motor to give unreliable performance like that. Oh well.
 
 ## The crash
 The drone now looks like this:
 ![[Pasted image 20230903202300.png]]
 which as far as I could tell came as a result of the controllers freaking out when I tried to pull out of a fast(ish) turn. The PID's had not been tuned at all, so that one is on me I guess. I only had parts spare for one arm but two were broken in this crash, so now might be a good time for a redesign.
+
 One other thing to note was that I had previously broken off a bunch of the legs so there was no crumple zone. The next design should have more of that I think. The current legs aren't good at absorbing shock too I feel.
+
 In the next design I'm not sure whether to add more durability or more manufacturability. I think the latter. There's not really any such thing as a durable drone when it's this lightweight though. (or is there? maybe some super thin carbon fiber?)
