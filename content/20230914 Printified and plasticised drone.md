@@ -27,3 +27,21 @@ You can see here though that the slicer got a bit excited and decided to turn on
 ![[Pasted image 20230917140825.png]]
 which I am sure did not help its strength. 
 Something to note for the next version, then.
+
+
+## The next version
+
+This version was printed on a new bambu lab P1P using a 0.4mm nozzle. I have a 0.2mm nozzle but changing it looks to be such a pain that I haven't. With this new printer and nozzle size it takes me 3 hours to print the entire drone as opposed to 7 hours to print one arm. Noice.
+
+Here is what it looks like:
+
+![[Pasted image 20230924201309.png]]
+
+I wrote some notes on how I adjusted the print settings [[20230928 Communicating structural parts for Bambu lab|here]], but although the bambu lab slicer took way more effort to get working I think that the final result is better. The double solid dovetail is far far stronger than what came before it. How much of an actual advantage that is is up for discussion though.
+
+A few minutes into flying this new version I crashed it and the end of the arm crumpled like this:
+
+
+![[Pasted image 20230924201524.png]]
+
+This actually bent the bottom of the motor because the screws were attached so well to the internal print that the impact with the bottom of the arm bent everything. Maybe I should print the arm side of the dovetail with no reinforcement so that it snaps off there.

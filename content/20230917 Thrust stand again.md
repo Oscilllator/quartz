@@ -18,3 +18,31 @@ The data for the 2302 doesn't look correct though. The manufacturer has it at 13
 ![[Pasted image 20230917165114.png]]
 weird.
 
+# Even moar propellers
+
+I printed up a nice big batch of propellers:
+
+![[Pasted image 20230924201733.png]]
+
+That I generated using an iterated version of the script that I think originated [here](https://www.techmonkeybusiness.com/articles/Parametric_Propellers.html). 
+
+None of them seem any good though. In the below plot the above propellers are marked with an 'x' (I didn't measure them all) and the ones from the above dataset have an 'o':
+
+![[Pasted image 20230924202242.png]]
+
+The format of the printed propellers is 'print\_{diameter in inches}\_{pitch in inches}\_{chord in mm}'
+
+Dismal. Just dismal. I had high hopes in particular for the last printed one which was D10 p2. I spent a little bit of extra time adjusting  chord as a function of radius function, as well as increasing the thickness a tad because the other propellers seemed a bit thin and flappy. 
+
+![[Pasted image 20230924202504.png]]
+![[Pasted image 20230924202517.png]]
+
+I guess the lift/drag ratio probably just came out terrible.
+
+## Efficiency
+As I understand it drone propellers operate at low reynolds numbers, mostly because they are tiny compared to e.g. aeroplane wings. I thought that perhaps given that I was 3d printing these I would be able to produce a large hollow prop that was both lightweight (since it's hollow), large diameter and stiff. I think I did do that, it just turns out such a propeller isn't any good. 
+ChatGPT tells me that as the reynolds number decreases, the relative penalty for thickening a propeller actually increases. So a thick airfoil designed for high reynolds numbers is worse than a thick one designed for low reynolds numbers. That's the opposite to what I would have thought, but it does seem to be true.
+
+### Another off the shelf 8040 propeller
+
+![[Pasted image 20231016080548.png]]
