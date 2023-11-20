@@ -79,5 +79,165 @@ which seems pretty reasonable to me, considering it was reconstructed from 512 p
 
 
 # Estimating the ground truth:
+This did not go very well. I adjusted the last output layer of the 3d convolutional kernel so that it output 2 channels rather than 3. The net then output this after a night of training:
 
 ![[Pasted image 20231109080312.png]]
+... it appears that everything that is scroll is white and everything that is ground truth is black. The ol' "here's the mean of your dataset" trick. There's no real proper reason why it is that I should be training on the reconstruction as well as the ground truth though, so if I just drop that hopefully that will make it better at training on the ground truth.
+
+I have also added a bit of code that trains on patches that at the edge of ink and no ink, so it doesn't bias too much towards 'no ink' since that's most of the dataset:
+```python
+
+def get_first_gt_x(out_vol: torch.tensor, out_gt: torch.tensor, path=GT1_PATH, edges=True):
+  gc.collect()
+  # out_vol is a N x 64 x 64 x 64 tensor, because the gt is 64 thick.
+  # out_gt is an N x 64  x 64 tensor from the gt image.
+  # n = out_vol.shape[0]
+  batch_sz, d_sz, w_sz, h_sz = out_vol.shape
+
+  start_y = 4600; start_x = 5800
+  end_y = 7000;   end_x = 9300
+  assert(out_vol.shape[0] == out_gt.shape[0])
+
+  with Image.open(os.path.join(path, 'inklabels.png')) as img:
+    gt = np.array(img)
+    gt = torch.from_numpy(gt).to(torch.float32)
+  size = torch.tensor(gt.shape)
+
+  print(f"loaded gt of shape {gt.shape}")
+
+  x_out = torch.randint(start_x, end_x, (batch_sz,))
+  y_out  = torch.randint(start_y, end_y, (batch_sz,))
+
+  if edges:  # Only train on stuff with a bit of 0 and a bit of 1
+    torch.set_default_device('cuda')
+    no_edges = gt.clone()
+    # mask off the edge of the image so we don't index beyond it.
+    no_edges[0:w_sz // 2, :] = 0
+    no_edges[-w_sz // 2:, :] = 0
+    no_edges[:, 0:h_sz // 2] = 0
+    no_edges[:, -h_sz // 2:] = 0
+    edge_x = torch.diff(gt, dim=0, append=gt[-1, :].unsqueeze(0))
+    edge_y = torch.diff(gt, dim=1, append=gt[:, -1].unsqueeze(1))
+    edge = torch.logical_or(edge_x, edge_y)
+    edge_locs = torch.argwhere(edge).cuda()
+    n_edges = edge_locs.shape[0]
+    chosen_indices = torch.randint(0, n_edges, (batch_sz,))
+    chosen_corners = edge_locs[chosen_indices]
+    x_out = chosen_corners[:, 0] - w_sz // 2
+    y_out = chosen_corners[:, 1] - h_sz // 2
+
+  for b_idx in range(batch_sz):
+    out_gt[b_idx] = gt[x_out[b_idx]:x_out[b_idx]+w_sz, y_out[b_idx]:y_out[b_idx]+h_sz]
+
+  for z_idx in range(d_sz):
+    layer = load_tif_cached(os.path.join(path, f"surface_volume/{z_idx:02d}.tif"), size.tolist(), check=z_idx==0)
+    for b_idx in range(batch_sz):
+      out_vol[b_idx, z_idx] = layer[x_out[b_idx]:x_out[b_idx]+w_sz, y_out[b_idx]:y_out[b_idx]+h_sz]
+    print(f"loaded layer {z_idx}")
+```
+
+
+
+## Effects of residual layers:
+The implementation of the residual layer courtesy of chatgpt as usual (it got the dims wrong though, also as usual):
+```python
+class ResidualBlock3d(nn.Module):
+    def __init__(self, in_channels, out_channels, conv_layer):
+        super(ResidualBlock3d, self).__init__()
+
+        # Main path layers
+        self.conv1 = conv_layer(in_channels, out_channels, kernel_size=2, stride=2)
+        self.bn1 = nn.BatchNorm3d(out_channels)
+
+        self.conv2 = nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=1, padding=1)
+
+        # Shortcut path layer - always using 1x1 convolution
+        if isinstance(conv_layer, nn.Conv3d):
+          self.shortcut = conv_layer(in_channels, out_channels, kernel_size=1, stride=2)
+        else:
+          self.shortcut = conv_layer(in_channels, out_channels, kernel_size=2, stride=2)
+
+    def forward(self, x):
+        residual = self.shortcut(x)
+        out = F.relu(self.bn1(self.conv1(x)))
+        out = self.conv2(out)
+        out += residual
+        out = F.relu(out)
+        return out
+
+...
+
+        self.encs = nn.ModuleList()
+        self.encs.append(nn.Conv3d(1, expansion_init, kernel_size=2, stride=2))
+        for i in range(layers):
+            in_channels = expansion_init * 2**i
+            out_channels = expansion_init * 2**(i+1)
+            # self.encs.append(nn.Conv3d(in_channels, out_channels, kernel_size=2, stride=2))
+            self.encs.append(nn.Sequential(
+                nn.Conv3d(in_channels, out_channels, kernel_size=2, stride=2),
+                nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=1, padding=1),
+                nn.BatchNorm3d(out_channels)
+            ))
+...
+        self.decs = nn.ModuleList()
+        for i in range(layers):
+            in_channels = final_expansion // 2**i
+            out_channels =  final_expansion // 2**(i+1)
+            # either this:
+            self.decs.append(nn.Sequential(
+                nn.ConvTranspose3d(in_channels,out_channels, kernel_size=2, stride=2),
+                nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=1, padding=1),
+                nn.BatchNorm3d(out_channels)
+            ))
+            # or this
+            # self.decs.append(ResidualBlock3d(in_channels, out_channels, nn.ConvTranspose3d))
+        self.decs.append(nn.ConvTranspose3d(final_expansion // 2**layers, 1, kernel_size=2, stride=2))
+
+```
+
+Here is my net after training with 1000 iterations, no residual layers:
+
+![[Pasted image 20231118181733.png]]
+
+And here is 1000 iterations with residual layers:
+``
+![[Pasted image 20231118181259.png]]
+
+Yuuuuuge difference!! The net with no residuals looks like it has flatlined, but it actually hasn't. It seems to train about 10x slower is all.
+
+## Overfitting
+I was training the net on 1000 examples, then reloading a new set of 1000 examples from the scroll every 1000 iterations. That leads to a loss curve that looks like this:
+
+![[Pasted image 20231118183538.png]]
+
+When I change this to 10000 examples, I get a loss curve that looks like this:
+![[Pasted image 20231118183749.png]]
+
+so you can see that there is no overfitting already, but also the net has like 10x higher loss! it's about as high as when there were no residual layers! is this a coincidence?
+Here is the net trained on a dataset size of 1e4, with no residual layers:
+
+![[Pasted image 20231118184035.png]]
+
+...about the same as with a dataset size of 1e3 from [[20231101 Vesuvius challenge#Effects of residual layers|before]]. This makes me update rather strongly towards "residual connections are great for overfitting" and away from "residual connections are good for avoiding exploding gradients".
+
+## Training on ink: initial results
+Here is the result of simply switching the target volume from reconstructing the original to reconstructing the ground truth:
+
+![[Pasted image 20231119083517.png]]
+
+Looks like it's doing a reasonable job of remembering the dataset just like before, although remembering the ink seems to be harder. Still though, it shows there is some correlation between what is desired on the input and what is desired on the output so that's nice.
+
+When I leave this to train for an hour or so on parts of the dataset that contain only an edge it actually does quite well. But when I plot the results of this:
+
+
+![[Pasted image 20231119135040.png]]
+
+...yeah, if all it sees is an edge, all it's gonna output is an edge.
+
+One other thing I'm running into here is loading times - significant parts of the training time are spent loading data. So speeding that  up is a good next step I think.
+
+## Attempt at a proper run
+I got rid of the code for training on only data around edges - I put that in because of the [[20231101 Vesuvius challenge#Estimating the ground truth|garbage]] that I got out before. Here is the loss curve for a true sampling of the input, attempting to reconstruct the output:
+![[Pasted image 20231119142023.png]]
+
+This too is exhibiting weird behaviors: big spikes, and this super long period of plateauing prior to the net 'picking up' the gradient again. 
