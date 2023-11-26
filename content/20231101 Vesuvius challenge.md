@@ -241,3 +241,26 @@ I got rid of the code for training on only data around edges - I put that in bec
 ![[Pasted image 20231119142023.png]]
 
 This too is exhibiting weird behaviors: big spikes, and this super long period of plateauing prior to the net 'picking up' the gradient again. 
+
+### Results after a few hours training
+I did this over a couple of different restarts so I don't have a good screenshot of the loss over time, but here is the final result:
+
+![[Pasted image 20231119201743.png]]
+
+...Looks pretty good to me!
+
+Here is what it looks like zoomed in on some random blob:
+
+![[Pasted image 20231119201834.png]]
+
+...so you can see that the boundaries of the model are clearly visible. Presumably this would be improve if a bunch of model outputs were averaged with different offsets. It might also be good to examine the loss as a function of the distance from the center of the cube - if there are edge effects it might be a good idea to discard them.
+
+## Attempt at training on ground truth overnight:
+![[Pasted image 20231120071745.png]]
+Looks like it plaeaued super quick there. This started with a learning rate of 3e-5 and went to 3e-7. it used the background thread data loading technique.
+
+And here is what that same model looks like trying to guess where the ink is:
+
+![[Pasted image 20231120072029.png]]
+
+oh well.
