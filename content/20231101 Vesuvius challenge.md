@@ -264,3 +264,27 @@ And here is what that same model looks like trying to guess where the ink is:
 ![[Pasted image 20231120072029.png]]
 
 oh well.
+
+## ???
+Having all these weird failures to train made me try to go back and replicate my previous successfull results. Here are the results of training overnight a 32 cube reconstruction:
+
+![[Pasted image 20231203100924.png]]
+
+Pretty garbage. I wonder if this is because I had a learning rate schedule that started at 3e-4 and went down to 3e-6. So I will load this model where it stopped and try again with a constant rate of 3e-4.
+
+And here is <1 hour of training with a learning rate of 3e-4:
+![[Pasted image 20231203120948.png]]
+
+So I think that this means that the learning rate towards the end was indeed too small.
+
+## Batch size
+I have been training with a batch size of 256, which is well below the max that will fit in my GPU. There are two reasons to increase batch size:
+- Better utilisation of The GPU since the weights loaded from memory can be used many times
+- Better estimation of the gradient
+The last one mostly seems bogus to me tbh, so I have not been putting effort into filling up the GPU. My intuition here was basically that the estimation of the gradient would go with sqrt (batch size), so instead of having a batch size of (say) 4, you should have a batch size of 1 and increment a small amount 4 times. IRL you still want a batch size >> 1 because of point 1 about GPU utilisation and so what I have been doing is increasing the batch size until `nvidia-smi` said that I was using as much power as I could.
+
+As a small and highly invalid experiment, here is me setting a breakpoint during training and setting the batch size from 256->1024.
+
+![[Pasted image 20231203142035.png]]
+
+...it doesn't look like it is having much effect here. Remember in the same time that I do 1 batch-size-1024 iteration I can do 4 of the 256 variant. I'll keep the experiment running for a bit more just to see what happens though.
