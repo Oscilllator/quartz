@@ -285,6 +285,11 @@ The last one mostly seems bogus to me tbh, so I have not been putting effort int
 
 As a small and highly invalid experiment, here is me setting a breakpoint during training and setting the batch size from 256->1024.
 
-![[Pasted image 20231203142035.png]]
+![[Pasted image 20231203163621.png]]
 
 ...it doesn't look like it is having much effect here. Remember in the same time that I do 1 batch-size-1024 iteration I can do 4 of the 256 variant. I'll keep the experiment running for a bit more just to see what happens though.
+Given that there was no change in the learning rate from 256->1024 batch size, this clearly means we need to go lower!
+
+![[Pasted image 20231203182743.png]]
+
+Above I changed the batch size to 64. 
