@@ -292,4 +292,20 @@ Given that there was no change in the learning rate from 256->1024 batch size, t
 
 ![[Pasted image 20231203182743.png]]
 
-Above I changed the batch size to 64. 
+Above I ran with three different batch sizes. It kind of looks like the mean loss changed with the batch size (I don't know how that could be) but the learning rate didn't really.
+
+## Experiment: learning rate
+Here is a learning rate of 3e-4 overnight:
+
+![[Pasted image 20231205080143.png]]
+Looks it like it just keeps learning! I was actually busy for a few days after this so let it run even longer, and the loss just kept on dropping. From the y axis you can see that the absolute level of improvement is not that great though.
+
+## Distribution
+I haven't been normalising the input to my net. It occurs to me that this is a bad idea. here is a histogram of the density across the whole ground truth scroll (after converting from uint16 to float):
+![[Pasted image 20231206213717.png]]
+honestly I think my instincts are right here and this is a pretty boring distribution that doesn't need anything done to it for a net to be able to understand it.
+
+
+
+exp about classifying on frozen layers.
+![[Pasted image 20231207082844.png]]
