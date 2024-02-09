@@ -56,3 +56,15 @@ Zoomed in on the region where the training data was derived from:
 
 Despite being clearly incredibly overfit to the training data to the point of replicating every last imperfection, this is by far and away the most promising result so far!
 perhaps by adding a smidge more of the actual scroll as training data + augmenting the inputs a lot the net will actually learn something.
+
+## 20240115 Augmentation
+I now trained the network on more or less the same thing, but augmented the dataset with rotations. The training looks like this:
+
+![[Pasted image 20240115155042.png]]
+
+
+Where I trained it for about 16 hours with the automatically decaying ground truth fraction. The fraction got down to 0.03 whereapon I got bored and manually set it to 0. That resulted in the huge spike in the loss over on the right hand side there, so even at 0.03 the network was still clearly basically only looking at the ground truth.
+
+The conclusion that I draw from this is that when trained without augmentation the training data for the model is small enough that it can be memorised, and when trained with augmentation it can't generalise to the underlying data.
+
+To be super confident I think I should make some synthetic data with a "scroll" made out of noisy text to see if it can recover the original text.
