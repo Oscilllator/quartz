@@ -82,3 +82,28 @@ What I do not understand here is when the MOSFET goes open. It clearly happens w
 
 circuit at the time of the above screenshot;
 ![[Pasted image 20240212081358.png]]
+
+
+
+## New circuit
+
+I made a new circuit that looks like this:
+![[Pasted image 20240219213949.png]]
+
+where the FET can be driven open loop - the feedback path is closed. That way hopefully we can observe what the actual resonant frequencies are and check that   ZVS is a thing.
+
+## The drain at open loop.
+
+Probing the drain of the FET looks like this:
+
+![[Pasted image 20240219200610.png]]
+
+Which is 1MHz - far below the supposed 10MHz of the tank circuit!
+## Impedance
+
+Here is the impedance of the big coil and the 130p cap tank circuit:
+
+![[Pasted image 20240219213023.png]]
+
+which looks absolutely perfect - 0 resistance at 11Mhz. Since the tank circuit is disconnected from the main circuit I took the liberty of probing the drain of the FET without the tank circuit attached and got the exact same measurement - so  I guess what is happening here is the input choke is forming a tank with the FET capacitance.
+
