@@ -107,3 +107,43 @@ Here is the impedance of the big coil and the 130p cap tank circuit:
 
 which looks absolutely perfect - 0 resistance at 11Mhz. Since the tank circuit is disconnected from the main circuit I took the liberty of probing the drain of the FET without the tank circuit attached and got the exact same measurement - so  I guess what is happening here is the input choke is forming a tank with the FET capacitance.
 
+## Voltage in the middle of the tank circuit
+
+Here I have added the main inductor and capacitor back in, and am probing in between the inductor and capacitor:
+![[Pasted image 20240220194627.png]]
+That looks much more correct. 
+
+## Pulse train
+It turns out if you drive the MOSFET driver at 10MHz with this kind of load it burns out after a few 10s of seconds. So I set up the signal generator to generate a pulse train. Here I have tried pulse trains of frequency 10, 11, 12MHz around the resonant frequency of 11.3MHz.
+
+![[Pasted image 20240222075543.png]]
+
+So we can see here that being close to resonance is important. how utterly unsurprising.
+
+# Longer turn-on
+
+Here I replaced the FET with a IPA60R080P, which has about half the input capacitance. that makes the waveform at the gate look somewhat sensible. Here is a 1000 cycle turnon transient at 11.3MHz:
+
+![[Pasted image 20240222212138.png]]
+
+- Yellow: gate waveform
+- Green: AWG
+- Cyan: drain
+- purple: between inductor and capacitor.
+The oscillations in the maximum amplitude of the drain and the resonance circuit are real, and I think that might be some oscillating phase shifts as it gets closer and further away from ZVS. Let's zoom in:
+### Beginning of the turn-on
+
+The phase shifts look like this:
+
+![[Pasted image 20240222212344.png]]
+
+So you can see there is about a 25ns delay between when the gate driver goes high (yellow) and when the drain goes low, and a 50ns delay between when the driver goes high and the voltage at the cap starts to drop.
+
+### High drain voltage:
+
+![[Pasted image 20240222212622.png]]
+
+### Low drain voltage
+
+![[Pasted image 20240222212705.png]]
+
