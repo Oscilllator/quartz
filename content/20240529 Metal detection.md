@@ -46,4 +46,4 @@ here is a diff of the above two vector fields:
 
 ![[Pasted image 20240529214136.png]]
 
-Wait what. That's just the coil that was + in both scenarios! The coil that switched between + and - just cancelled itself and vanished from the output!
+Wait what. That's just the coil that switched polarity! (a + b) - (a - b) = 2b, duh. I wonder if this actually invalidates anything...
