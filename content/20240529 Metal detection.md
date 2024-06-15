@@ -47,3 +47,11 @@ here is a diff of the above two vector fields:
 ![[Pasted image 20240529214136.png]]
 
 Wait what. That's just the coil that switched polarity! (a + b) - (a - b) = 2b, duh. I wonder if this actually invalidates anything...
+
+
+# Measurements
+
+### +- case balanced
+Here I have balanced things down to the difference in the second harmonic coming from the signal generator:
+
+![[Pasted image 20240601152200.png]]
