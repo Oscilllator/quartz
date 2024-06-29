@@ -36,3 +36,17 @@ Then a jig was made to line the two halves up:
 The blob on the right is the first blob of flux. That fixed the flex in place, and then I started soldering from the other end. Here the first wire is placed down:
 
 ![[Pasted image 20231124093351.png]]
+
+## Final repair:
+
+And here it is all soldered together:
+
+![[Pasted image 20240628191345.png]]
+
+![[Pasted image 20240628191417.png]]
+
+And plugged in:
+
+![[Pasted image 20240628191555.png]]
+
+It actually showed up as a webcam but I wasn't able to get any images :( it was just all black.
