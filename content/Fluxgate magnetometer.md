@@ -64,3 +64,48 @@ It introduces a huge amount of charge injection but I'm going to wave my hands a
 ![[Pasted image 20240701193547.png]]
 
 Which sure does look an awful lot like mains. So I guess we have reached the noise floor of this particular environment.
+
+## Alternative to gating and filtering
+
+I got annoyed at the above gating because of the charge injection that I couldn't get rid of. I tried adding a complementary pmos and when that didn't work gave up. Instead, how about rectifying the signal? It would need to be amplified first but that's OK as my boards with a bunch of amplifiers came in.
+
+Here one is:
+
+### Amplifier
+![[Pasted image 20240702204618.png]]
+
+It has a 10MHz gain bandwidth product (TP2311) so that looks about right.
+
+![[Pasted image 20240702212131.png]]
+
+here is what the magnetometer looks like detecting a 1KHz sine wave:
+
+![[Pasted image 20240702212010.png]]
+
+The magnetometer is being driven at 70kHz.
+
+### Bandpass filter
+
+![[Pasted image 20240702214700.png]]
+
+![[Pasted image 20240702214711.png]]
+
+...Not great.
+
+## Using magnetometer to sense 11kHz magnetic field.
+
+This is starting to get a bit tricky. I angled the magnetometer such that it was not receiving much magnetic field. Then I strapped a coil to it, and excited the coil at 11kHz (to fit inside the above bandpass later).
+
+Setup:
+![[Pasted image 20240703082710.png]]
+
+There are three states here in the FFT plot:
+1) No excitation, minimum magnetic field. This  resulted in a peak at basically only 50kHz
+2) No excitation, max magnetic field. Strong peaks at 100 and 200kHz appear in proportion to the strength of the field
+3) Exciting with external field. Base 11kHz modulation appears, but there is a much stronger peak at 100kHz +/- 11kHz. This is also in direct proportion to the volts going into the coil, and is also independent of the external magnetic field.
+![[Pasted image 20240703081957.png]]
+
+I had initially thought here that the strongest signal would show up at the base excitation freqency:
+![[Pasted image 20240703082409.png]]
+
+But from the above FFT it appears that this is not actually the case. 
