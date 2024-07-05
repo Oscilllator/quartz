@@ -109,3 +109,79 @@ I had initially thought here that the strongest signal would show up at the base
 ![[Pasted image 20240703082409.png]]
 
 But from the above FFT it appears that this is not actually the case. 
+
+## Measuring technique pivot.
+
+I gave up on all of the above amplifiers and filters, I do not think they are necessary. Instead, I can just pull 100e6 samples off the scope and do an FFT to measure the power in the bands I care about directly. I think that's a much better technique.
+
+## More current
+I was barely receiving any signal at all from my magnetometer from my coil and I figure that was because I was driving it from my waveform generator rather than from a proper driver. So I resoldered the H bridge from [[20240522 Plasma toroid 4 decoupling|the plasma toroid project]] and that pushed plenty of amps into the system. So many that I needed to put 3 5W 10R resistors in parallel so as not to hit the undervoltage lockout of the LMG chip. But after that it was fine.
+
+## Measuring the current
+I can't look at the high side of the coil and use the 50R impedance of the AWG to calculate the current going into this thing any more, since this is my setup now:
+
+
+
+![[Pasted image 20240704165355.png]]
+
+So I need another way to measure the current. I don't have any current sense resistors (4 1.1R 0603 resistors in parallel blew up real quick) but I do have a stainless steel PCB stencil, so I chopped some of that and used it as a current sense resistor:
+
+![[Pasted image 20240704165623.png]]
+
+You may be wondering how one solders to stainless steel. It is in fact trivial with the tremendous flux that I was gifted. Naturally the label corroded off quite quickly and so I don't know what brand it is precisely, but it is inside a secondary containment container with "STAY BRITE" on it. 
+
+Anyway the above current sense resistor is about 0.286 Ohms apparently.
+
+This will be required later as the coil itself has some frequency response and so you can't just assume the applied voltage translates to a current directly.
+
+
+
+## Analog current
+
+Now I have things set up reasonably well I need to generate a signal at many different frequencies from my coil and measure it with the fluxgate magnetometer to prove this whole thing out. But the output of the above H bridge is always a square wave and so there will be all kinds of harmonics all over the place. I don't want to deal with that, I want to measure one and only one frequency at a time!
+
+No problem though, I will use the inductor in my coil like a motor winding and drive it like a BLDC sin drive!
+Here is the waveform snipped (ChatGPT was useless for this, ugh):
+```python
+def generate_pwm_signal(N):
+    window_size = 100
+    out = np.ones(N)
+    out_window = out[0:window_size * (N // window_size)].reshape((-1, window_size))
+    subsize = out_window.shape[0]
+
+    x = np.linspace(0, 2 * np.pi, subsize)
+    sin = np.sin(x)
+    sin_norm = (sin - np.min(sin)) / (np.max(sin) - np.min(sin))
+    sin_norm = sin_norm * 0.8 + 0.2
+
+    out_window[:] = np.linspace(0, 1, window_size).reshape((1, -1)) < sin_norm.reshape((-1, 1))
+    remainder = N - subsize * window_size
+    if remainder > 0:
+        out[-remainder // 2:] = 1
+    return out
+    
+```
+This can then get uploaded to the scope. This results in the following current plot:
+
+![[Pasted image 20240704170558.png]]
+
+Which doesn't look too bad. It didn't replicate the low end very well so I had to do the `sin = sin*0.8 + 0.2` above. I also had to make a tradeoff with the waveform output sample rate vs number of samples in the AWG sent to the scope, since the AWG uses the same csv file (it only takes csv files over usb stick) and just plays it back faster or slower. So above a certain waveform repetition rate it goes over the AWG sample rate and the whole thing falls apart. I could transfer a new csv file per frequency but pls, that ain't gonna happen. The above waveform has 8192 samples and that allows it to go between 1 and 15kHz.
+
+Now we are ready to make some measurements!
+
+# Measurement setup
+
+The measurement setup looks like this:
+
+![[Pasted image 20240704172158.png]]
+
+The idea here is that the two coils on either side are wound with the opposite circularity coil, and then placed in parallel. Per [[20240529 Metal detection#One positive one negative|my previous simulations]] (and common sense) this means that there is a null in the middle where the magnetometer can be placed. The idea here is that it is similar to the double D coil setup that many other metal detectors use. The magnetometer is placed so that it is sensitive to fields in the vertical direction. There is a significant earth component in that direction too, but according to the above FFT measurements this should not affect things.
+
+The magnetometer is hot glued to a mug so I can slide it around and get it into the right position. I do this in the time domain by just lookint at the scope and adjusting things so the persistence view shows that the amplitude is no longer being modulated. Interestingly it is not possible to zero out the field when the magnetometer is rotated 90 degrees so the donut is facing more towards the camera in the above pic (but is still vertical). I guess it's just too wide and either side of the toroid is affected differently.
+
+## Test objects
+
+![[Pasted image 20240704172732.png]]
+
+Here are the test objects with which to make measurements. You will notice they are not exactly subtle targets. This setup is very insensitive. The point here though is to see how things _change_ over frequency, not the absolute level. I shall wave my hands and say that the setup is poorly optimised overall and surely if I built it for real I could make it much more sensitive.
+
