@@ -185,3 +185,79 @@ The magnetometer is hot glued to a mug so I can slide it around and get it into 
 
 Here are the test objects with which to make measurements. You will notice they are not exactly subtle targets. This setup is very insensitive. The point here though is to see how things _change_ over frequency, not the absolute level. I shall wave my hands and say that the setup is poorly optimised overall and surely if I built it for real I could make it much more sensitive.
 
+## Measurement technique (Siglent SCPI commands are garbage)
+The siglent scope that I have has 500Mpoints of memory. So the idea here was to use a computer to control the AWG of the scope to output the right sin drive PWM wave for the given measurement frequency. Then I could pull the waveform down to the computer again using SCPI
+However:
+- When using the SCPI command `C{channel}:WF? DAT2` to pull waveforms off the scope, if you specify any more than 10e6 waveforms you just get back 10e6, even though the acquisition may have been for 100e6 samples.
+- Therefore you have to save data to a USB in a mysterious binary format if you want all your samples
+- None of the USB SCPI commands work, they all timeout
+- There are no SCPI commands for controlling the waveform generator it seems
+So to take a given measurement the workflow was to do the following manually:
+1) Change the AWG frequency
+2) Press 'acquire' and wait ~15a
+3) Save the waveform (100e6 points at 10MSa/s)
+4) Run a script to record the metadata (which target, which frequency etc.)
+Then in post I use the date modified timestamp on the oscilloscope file with the timestamp of when I ran the above script to associate the waveform data with the metadata. Disgusting.
+
+Also, the setup is quite insensitive, so I had to place the copper/ferrite targets directly on the coil right next to the mug to get a signal. This makes me a bit worried as perhaps I am blocking the field from one of the coils rather than introducing a new field from either eddy currents or distortions. 
+
+# Measurement results
+
+I measured three things:
+- Copper plate
+- Ferrite
+- Nothing, but with the magnetometer offset from center slightly to get some signal
+For each of these things I measured 1-15kHz in 1kHz steps which was incredibly tedious. Each measurement point here from the scopes points of view is essentially a 4\*100e6 array of samples. That represents a full 10 seconds of data so there is quite a lot of averaging happening.
+
+I drove the magnetometer drive coil at 170'112Hz. I chose this rando frequency so it wouldn't be a multiple of any of the modulation frequencies.
+
+Another thing of note here is that the ferrite caused a significant DC change in the measured magnetic field, which is what you would expect for something ferromagnetic. To convince myself that there would be no eddy currents here I measured the resistance of the ferrite material and it is indeed an open circuit.
+### Time series
+
+Not much interesting here but I shall show it for completeness
+
+![[Pasted image 20240705172121.png]]
+
+### Frequency 0 -> modulation kHz
+
+The below spectrograms have all been averaged with a 2Hz wide filter, as otherwise they were incredibly noisy and full of spikes.
+
+![[Pasted image 20240705171740.png]]
+
+The circled parts of the green trace above are the measured currents being used to modulate the two coils. Since this is AM modulation, this apparently should show up on either side of the main drive. The reason some of the measurement above is chopped out is for plot rendering performance. 
+
+### Around magnetometer drive frequency
+
+![[Pasted image 20240705173307.png]]
+
+### Around 2 \* magnetometer drive frequency
+
+![[Pasted image 20240705173453.png]]
+
+The reason that the signal from the magnetometer shows up at 2x the frequency is because fluxgate magnetometers get a pulse every time the winding magnetises and demagnetises, so you get 2 pulses per period.
+
+
+## Cooked measurements
+So I get one of the above spectrograms per measurement. The next thing to do is to extract out what the magnetometer is actually measuring. To do this I just placed a 10Hz wide bandpass filter around +/- 2x the modulation frequency and called that the 'sense' measurement, since it is the sense winding of the magnetometer.
+I also put a 10Hz wide band around the measured current going through the coil, since it is possible that this also changes as a function of frequency
+
+### Volts as a function of frequency
+
+![[Pasted image 20240705170107.png]]
+
+So we can see here first off that the current going through the modulation coil is pretty flat. Also all of the measurements including the control slope down with frequency. So I guess the magnetometer doesn't have such a flat frequency response after all.
+
+You can also see that for the copper I took a measurement twice at 5 and 15kHz. They were both very consistent so I think this measurement has pretty good snr.
+### Signal as a function of frequency
+
+Here I have divided the signal for each of the actual measured objects by the signal when there was no object, the control. The absolute signal level for the control is arbitrary and was just set by how much off-center I placed the magnetometer when making the measurement. The idea was to directly measure the magnetometers bandwidth so it could be controlled for. Since the current measurement looks flat I didn't bother controlling for that.
+
+![[Pasted image 20240705170117.png]]
+
+...And it looks like both of them are completely flat. That is exceedingly disappointing, I was hoping the slope would look like this:
+
+![[Pasted image 20240705174857.png]]
+
+It is possible though that this is still the case. It could be for two reasons that I can think of
+- The measurement did not go low enough in frequency
+- Ferrite and copper do have quite a different response vs frequency but that was not what I was observing. Because the setup was so insensitive I had to place both the ferrite and the copper plate right inside basically touching the magnetic field. This could have set up an imbalance from the beginning that was much larger than the actual signal I wanted to measure.
