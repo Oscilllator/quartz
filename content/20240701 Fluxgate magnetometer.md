@@ -258,6 +258,7 @@ Here I have divided the signal for each of the actual measured objects by the si
 
 ![[Pasted image 20240705174857.png]]
 
+## Hopeful reasons for this result
 It is possible though that this is still the case. It could be for two reasons that I can think of
 - The measurement did not go low enough in frequency
 - Ferrite and copper do have quite a different response vs frequency but that was not what I was observing. Because the setup was so insensitive I had to place both the ferrite and the copper plate right inside basically touching the magnetic field. This could have set up an imbalance from the beginning that was much larger than the actual signal I wanted to measure.
