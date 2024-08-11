@@ -203,3 +203,70 @@ The question is though what defines the 'loop area'. You might think that it is 
 ![[Pasted image 20240810122339.png]]
 
 So it looks like changing the size of the sensor is futile. But one thing could easily be changed: I have been using a 50R impedance waveform generator with a 20V signal to power the drive coil. It sounds like I should change that to something else. 
+
+Actually:
+
+![[Pasted image 20240810150445.png]]
+
+So maybe there is something to building a large sensor!.
+
+## More current spikes.
+
+Another thing to do is drive the drive coil harder. I'm going to add a cap in series with the output of my H bridge in an identical topology to the [[20240522 Plasma toroid 4 decoupling]].
+
+I have no idea what the inductance of the drive coil is and given that it depends on the amplitude of the signal due to the saturation of the coil I'm just going to start with 10uF and go from there. 
+
+10uF looks like this:
+
+![[Pasted image 20240810184702.png]]
+
+which is a period of around 400ns. 
+This is what it looks like with 100nF:
+
+![[Pasted image 20240810190442.png]]
+
+...I have never seen a more square resonance in my life. Down to 100pF!
+
+![[Pasted image 20240810190751.png]]
+
+...too far. 2nF looks like this:
+
+![[Pasted image 20240810191511.png]]
+
+I think what's going on here is that the Q is suuper low because of the energy losses in the switching. The reason that I am even trying this resonant mode is because a single half bridge is one sided, so it can't saturate the coil in both directions. Just to sanity check, this is what it looks like when I drive the coil with no capacitor, just the half bridge switching node to ground:
+
+![[Pasted image 20240810191915.png]]
+
+### Half the half bridge:
+
+Instead of having the coil go to ground, how about this:
+
+![[Pasted image 20240810212446.png]]
+Now it can sink and source current! Never mind about the 20 ohms to ground, this ain't an efficiency competition. This actually works quite well. Even when switching the coil current the voltage at the midpoint stays flat with 20uF of decoupling. However the output still goes all unstable at higher than 70kHz, just like with all of the above capacitor resonant setups:
+
+![[Pasted image 20240810212809.png]]
+
+This is what the output looks like at a lower frequency of 14 kHz
+
+![[Pasted image 20240810213312.png]]
+
+And here is the highest stable frequency:
+
+![[Pasted image 20240810213551.png]]
+
+It seems pretty clear here that the reason the output goes all unstable at a higher frequency than this is because the hysteresis curve hasn't gotten all the way back to the beginning, so "isn't ready" for a new cycle to begin. From before we could see that the duration of the spike got shorter with higher di/dt, so you would think that just cranking up the supply voltage would do the trick here. It doesn't though. Here is a picture that illustrates this shortening:
+
+![[Pasted image 20240810214011.png]]
+
+You can clearly see that at 20V supply there is loads of time between impulses. And yet, the maximum frequency that the circuit can be operated at stably is exactly the same - 73kHz. So how was I able to operate it at 200kHz with the waveform generator before? Time to plug that back in. Here is the AWG hooked up with a 20V amplitude square wave:
+
+![[Pasted image 20240810214723.png]]
+
+This is a 50R output so it shows clearly the magnetometer getting its core charged up, during which it has a high inductance and there is some imbalance in the coil, followed by the saturation of the core and the collapse of the voltage across the drive coil down to 0 as the resistance becomes equal to the few mOhm of DC coil resistance. 
+
+Here it is operating at 200kHz:
+
+![[Pasted image 20240810214953.png]]
+
+Perfectly stable. Why is that? I don't really know. Thinking about the above paragraph though, maybe if I put some series resistance in with the coil like the waveform generator has I would prevent the instability. But at that point I would be just like the waveform generator! The whole idea here was that by driving it directly from the half bridge the core would saturate faster, and I would get a shorter higher amplitude peak that would be an overall better SNR. That doesn't seem to have been the case though, so I think it's safe to give up here. Probably a better core material is required.
+
