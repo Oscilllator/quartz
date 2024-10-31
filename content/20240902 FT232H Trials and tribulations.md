@@ -73,7 +73,10 @@ I implemented this and indeed it seems at first glance to be much better. Here i
 
 ![[Pasted image 20241009074403.png]]
 
-The horrible nonlinearities in the sin wave are just the R2R DAC. you can see from the digital stream that it's working! So that's nice. The stream does have a tendency to lock up sometimes though, so I need to figure that out. It also has this bug, whereby when I send a message that's large enough that the ftdi chip needs to do flow control, I get something that looks like this sometimes:
+The horrible nonlinearities in the sin wave are just the R2R DAC. you can see from the digital stream that it's working! So that's nice. The stream does have a tendency to lock up sometimes though, so I need to figure that out.
+
+#### Bit untwiddling
+It also has this bug, whereby when I send a message that's large enough that the ftdi chip needs to do flow control, I get something that looks like this sometimes:
 
 ![[Pasted image 20241009074750.png]]
 
