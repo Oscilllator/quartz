@@ -62,4 +62,4 @@ R32 = 1kR:
 
 ![[Pasted image 20241207214957.png]]
 
-So you can see that as predicted, decreasing the bandwidth of the booster stage as compared to the op amp stage is leading to instability. But according to the app note you would also expect that
+So you can see that as predicted, decreasing the bandwidth of the booster stage as compared to the op amp stage is leading to instability. But according to the app note you would also expect that for the R32=1R case there would be some oscillation coming from Q1 and Q12 somehow.
