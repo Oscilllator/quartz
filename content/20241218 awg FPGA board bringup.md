@@ -57,3 +57,48 @@ I foolishly connected this to the fpga instead of via a 2k resistor to ground:
 ![[Pasted image 20241218213253.png]]
 
 Just so I fixed that before trying to actually use it.
+
+
+# Resistor changes
+
+![[Pasted image 20241219194046.png]]
+
+These guys are supposed to be much smaller according to the [docs](file:///home/harry/Downloads/FPGA-TN-02039-2-4-ECP5-and-ECP5-5G-sysCONFIG.pdf):
+
+![[Pasted image 20241219194116.png]]
+# Final problem
+
+I used the 'verbose' mode of ecpprog and it said I had something called a 'ID error:':
+```
+sudo ecpprog -S -a -v awg.bit
+init..
+IDCODE: 0x41112043 (LFE5U-45)
+ECP5 Status Register: 0x04a00000
+  Transparent Mode:   No
+  Config Target:      SRAM
+  JTAG Active:        No
+  PWD Protection:     No
+  Decrypt Enable:     No
+  DONE:               No
+  ISC Enable:         No
+  Write Enable:       Not Writable
+  Read Enable:        Not Readable
+  Busy Flag:          No
+  Fail Flag:          No
+  Feature OTP:        No
+  Decrypt Only:       No
+  PWD Enable:         No
+  Encrypt Preamble:   No
+  Std Preamble:       Yes
+  SPIm Fail 1:        No
+  BSE Error Code:     ID Error (0b001)
+  Execution Error:    Yes
+  ID Error:           No
+  Invalid Command:    No
+  SED Error:          No
+  Bypass Mode:        No
+  Flow Through Mode:  No
+
+```
+
+Looking up my specific part number (different from the colorlight part number)
