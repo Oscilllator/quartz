@@ -135,3 +135,45 @@ And with a 2.5pF cap added in:
 ![[Pasted image 20250107215538.png]]
 
 That is about as small of a cap as it's safe to add I think. The gain is already knocked down by 1dB at 10MHz by this. Since the gain peaking at the end is below the original 18dB gain of the amp I feel that's enough. 
+
+## Output swing
+Here is the output from the ad9744 ramping from min to max:
+![[Pasted image 20250108191010.png]]
+A mere +/-2V. Pathetic! It needs to be +/-10V, so we can burn out the 50R resistors on everyone's scope. It has a 1.25V compliance range, and 20mA max output. So I should use a 62.5R resistor, but put a 50R one on. That doesn't explain a factor of 5 difference though. 
+The signal on top of the 50R resistor R103/R104 is only +/-100mV though, or 0.1/50 = 2mA. So either I'm not sending the right values to the dac, or the output current is not being set correctly.
+
+The [datasheet](https://www.analog.com/media/en/technical-documentation/data-sheets/AD9744.pdf) says this:
+![[Pasted image 20250108191710.png]]
+
+![[Pasted image 20250108191739.png]]
+
+![[Pasted image 20250108191810.png]]
+
+so we should aim for an output current of 0.02/32. 1.2/(0.02/32) = 1920R, which makes sense as all the example resistors in the datasheet schematics have a 2kR value, and that's what I put in:
+
+![[Pasted image 20250108192029.png]]
+
+Indeed checking the physical board the resistor is 2kR. The voltage across it though was only 0.7V, which isn't right. 
+
+...apparently I powered the chip through some 120R resistors, reducing the supply voltage to 2.2V. I'm a bit surprised it worked at all.
+
+This is what the output look like now, going directly into my scope (so no op amp nonlinearity stuff):
+
+![[Pasted image 20250108214824.png]]
+
+
+...Not remotely linear, and still too low amplitude!
+
+The only thing left on the output of my circuit was my "ESD" protection circuit:
+
+![[Pasted image 20250108220032.png]]
+
+After blowing that off I get this:
+
+![[Pasted image 20250108220940.png]]
+
+Much more sensible, and goes much closer to a proper output voltage!
+
+![[Pasted image 20250108221224.png]]
+
+And now, 15Vpp
