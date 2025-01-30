@@ -129,7 +129,7 @@ Here is the whole system as-is with no capacitor across the feedback resistor:
 
 ![[Pasted image 20250107215725.png]]
 
-There is some pretty huge gain peaking going on at 
+There is some pretty huge gain peaking going on at 40MHz.
 
 And with a 2.5pF cap added in:
 ![[Pasted image 20250107215538.png]]
