@@ -47,4 +47,12 @@ Don't know why this is, but it's clearly just shorting the inductor to ground pe
 
 ...Actually this did not fix the issue. There are some super weird correlations going on. It's almost as though the temperature is important, it seems more likely to happen right after soldering something on. But it also might just be that it happens more often after waiting a while. There definitely don't seem to be any caps that take a while to discharge, so it isn't that.
 
-I thought that perhaps there wasn't enough input capacitance, and so the voltage on the input was going really low on the first switch of the power supply, and the subsequent switch never turned off and shorted the inductor to ground. it isn't that either...
+I thought that perhaps there wasn't enough input capacitance, and so the voltage on the input was going really low on the first switch of the power supply, and the subsequent switch never turned off and shorted the inductor to ground. It isn't that either, I can see on occasions where it 'works' the power rail goes up to 2V, and on occasions where it doesn't work it just goes up to 10, monotonically in both cases.
+
+This is what a successful startup looks like:
+
+![[Pasted image 20250221075302.png]]
+
+and an unsuccessful one (had to zoom i
+n a lot):
+![[Pasted image 20250221075620.png]]
