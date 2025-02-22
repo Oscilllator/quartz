@@ -1,6 +1,8 @@
 
 # The PCB
 
+![[Pasted image 20250221200047.png]]
+
 Basically the same as the [[20250103 awg buffer bringup|previous]] one, but with the changes integrated and the addition of the positive and negative rails for the op amp. The rails look like this:
 
 ![[Pasted image 20250219210052.png]]
@@ -53,6 +55,39 @@ This is what a successful startup looks like:
 
 ![[Pasted image 20250221075302.png]]
 
-and an unsuccessful one (had to zoom i
-n a lot):
+and an unsuccessful one (had to zoom in a lot):
 ![[Pasted image 20250221075620.png]]
+
+
+I also tried adding a 10uF cap to ground on the feedback pin for a "soft start" per ChatGPT, but that did not work. What actually is the problem is that this particular power supply turns on too slowly. I've been turning my pcb off and on using the main switch on the power supply, and that gives a ramp rate of what you see in the first picture above. If instead I just jam the SMA connector into the power supply after it is turned on then the rise time is much shorter and everything works fine. I guess if the output switch turns on at a voltage lower than what's required to hit the 'off' condition then it really is just a short to ground.
+
+Now after hot gluing on my own switch things are 100% reliable. When it is in actual use powered by a USB or something else, it will have the full rail voltage available straightaway.
+
+# Oscillation
+
+This is what the output looks like with a ramp fed in and the power supplies working:
+
+![[Pasted image 20250221202657.png]]
+
+Per Jim Williams AN47 in the [[20250103 awg buffer bringup#Bandwidth of op amp|previous bringup]], this is very likely the larger power transistors being slower somehow, despite the fact that they worked fine when I deadbugged them on the previous rev of the board. There is no oscillation present when the output is 50R terminated though, I wonder why that is. Time to measure the rise time. Here is the change I made, so the op amp excludes the booster circuit from the feedback loop:
+
+![[Pasted image 20250221205958.png]]
+
+(actually just moving R120 into the C102 footprint). Interestingly the oscillation is still present! It goes away if R114 is removed. It also takes a second or so to come back after power on, which is interesting. The frequency is around 50MHz. 
+
+### Ferrite beads
+Let's see if replacing R111 and R108 with ferrite beads per the app note:
+
+![[Pasted image 20250221210122.png]]
+
+works.
+
+using a 600R@100MHz ferrite in an 0603 package I get this:
+
+![[Pasted image 20250221210840.png]]
+
+...Rather the wrong direction, that. Shorting out the ferrite entirely actually makes it a fair bit better. I also noticed that the oscillation is extremely temperature dependent. A whiff of condensed air spray makes it huge, and a whiff from the hot air gun makes it go away. ChatGPT informs me that the gain of a bipolar transistor goes up as a function of temperature, so that might be it.
+
+From poking with the soldering iron and the condensed air can, it is clear that Q103 and Q107 are indeed responsible for the temperature dependence of the oscillation.
+
+Since the DC resistance of the ferrite bead is ~0, and I replaced a 10R resistor with it, I thought maybe the worsening of the oscillation came from the drop in DC resistance and not from the ferrite beads ferritey properties. So I put a 10R resistor back in, this time in series with a 60R@100Mhz ferrite (instead of 600R@100MHz) so as to have a lower Q. This makes the oscillations quite a lot worse than with the 10R resistor, which doesn't make much sense to me.
