@@ -154,3 +154,53 @@ because it makes sense, and because the datasheet says the switch current is mea
 ![[Pasted image 20250222212929.png]]
 
 ???? It's only 50%??? What? All the other configurations are like 85%, so I just assumed that the inverting would be the same! 
+
+## External MOSFET
+
+Perhaps I can increase the efficiency, or at least move the heat out of this poorly heatsunk SOIC-8 package by adding an external transistor. The datasheet does not have information on how to do this for the inverting converter, so I did this:
+
+![[Pasted image 20250223181736.png]]
+
+This does not work and had me puzzled for quite some time. With no load connected the output only gets to -8V. However it transpires that this is for headroom reasons. The input is only 5V. The top of the inductor can only be driven to (5V - switch voltage drop - MOSFET threshold voltage) which is like 2.5V. And the MOSFET isn't even hard on, because the source of the MOSFET wants to float up to the supply.
+
+Increasing the supply voltage to 10V means that the regular can achieve its desired output voltage of -15V. But attaching a load brings that downs to -10V and also puts the MOSFET at around 140C, most likely because the source will always float up to where the gate is. I wonder if I powered the NCP3063 off the 15V rail, and put the MOSFET drain at 5V. Then, the source would float all the way up to the 5V supply rail since the gate would be at 15V.
+That's worth an experiment.
+
+I performed this experiment by changing the input voltage to 10V, and then powering the drain of the external FET from a 5V supply. This succeeded in regulating to 15V fine, since when the supply switch is conducting, the gate is driven to +10V, with the source sitting at the input voltage of +5V. When the switch is no longer conducting, a 100R resistor pulls it down to the negative rail of -15V, so the gate is turned off properly.
+
+With no load, the max temperature of any component is 47 degrees. With a 10R load on the output, the op amp can't swing past about +/-5V or so, and the inductor gets up to 160 degrees. Toasty! The waveforms on the gate (yellow) and the source of the FET (green) look like this:
+
+![[Pasted image 20250223202047.png]]
+
+This isn't exactly textbook, but also I don't see what could be done to improve things here. The inductor I am using is this one:
+
+![[Pasted image 20250223202829.png]]
+
+I'm drawing an average of like 1.5A here, so that isn't great. I need to figure out if the inductor is doing the right thing here. The art of electronics (still better than an LLM!) has this to say on the topic:
+
+![[Pasted image 20250223203525.png]]
+
+So it looks like I want to measure the current going through the inductor somehow, and see if it has a sawtooth. Deviations from that presumably mean something bad.
+
+The art of electronics says that the minimum inductance is:
+
+$$
+L_{\text{min}} = \frac{T}{2} \frac{V_{\text{out}}}{I_{\text{out}}} \left( \frac{V_{\text{in}}}{V_{\text{in}} + |V_{\text{out}}|} \right)^2
+$$
+
+Which in my case given a 60us switching period is `(60e-6/2)*(15/0.5)* (5/(5+15))**2` = 56uH.
+
+
+
+I connected a stainless steel strip between the source of the FET and the switch node. It's around 0.1R I think but I'll measure it later if it's important. Channel 2 and 4 measured either and, and math was used to subtract.
+
+Here is the current going through with the supply powering the circuitry, but only a 50R load on the output:
+
+![[Pasted image 20250223214514.png]]
+
+And with the supplies disconnected from the booster circuit, so the load is 0:
+
+![[Pasted image 20250223214717.png]]
+
+Well then. It looks like what I'm measuring is the difference in gain between the two channels.
+
