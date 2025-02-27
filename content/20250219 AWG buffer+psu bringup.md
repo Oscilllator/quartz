@@ -176,7 +176,9 @@ This isn't exactly textbook, but also I don't see what could be done to improve 
 
 ![[Pasted image 20250223202829.png]]
 
-I'm drawing an average of like 1.5A here, so that isn't great. I need to figure out if the inductor is doing the right thing here. The art of electronics (still better than an LLM!) has this to say on the topic:
+I'm drawing an average of like 1.5A here, so that isn't great. I need to figure out if the inductor is doing the right thing here. 
+### Art of electronics
+The art of electronics (still better than an LLM!) has this to say on the topic:
 
 ![[Pasted image 20250223203525.png]]
 
@@ -187,8 +189,9 @@ The art of electronics says that the minimum inductance is:
 $$
 L_{\text{min}} = \frac{T}{2} \frac{V_{\text{out}}}{I_{\text{out}}} \left( \frac{V_{\text{in}}}{V_{\text{in}} + |V_{\text{out}}|} \right)^2
 $$
+Where T = switching period.
 
-Which in my case given a 60us switching period is `(60e-6/2)*(15/0.5)* (5/(5+15))**2` = 56uH.
+Which in my case given a 60us switching period is `(60e-6/2)*(15/0.5)* (5/(5+15))**2` = 56uH. My inductor is 226uH which might be a bit high I suppose, but not unreasonable.
 
 
 
@@ -202,5 +205,25 @@ And with the supplies disconnected from the booster circuit, so the load is 0:
 
 ![[Pasted image 20250223214717.png]]
 
-Well then. It looks like what I'm measuring is the difference in gain between the two channels.
+Well then. It looks like what I'm measuring is the difference in gain between the two channels. This is what the current looks like when I measure using a sense resistor attached to the _bottom_ of the inductor:
 
+![[Pasted image 20250227072230.png]]
+
+Looks like the supply is only switching once in a while. This is what it looks like with the booster circuit hooked up with a 50R load:
+
+![[Pasted image 20250227073439.png]]
+
+Actually all of the above was done without the waveform generator putting in its customary ramp wave. When that'd done things looks different:
+
+![[Pasted image 20250227074040.png]]
+
+Can't really say that anything jumps out as bad here, really. 
+
+$$
+I_{\text{out(min)}} = \frac{T}{2L} V_{\text{out}} \left( \frac{V_{\text{in}}}{V_{\text{in}} + |V_{\text{out}}|} \right)^2
+$$
+This is the equation for the minimum amount of current from [[#Art of electronics|above]]. The minimum current is not a function of the load, apparently. That seems kind of sus. But the equation for the peak current does have the average load in it, so that makes sense.
+
+In this experiment by the way the supply can only keep working for 10s or so before something heats up enough and the 2A supply limit on my bench supply is reached so the supply voltage collapses.
+
+Anyway clearly the minimum current in the inductor is a huge function of the load on the system since it's so high when the output ramp is negative.
