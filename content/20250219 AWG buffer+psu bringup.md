@@ -227,3 +227,15 @@ This is the equation for the minimum amount of current from [[#Art of electronic
 In this experiment by the way the supply can only keep working for 10s or so before something heats up enough and the 2A supply limit on my bench supply is reached so the supply voltage collapses.
 
 Anyway clearly the minimum current in the inductor is a huge function of the load on the system since it's so high when the output ramp is negative.
+
+## Left turn
+
+I'm giving up on this. Too much effort. I found the [XL6007](https://www.lcsc.com/datasheet/lcsc_datasheet_2411041759_XLSEMI-XL6007E1_C73334.pdf) on aliexpress, it seems to be a good chip. There are +/-15V modules available on aliexpress for [$3.40](https://www.aliexpress.us/item/3256805735027895.html?spm=a2g0o.productlist.main.17.7e895b50zBrsam&algo_pvid=543b38d7-873a-4956-a308-9a7b45472a0f&algo_exp_id=543b38d7-873a-4956-a308-9a7b45472a0f-8&pdp_ext_f=%7B%22order%22%3A%2211%22%2C%22eval%22%3A%221%22%7D&pdp_npi=4%40dis%21USD%214.88%213.42%21%21%214.88%213.42%21%40%2112000036837542484%21sea%21US%21783315244%21X&curPageLogUid=lRBnbCBktkdQ&utparam-url=scene%3Asearch%7Cquery_from%3A), so I will buy the module and either plop it in or copy-paste it into my design. Interestingly this represents the first time that I have found a chinese IC that will do my job and no western ones. Also interestingly the datasheet suggests using a transformer for the dual output:
+
+![[Pasted image 20250227204810.png]]
+
+But the aliexpress picture just shows a bunch of regular inductors:
+
+![[Pasted image 20250227204931.png]]
+
+So I am interested to see how it works. For now I'll hook up the bench supplies and continue load testing.
