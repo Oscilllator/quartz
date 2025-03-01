@@ -239,3 +239,15 @@ But the aliexpress picture just shows a bunch of regular inductors:
 ![[Pasted image 20250227204931.png]]
 
 So I am interested to see how it works. For now I'll hook up the bench supplies and continue load testing.
+
+## Current limiting
+
+During the course of my load testing I decided to solder a 10R resistor to ground on the output of the AWG. I did this when it was switched on, thinking that the current limiting circuit would work. Reader, it did not. After replacing the op-amp and a bunch of the transistors, I got it back up and running. Then I decided to monitor the current going through the sense resistor, like so:
+
+![[Pasted image 20250228204428.png]]
+
+Interestingly, it seems the capacitance of the cable is enough to set up some oscillation:
+
+![[Pasted image 20250228204521.png]]
+
+
