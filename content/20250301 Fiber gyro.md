@@ -74,7 +74,7 @@ Actually both of the above signals originate from this chip:
 
 ![[Pasted image 20250310211827.png]]
 
-This is a [LTC1403AIMSE](https://www.analog.com/media/en/technical-documentation/data-sheets/14031fd.pdf) 12 bit ADC:
+This is a [LTC1403AIMSE](https://www.analog.com/media/en/technical-documentation/data-sheets/14031fd.pdf) 14 bit ADC:
 
 ![[Pasted image 20250310212621.png]]
 
