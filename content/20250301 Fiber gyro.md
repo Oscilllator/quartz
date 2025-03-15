@@ -82,3 +82,14 @@ It would appear that I was looking at the CONV/SCK/SDO lines. The CONV line is t
 
 So the next step is to take a reading of the digital signals, which will require probing the CLK+SDO lines concurrently. Probably the CONV line would help, too.
 
+## Decoding
+The clk/serial/data lines look like this after some gentle massaging coming out of the scope:
+![[Pasted image 20250314203107.png]]
+
+Decoding a whole bunch more data than that leads to this trace of some samples:
+
+![[Pasted image 20250314203406.png]]
+
+...Noise. note that the above trace is only for a few milliseconds of data, and the laser current changed every few hundred milliseconds. But there's no signal much larger than this showing up at any time, that was verified before by just probing the input to the ADC with the scope.
+
+So at this point the most likely problem is the laser not being driven properly, or the photodiode being broken. Given that they are most likely fiber coupled devices, if either the laser or the photodiode proper are broken then it's game over.
