@@ -1,5 +1,6 @@
 
 # Pinout
+
 ![[Pasted image 20250301110518.png]]
 20 pin connector. Total width from the start of the first pin to the start of the next is 9.49mm. So a pitch of 0.4745mm. Call it 0.5mm I suppose.
 
@@ -84,6 +85,7 @@ So the next step is to take a reading of the digital signals, which will require
 
 ## Decoding
 The clk/serial/data lines look like this after some gentle massaging coming out of the scope:
+
 ![[Pasted image 20250314203107.png]]
 
 Decoding a whole bunch more data than that leads to this trace of some samples:
@@ -105,7 +107,9 @@ The three pin connector that goes to the laser package has a bewildering array o
 I have a realsense camera, which does not have an IR filter. So it can see ~900nm light no problem. Often these things are 1550, but it's worth a shot to try and put a small amount of current through all the diodes and see if something emits.
 
 With no voltage applied:
+
 ![[Pasted image 20250315093614.png]]
+
 With the diode tester of my multimeter between two of the laser package terminals:
 
 ![[Pasted image 20250315093551.png]]
@@ -207,6 +211,7 @@ So it looks like it's just measuring 0V. It occurs to me that when I measured th
 ### Two different hardware revisions:
 
 This is what the one that works looks like:
+
 ![[Pasted image 20250315205705.png]]
 
 And this is what the one that doesn't looks like:
@@ -219,3 +224,4 @@ The broken ones mirror isn't bolted down and is flapping in the breeze! And ther
 The gyro that works has light clearly coming out of the mirror. The one that doesn't, doesn't. I can see that there is light coming out of the laser as it leaks out the bottom of the package. however there is absolutely zilch coming out of all other areas. I think this is the root cause of the issue this particular gyro has. Light is clearly coming out of the laser, and not coming out of the fiber that's supposed to go to the photodiode. Not much I can do about that.
 
 Still though, the fact that the location of the mirror is so incredibly poorly constrained, and the small shifting of the PCB from the previous gyro fixing it entirely means that I'm not 100% satisfied.
+
