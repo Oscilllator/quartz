@@ -109,7 +109,7 @@ I disconnected the base resistors R108 and R111. when either of them is disconne
 
 ![[Pasted image 20250222202100.png]]
 
-## Most things are obvious,= once explained
+## Most things are obvious, once explained
 
 The circuit oscillates. So, it must have a feedback loop some where. Where is there a loop on the schematic?
 
