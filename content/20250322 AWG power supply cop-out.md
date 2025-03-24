@@ -52,3 +52,12 @@ Now that the current limit is working well, I thought it might be improved by be
 By sticking a cap between the base and emitter of the turnoff transistor, you could get an RC time constant set up. Since the voltage across there would only ever be 0.6V you could have a super fat transistor, too.
 
 But when I actually try this by making a waveform with a pulse in it, the magnitude of the pulse doesn't change at all when I add a 10uF cap and up the resistor to 1k. That should be a 15s time constant! My probing situation isn't really good enough to get a good measurement between the transistor base and the output so I will again stick a footprint in and leave it at that, gotta get this show on the road.
+
+## To LCSC
+
+This is the final schematic of the power stage that I ended up sending to LCSC:
+
+![[Pasted image 20250323210251.png]]
+
+I just asked Mr deep research about how one would go about a 100MHz 10A output stage, and got a link to a great [TI app note](https://www.ti.com/lit/ug/tidue75/tidue75.pdf?ts=1742788027500#:~:text=This%20TI%20design%20uses%20the,signal%20bandwidth%20and%20distortion%20performance) where they just stick 4 amplifiers in parallel. That's 4 of a $12 part though, so it would be nice to not do that.
+
