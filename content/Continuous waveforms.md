@@ -140,7 +140,7 @@ This is where it's currently at:
 
 ![[Pasted image 20250325214243.png]]
 
-completely unacceptable. Needs to be >10MSa/s, and should be more like 100e6.
+completely unacceptable. Needs to be >10MSa/s, and should be more like 100e6. However when I ask ChatGPT to translate the python code into C it goes to 100e6 samples/s, so that's nice. I will avoid adding a C library dependency into the python package for the moment, but that's something that can be done in the future.
 
 ### Overnight test
 
