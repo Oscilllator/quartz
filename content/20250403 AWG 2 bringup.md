@@ -25,21 +25,41 @@ I have tried attaching ferrite beads to things before and have never observed th
 
 One port measurement
 
-![[Pasted image 20250403212637.png]]
+![[Pasted image 20250405125359.png]]
 
 ### Two port measurement
 
 ![[Pasted image 20250403211950.png]]
 
-![[Pasted image 20250403211926.png]]
+![[Pasted image 20250405130124.png]]
 
 So I interpret the S11 and S21 together as:
 - It's close to an open circuit at 50MHz 
 ## 60R at 100MHz
+One port measurement:
 
-![[Pasted image 20250403212402.png]]
+![[Pasted image 20250405130021.png]]
+
 
 
 Two port measurement
+Here the resistance peaks at 50MHz with 100R. That's just what I want!
+![[Pasted image 20250405125608.png]]
 
-![[Pasted image 20250403212520.png]]
+
+
+## Back to the oscillations
+
+Actually, completely removing the two resistors on the output of the diode from the circuit does not stop the oscillation at all!
+
+![[Pasted image 20250405130437.png]]
+
+So it sounds like the feedback loop from the [[20250219 AWG buffer+psu bringup#Oscillation|previous notes]] was a red herring. Going back to AN47 and following Ref 43 led to [here](https://www.hifisystemcomponents.com/downloads/articles/Prevent-Emitter-Follower-Oscillation.pdf) which states clearly that the oscillation is simply a result of driving an emitter follower with a low impedance. So I put in a big bump to the resistor R2010 on the output of the op amp to 200R, and also added 4pF to the feedback of the amplifier, and now things look pretty good, with a rise time of around 50ns:
+
+![[Pasted image 20250405141724.png]]
+
+Into big signals though it seems a lot worse:
+
+![[Pasted image 20250405142021.png]]
+
+
