@@ -4,6 +4,19 @@ enableToc: false
 ---
 
 # Topics
+## Waveform generator
+Most importantly: kicad design files, RTL for the fpga, and python interface available [here](https://github.com/Oscilllator/waveform-generator). Also there are of course notes:
+- [[20240902 A good waveform generator]]
+- [[20241002 waveform generator cont]]
+- [[20241207 Waveform gen first PCB]]
+- [[20241207 Waveform generator booster stage]]
+- [[20241218 awg FPGA board bringup]]
+- [[20250103 awg buffer bringup]]
+- [[20250201 AWG checklist]]
+- [[20250219 AWG buffer+psu bringup]]
+- [[20250322 AWG power supply cop-out]]
+- [[20250403 AWG 2 bringup]]
+- [[20250411 Continuous waveforms]]
 ## FM radio
 
 - [[20220301 fm - Loop the loop.md]]

@@ -6,7 +6,37 @@ The goal here was to build some kind of metal detector that could operate at a w
 It's obviously possible to put a whole bunch of energy in a tx coil across many frequencies via some kind of class-D amplifier setup. And you could open-circuit the rx coil and measure the voltage across it too, if you wanted. But I don't think that that would be a good way to operate the device. Operating the coil with a capacitor in parallel as a tank circuit at the tx coil frequency is universally how metal detectors are designed, and with good reason I think. It is not so much that the tank circuit provides _gain_ by resonating, but that it presents as a different impedance. It actually absorbs more of the energy in the oscillating magnetic field. So it's not equivalent at all to sticking a super low noise amplifier on the output of the coil.
 
 ### Briefly: Why not operate at different frequencies sequentially?
+<<<<<<< HEAD
+You could trivially design a setup that used a switched capacitor network or tapped off the inductor to operate at different frequencies sequentially. I find this to be against the ideals of the project and refuse on that basis. When I think about what a good metal detector should be doing it is blasting the environment with as much wideband energy as it possibly can on the tx side, and using some kind of multiple coil setup to get even more information a la phased array. So since wideband seems not to be possible, perhaps N-band is.
+
+## Setup:
+
+So one way to get this to work would be to just have a whole pile of different receive coils all operating at once. That seams infeasible though. If you look at the actual physical size of metal detector coils, they are pretty big. Big enough that stacking 10 of them together probably wouldn't be a super great idea. What if instead of this we could have one very large coil and then operate different subsections of it at different frequencies?
+
+It would work something like this: Suppose you have a coil, and divide it into two sections, connected in series. The two sections together would resonate at some frequency F, and the subsection at the end would resonate at some frequency 2F. Obviously if you just hooked this up as-is, it wouldn't work.
+But, what if you inserted a magic device in the middle? A device that let frequency F through, but blocked frequency 2F. Then the smaller section of the coil would be 'invisible' to the larger section, and they could resonate at both frequencies at once! 
+#diagram here#
+
+### What would this look like?
+Well it would look a little bit like a diplexer in the sense that different frequencies go to different places. It would actually need three ports I think, with the third port being used to attach the capacitor for the 2F resonator.
+
+I don't really know how to design such a thing, but how hard could it be to simulate?
+
+# Simulation of a graph of RLC networks.
+
+So we have N inductors, resistors, and capacitors connected together in a graph. And we want to calculate the impedance between the nodes as a function of frequency. The term for this is 'Nodal analysis', and it involves at some point constructing an 'Admittance matrix'.
+
+The physical layout of the system can then be described then as an adjacency matrix where the N nodes in our system are connected by resistors and capacitors. Note that for reasons I don't have a great intuition for, _ground does not count as a node_ when doing these kinds of analyses. Instead, a connection from a node i to ground is represented as a connection with itself i.e. an element on the matrix diagonal.
+
+if $v = ir$ and we define admittance of something to be the inverse of the resistance to be $y = 1/r$. Then $yv = i$, obviously. It transpires then that we can write our Admittance Matrix $Y$ like this:
+$$YV = I$$
+Where when we have N nodes Y is the NxN admittance matrix, $V$ is the Nx1 voltages of the different nodes, and $I$ is the Nx1 currents in the nodes. If we knew the currents going into and out of the nodes then, we could solve for the voltages like this:
+$$V = Y^{-1}I$$
+OK. This is all lecture note stuff. But recall that we don't have ground as an explicit node here. That means that we can stuff 1A of current into node 0 without having to have a -1A anywhere else as the current will just end up going to ground. So if we say that the input node is node 0 and we have N nodes, then $I = [1, 0, 0...0_n].T$. We know the admittance matrix, we know about `torch.pinv`, and we know what I is! The system is now solveable
+
+=======
 You could trivially design a setup that used a switched capacitor network or tapped off the inductor to operate at different frequencies sequentially. You could then build up a picture of what is happening by scanning through the frequencies one after the other, but this would of course take a lot longer. I find this to be against the ideals of the project and refuse on that basis. When I think about what a good metal detector should be doing it is blasting the environment with as much wideband energy as it possibly can on the tx side, and using some kind of multiple coil setup to get even more information a la phased array. But since wideband seems not to be possible, perhaps N-band is.
+>>>>>>> f591c9a2091b738c4a6b96dc61d5e7a703aa10a3
 
 ## Simultaneous multi-frequency inductors:
 
