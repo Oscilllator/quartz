@@ -6,11 +6,14 @@ I have high ApoB levels. Here are three levels taken in the recent past:
 | 2024-11-05 | 100   | fasted     |
 | 2025-01-09 | 102   | fasted     |
 | 2025-06-11 | 119   | not fasted |
-This means that I am in the 'high risk' category and have lower life expectancy on account of stuff accumulating in my arteries. How much lower life expectancy? I don't know. The advice for people in this situation is often to eat less saturated fat. I've heard in various places that this might not be that effective, and that things are "mostly genetic" and so on, so let's put that to the test.
+
+This means that I am in the 'high risk' category and have lower life expectancy on account of stuff accumulating in my arteries. How much lower life expectancy? I don't know. The advice for people in this situation is often to eat less saturated fat. I've heard in various places that this might not be effective, and that things are "mostly genetic" and so on, so let's put that to the test.
+
+Going into this experiment I was pretty skeptical that anything would happen.
 
 # Diet
-### Content
-If saturated fat is bad, the diet is just to eat as little of it as possible. I arbitrarily decided that this meant that all meals must have <10% saturated fat on a calories basis, and I adhered to that diet with 100% accuracy I made sure to look at the dietary breakdown of everything I ate.
+### Composition
+If saturated fat is bad, the diet is just to eat as little of it as possible. I arbitrarily decided that this meant that all meals must have <10% saturated fat on a calories basis, and I adhered to that diet with 100% accuracy. I made sure to look at the dietary breakdown of everything I ate.
 
 This means:
 - No dairy
@@ -47,14 +50,23 @@ Here is a table of all of my ApoB data for all timepoints:
 | 2025-07-05 | 79           | Y       | 10:30AM                 |
 | 2025-07-05 | 78           | N       | 12:30PM                 |
 | 2025-07-16 | 69           | N       |                         |
+
 ![[Pasted image 20250719121259.png]]
 
-It's pretty clear from this that the diet is wildly effective. People were asking my about my LDL throughout the experiment so I added a measurement on at the end and got 91.
+It's pretty clear from this that the diet is wildly effective. People were asking my about my LDL throughout the experiment so I added a measurement on at the end and got 91. All tests were taken with [ulta lab tests](http://ultalabtests.com/).
 
-The results are wayyy more dramatic than what reading the literature would have you believe. Here are two ([one](https://pmc.ncbi.nlm.nih.gov/articles/PMC3491165/#T2), [two](https://www.jlr.org/article/S0022-2275(23)00093-7/fulltext))random studies that both predicted a ~5 point change in ApoB. One of the tables:
+My results are wayyy more dramatic than what reading the literature would have you believe. Here are two ([one](https://pmc.ncbi.nlm.nih.gov/articles/PMC3491165/#T2), [two](https://www.jlr.org/article/S0022-2275(23)00093-7/fulltext)) random studies that both predicted a ~5 point change in ApoB. One of the tables:
 
 ![[Pasted image 20250719115916.png]]
 
-Look at the absolutely huge standard deviation on that result. What utter trash. The study says "Dietary adherence was promoted through regular telephone contacts and weekly meetings with the dietitians".
+Look at the absolutely huge standard deviation on that result. What utter trash. The study says "Dietary adherence was promoted through regular telephone contacts and weekly meetings with the dietitians". Sure it was.
 
-Following this diet was _really hard_. I had to be exceedingly careful eating out, I regularly refused to eat what the people around me ate, and generally was a complete nuisance to the people around me. Also the food was much less nice. I suspect that all these studies had really bad adherence.
+Following this diet was _really hard_. I had to be exceedingly careful eating out, I regularly refused to eat what the people around me ate, and generally was a nuisance to the everyone around me. Also the food was a lot worse. I suspect that all these studies had really bad adherence. 
+
+# Next steps
+
+I've stopped this diet, and am now trying to eat as much saturated fat as possible in my diet. Let's see how high this number can get. Then after that I might sit down and look up whether or not what the actual causal input-output relationship is for ApoB->life expectancy.
+
+# Conclusion
+
+I dropped my ApoB by 50 points in 5 weeks, and it was still dropping at the end.
