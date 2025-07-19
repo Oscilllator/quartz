@@ -224,10 +224,41 @@ And you can see that the stats continue to be bad - the loss is jumping around b
 
 ### 12 hour run
 
-Here is an extremely weird plot of the loss and the speed of sound in the center of the grid:
+	Here is an extremely weird plot of the loss and the speed of sound in the center of the grid:
 
 ![[Pasted image 20250627201228.png]]
 
 ![[Pasted image 20250627201236.png]]
 
-Who knows what this means
+Who knows what this means..
+
+## A clue
+
+Throughout this whole sim there has been a persistent big 'hole' on the left hand side which I had been chalking up to [[20250607 full wave inversion for sound#Bad-ish initialization|Bad initialization.]] But just now I added a gradient plot so I can see how thing are being updated, and this is what came up:
+### Gradient
+
+![[Pasted image 20250629214159.png]]
+
+The three dots there have a magnitude 100x larger than any other pixels! That's it! Now it is a question of finding out how they arose.
+
+
+### Things that don't work to remove the gradient singularities
+- Larger batch size
+- Using a large batch size with a median. The actual singularities are removed, but the ripples from them are not.
+- Doing all calculations in float64 - to try to rule out numerical precision issues
+- Moving the circles in the sound speed grid around
+- Transposing the x and y positions of the sensors transposes the positions of the singularities.
+### Things that have some effect
+- Source frequency. The tutorial had 1e6.
+This is what 1e7 looks like:
+
+![[Pasted image 20250714220238.png]]
+
+And 1e5:
+
+![[Pasted image 20250714220348.png]]
+
+If you squint it kind of looks like there is a transpose-like pattern showing up in the gradients.
+
+Changing the source waveform to a nasty nasty chirp with unterminated ends gives this:
+![[Pasted image 20250714222929.png]]
