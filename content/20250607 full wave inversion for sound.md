@@ -248,6 +248,7 @@ The three dots there have a magnitude 100x larger than any other pixels! That's 
 - Doing all calculations in float64 - to try to rule out numerical precision issues
 - Moving the circles in the sound speed grid around
 - Transposing the x and y positions of the sensors transposes the positions of the singularities.
+- Increasing the duration of the simulation. The current duration is set by the amount of time taken for a signal to propogate from one end of the grid to the other. Since this problem involves scattering, I thought the required time might be longer. But no, you get the exact same singularities pretty much.
 ### Things that have some effect
 - Source frequency. The tutorial had 1e6.
 This is what 1e7 looks like:
@@ -262,3 +263,40 @@ If you squint it kind of looks like there is a transpose-like pattern showing up
 
 Changing the source waveform to a nasty nasty chirp with unterminated ends gives this:
 ![[Pasted image 20250714222929.png]]
+
+So from this we can say that the problem is related to the source signal.
+
+The same signal with not only a higher source frequency but also a shorter duration chirp:
+
+![[Pasted image 20250720092825.png]]
+
+There is obviously something going on with the transpose of the source locations.
+### Inverting the signal
+
+#### Regular, before inversion
+![[Pasted image 20250720092109.png]]
+
+#### After inversion
+
+![[Pasted image 20250720092258.png]]
+
+... Well that's exactly the same. I was hoping that the white/black in the top would be flipped, so that the two could be averaged out to get a correct result.
+
+
+### Transpose
+
+... of course, the x/y of the image coordinate system was different to that of the sensor positions, so the discontinuities are on top of the sensor locations.
+
+I also discovered a bunch of bugs in the loss function whereby the hilbert transform was being performed over the wrong axis of the measurement matrix. After fixing that, and after zeroing out the ith-to-ith sensor measurement (i.e. the sensor measuring itself) I get this:
+
+![[Pasted image 20250720161148.png]]
+
+Which is not that much better, really.
+
+### 2:1 aspect ratio long run
+
+From the above, and moving the sensor locations 20 units away from the edge due to the 20 wide boundary condition, the sensors didn't really have a good angular spread anymore which I figure is necessary to get good diversity of angles looking at what we want to reconstruct. So I changed it to a 2:1 aspect ratio:
+
+![[Pasted image 20250720205213.png]]
+
+This seems to have done a kind of OK job, but clearly the ripples are still causing a lot of problems and it completely loses the bottom of the circle. You can also see in the gradient view that most of the effort is going towards the close-in stuff.

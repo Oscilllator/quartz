@@ -70,3 +70,13 @@ I've stopped this diet, and am now trying to eat as much saturated fat as possib
 # Conclusion
 
 I dropped my ApoB by 50 points in 5 weeks, and it was still dropping at the end.
+
+---
+### 2025_09_16: Extra fat results
+Since the last blood test I have increased the percentage of saturated fat in my diet. There was no specific target this time, but I did things like have a breakfast consisting of a cup of tea with 150ml of cream in it on the regular.
+
+As a result I hit a new high score of 133.
+
+![[Pasted image 20250920130310.png]]
+
+Being able to control the apob level in both directions is a nice extra piece of evidence for a causal relationship.
