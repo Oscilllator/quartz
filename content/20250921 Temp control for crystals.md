@@ -31,3 +31,62 @@ I think the primary cause for this 5C+ overshoot is the lag between the liquid i
 Apparently it's not so easy to have a thermometer immersed in a copper sulfate solution - it will corrode stainless steel and most metals. So it would be good to be able to figure out a solution where the thermometer could stay on the outside.
 
 ![[Pasted image 20250921201616.png]]
+
+
+### Stuck relay bug
+Don't really know how this happened. almost looks like the relay got stuck on or something. Would be nice to have a measure of the current. Anyway the temp only got to 94C, so that is another point against the thermocouple being on the outside.
+
+![[Pasted image 20250922195850.png]]
+
+### overnight run #2
+This is with
+```c++
+static constexpr float Ki = 0.1 / (20 * 60 * 10);      // [duty / (°C·s)]
+```
+![[Pasted image 20250923075744.png]]
+
+I term is still way too high I think...
+
+## Stuck relay bug again
+
+I set up a run to hit different temperature points over the course of the day, and the exact same temperature runaway happened, only this time you can see it boiled off all the water, fortunately only just before I got home:
+![[Pasted image 20250923183637.png]]
+
+Here I was monitoring the 5v line of the relay as a crude current sense. When the coil is correctly actuated, the voltage rail drops a little bit. 
+
+On the far right of the below image, you can see that the rail is toggling up and down with the GPIO. And on the left it isn't. This is because I gave the relay a good flick, which seemed to unstick it. So, the relay is no good for this application. 
+
+![[Pasted image 20250923183801.png]]
+
+## Different power control
+
+Since the relay kept getting stuck, I decided some other way of controlling the power going to the heating element was in order.
+### Silly relay
+![[Pasted image 20251003201413.png]]
+
+...The less said about this the better
+
+### Triac 
+
+I found a old triac dimmer in the closet, looks like this:
+
+![[Pasted image 20251003201455.png]]
+
+I believe this is the schematic:
+
+![[Pasted image 20251003201542.png]]
+
+
+This is what the output of the system looks like:
+
+![[Pasted image 20251003201222.png]]
+
+When I attache the above purple circled optoisolator though, only the negative half of the waveform is controlled, and the DIAC gets to >100C at high powers. I guess this is because the phototransistor is not symmetrical.
+
+## Off the shelf dimmer
+I bought [this](https://www.amazon.com/dp/B071X19VL1?ref=ppx_yo2ov_dt_b_fed_asin_title) dimmer off amazon and it works just fine. In particular it doesn't have the hysteresis problems that both the hotplate-stirrer and the pot controlled dimmer had. Now, I can actually control the temperature:
+
+![[Pasted image 20251006075037.png]]
+
+Though there is huge overshoot and it takes forever to converge. Though the temp ramps will happen over a few days, I think a settling time of like 6 hours might be a problem as it will affect the ability of the controller to reject disturbances over shorter timescales. We'll find out I suppose.
+
