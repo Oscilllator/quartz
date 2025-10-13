@@ -90,3 +90,19 @@ I bought [this](https://www.amazon.com/dp/B071X19VL1?ref=ppx_yo2ov_dt_b_fed_asin
 
 Though there is huge overshoot and it takes forever to converge. Though the temp ramps will happen over a few days, I think a settling time of like 6 hours might be a problem as it will affect the ability of the controller to reject disturbances over shorter timescales. We'll find out I suppose.
 
+#### Disturbances
+
+Here I left the system running in an empty apartment, and opened the door at some point to let cold air in.
+
+![[Pasted image 20251006215210.png]]
+
+As expected there are a bunch of disturbances. You can see the duty cycle trying to compensate, but it isn't really fast enough so the excursions are still significant.
+
+
+## Temperature ramp
+
+![[Pasted image 20251011082634.png]]
+
+## Fan on overnight
+
+![[Pasted image 20251011082606.png]]
