@@ -5,6 +5,8 @@
 - wire up gps backup pin FET
 - pulldown on gps FET input?
 - Move USB connector so it isn't right next to screen?
+- wire up the enable line for the gps amplifier.
+- switch to lower quiescent current regulator?
 # Schematic
 
 ![[Pasted image 20251211200746.png]]
@@ -74,3 +76,45 @@ The LED's are bright. Too bright.
 So I asked mr gemini if there were any parts in jlcpcb's standard parts catalog that could be use to detect ambient light, and it suggest the ol 'led as a photodiode' trick. It had a good method too which I would not have thought to use: reverse bias the photodiode then switch your digital pin to input. This charges the LED capacitance and so the discharge time is dependent on the photocurrent from the LED. Brilliant, [Dan Gelbart would approve](https://youtu.be/W6q_JRZCaZM?list=PLlkx3gSXbdKAl4oUtflEJE_vSX-hYZHrn&t=4532).
 
 Anyway I hooked it up and it works great, it takes 6000us in close to complete darkness and 2us with a phone torch pushed up against the LED.
+
+# Power draw
+The power draw of this thing with the gps and the oled screen ostensibly off, with the esp32 doing nothing in the main loop, is 70mA. That's pretty bad if we want to be able to run this thing off a AA battery for a long time.
+
+Like a fool, I did not properly connect my devices to current sense resistors so I can't easily tell how much power they are using. But at 70mA I should be able to see with a thermal camera, especially if I diff the measurements.
+
+### Diffed thermal measurements
+
+![[Pasted image 20251214120554.png]]
+
+![[Pasted image 20251214120604.png]]
+
+
+![[Pasted image 20251214120757.png]]
+
+So it looks like there aren't any surprises. The GPS indeed turned itself off, which is good. Other than that it's just the linear regulator, the esp, the amplifier for the gps, and the usb to serial converter. The linear regulator looks like it's drawing a lot of power. But it's 70mA powered off 5V, and about 70mA powered directly off the 3.3v line. So I don't think that the linear regulator has a lot of quiescent current.
+
+I put a cloth over the thermal camera setup to try and eliminate the effect of reflections, but the gold plated tap in the top right still showed up.
+
+### Desolder till the power is gone
+- remove esp32 ground lead: 30mA
+- remove gps ground and short indicating leds fets to ground: 20 mA
+- remove usb to serial chip ground: the same, 20mA 
+- power the above off the 3.3v rail directly to eliminate the linear regulator: same, 20mA
+Here is what the diff thermal image has to say after the above desoldering whilst powering the board of the 3.3v rail:
+
+![[Pasted image 20251214192644.png]]
+
+Looks like the linear regular draws a bunch of current just being attached to the 3.3v rail, with nothing on the 5!
+After desoldering the linear regulator the draw goes down to 10mA. then after desoldering the gps amplifier, finally the draw is down to 0.
+- soldering the linear regulator back on goes up to 16mA
+- Then putting the amplifier back on it goes up to 21mA. Doesn't quite add up but I am at the very bottom of my flukes current range as I have blown the 400mA fuse as I always do.
+- Attaching the usb to serial takes things up to 24mA
+- Then switching to the 5V supply it goes up to 27mA
+- Then adding in the esp32 it goes up to 52mA
+- Changing the arduino script so the only thing it does in the main loop is sleep doesn't change the power much, is 55mA
+- Moving the enable line back over to the esp32 (so it's always on) takes the power up to 79mA
+- Then putting the OLED on, it goes up to 81mA. This gladdens me, means the system can run in an overall very low power state if I could get the esp32 sleep right.
+- Enabling the compass indoors at night in a well lit room, the current is still around 80mA
+- At full brightness the total power draw is 103mA
+- 
+
