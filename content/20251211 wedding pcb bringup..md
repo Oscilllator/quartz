@@ -116,5 +116,66 @@ After desoldering the linear regulator the draw goes down to 10mA. then after de
 - Then putting the OLED on, it goes up to 81mA. This gladdens me, means the system can run in an overall very low power state if I could get the esp32 sleep right.
 - Enabling the compass indoors at night in a well lit room, the current is still around 80mA
 - At full brightness the total power draw is 103mA
-- 
+
+## Back to compass
+The compass seemed like it was working reasonably well earlier after I implemented the code that reset/flipped the measurement each time to cancel out the bias. But after getting on a plan and waiting a few days, the measurements are back to pretty useless. Here is a scatter plot of the measurements over the x/y axes when rotating the compass:
+
+![[Pasted image 20251219021218.png]]
+
+If there was no bias remaining, the compass measurements would be centered around the origin.
+
+## CR2025
+
+The CR2025 backup battery is right next to the imu. I just discovered it's also magnetic!
+
+Here are some magnetic readings taken with the battery removed:
+
+![[Pasted image 20251219022649.png]]
+Still not that great
+### Basic calibration
+It was inevitable that this would be required. Here is a super simple calibration class:
+```c++
+
+class CompassCalibrator {
+public:
+  CompassCalibrator() {
+    mins_ = {1e9, 1e9, 1e9};
+    maxs_ = {-1e9, -1e9, -1e9};
+  }
+
+  void AddObservation(sensors_vec_t obs) {
+    constexpr float kEarthField = 50.0; // Typical Earth's field ~25-65 µT
+
+    if (magnitude(obs) > kEarthField * 2) {
+      Serial.println("Warning: Magnetic reading exceeds 2x Earth field - possible interference");
+      return;
+    }
+
+    sensors_vec_t old_mins = mins_;
+    sensors_vec_t old_maxs = maxs_;
+    mins_ = elementwise_min(mins_, obs);
+    maxs_ = elementwise_max(maxs_, obs);
+  }
+
+  sensors_vec_t calibrate(sensors_vec_t in) {
+    return ((in - mins_) / (maxs_ - mins_) + (-0.5)) * 2.0;
+  }
+
+private:
+  sensors_vec_t mins_;
+  sensors_vec_t maxs_;
+};
+```
+
+
+Which leads to these results:
+
+![[Pasted image 20251219071341.png]]
+
+
+Seems pretty good. The measurement kind of messes itself up a bunch if you go near a piece of iron though which is an issue. the above was also taken under super ideal conditions with perfect rather than handheld rotation. for example after putting the compass down on a table with a metal support underneath it, you get this:
+
+![[Pasted image 20251219072042.png]]
+
+...significantly less idea.
 
