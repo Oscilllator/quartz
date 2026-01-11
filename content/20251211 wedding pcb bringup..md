@@ -1,12 +1,28 @@
 # \[top] checklist for next time
-- pulldown for flash voltage
-- pwm on gps lock pin for brightness
-- Right thickness coin cell holder
-- wire up gps backup pin FET
-- pulldown on gps FET input?
-- Move USB connector so it isn't right next to screen?
-- wire up the enable line for the gps amplifier.
-- switch to lower quiescent current regulator?
+- [x] pulldown for flash voltage
+- [x] pwm on gps lock pin for brightness
+- [x] Right thickness coin cell holder
+- [x] move the coin cell holder so a coin cell can be inserted without bumping into other components
+- [x] Move the coin cell holder further away from the compass since the battery is magnetic. Not strictly necessary with bias estimation, but desirable.
+- [x] wire up gps backup pin FET
+- [ ] pulldown on gps FET input?
+- [x] Move USB connector so it isn't right next to screen?
+- [x] wire up the enable line for the gps amplifier.
+- [ ] ~~switch to lower quiescent current regulator?~~
+- [x] Add accelerometer
+- [x] Add an ambient light sensing LED
+- [x] add resistors in line with power rails to easily turn on/off different chips
+- [x] remove the board cutout for wifi.
+- [x] Add in user button for no particular reason.
+- [x] make sure pcb can be powered from a phone with usb c connector in both orientations
+- [x] update "plug into power bank" text to explain you can use a phone
+- [x] Update notification LED text
+- [x] put in user button.
+- [x] move the USB C connector down the bottom, like a phone
+- [x] round the corners on the PCB
+- [x] Figure out why the first time it's powered on to a power bank, it just hangs.
+- [ ] make is so that when the board is booting, the LED's are off.
+
 # Schematic
 
 ![[Pasted image 20251211200746.png]]
@@ -179,3 +195,69 @@ Seems pretty good. The measurement kind of messes itself up a bunch if you go ne
 
 ...significantly less idea.
 
+# An accelerometer is needed.
+
+Reliable heading estimation isn't going to work unless the PCB is _never_ tilted from the horizontal. The component of the magnetic field in the vertical direction is large, larger than that in the horizontal direction (for many locations at least). This means that when the PCB is tilted, the measured min/max components of the x/y field are much larger than they otherwise would be. So the offset subtraction does not work, as it is contaminated by the measurement in the vertical z direction.
+
+Since the location of the pcb is known from the gps, the expected magnetic field vector can also be calculated.  But, this does not get us all the way. As Mr GPT puts it:
+
+![[Pasted image 20251226231454.png]]
+
+
+# Add an accelerometer.
+I have now added:
+- Tilt compensation with an accelerometer
+- A new way of estimating the bias that is robust to outliers.
+Specifically the new algorithm for estimating the bias is to maintain a rolling 20 sample buffer of compass measurements. New compass measurements are only added to the buffer if they are >10 uT from any of the other measurements in the buffer. A sphere is fit with least squares to the 20 measurements. This is mildly robust to outliers when they are introduces, but crucially as the compass continues to be used new estimates are added that push the old ones out. That way a single bad measurement can't corrupt the bias forever, as the old (max + min) / 2 method did.
+
+This new method results in a fit with an rms error of ~1 degree, which is nice.
+
+# GPS odometer
+I figured a fun thing to have would be an odometer, measuring how far you have moved whilst the PCB is on. This gives a better sense of progress than seeing the distance to the wedding change from 9000km away to 8999.9km away.
+
+Problem: A stationary GPS signal wanders around at about walking speed, so you will accumulate many km of distance with the pcb just sitting on the desk. I tried to mitigate this in a similar way to the magnetometer calibration by having a buffer of N lat/long pairs, and only incrementing the distance travelled if the new lat/long is far away from every single other element in the buffer. That way if the position wandered around without too much drift, the wandering positions would not accumulate.
+
+This doesn't seem to work though. A further investigation plotting the GPS position as a function of time overnight with the PCB sitting on a desk gives this result:
+
+![[Pasted image 20260105075804.png]]
+
+What garbage. What utter trash. I really don't see how the drift could be hundreds of meters! Now mind you the gps antenna here was indoors next to a window, so the gps signal was probably not that great. There seem to be 7-11 satellites connected though, so the error still seems high to me.
+
+# Checking supply rail during the set/reset compass measurement
+[[20251211 wedding pcb bringup.#Compass||Earlier]] when the set/reset measurement method did not completely remove the bias, gemini suggested that this might be because my schematic did not include an appropriate amount of decoupling per the datasheet (true) and that therefore maybe the supply rail was drooping during the measurement. Probing of the rail however reveals that any droop is <100mV, so I don't think that this is the case.
+
+# LED bar mystery.
+![[Pasted image 20260107212127.png]]
+
+# GPS backup power
+
+The GPS module states that it draws 10uA from the backup supply:
+![[Pasted image 20260110121133.png]]
+
+However I cunningly put a 5.1kR resistor in series with it when I made the schematic, and so I am able to measure that since there is a 3.3mV drop across it, in fact it only draws 3.3e-3/5.1e3 = 725nA, considerably less. This means that a CR927 battery should be quite sufficient.
+
+# LED interpolation
+I finally decided to add LED interpolation, whereby the brightness would be interpolated between two adjacent LED bars based on the true heading of the compass, rather than snapping to the nearest bar. It took ages for mr Claude to get this right, and it ended up taking the i2c peripheral to send out sychronous gpio edges on all relevant gpio lines. This was because otherwise you have to to time-slicing between two adjacent LED's, since it's not possible to light up only two LED's at once in an LED matrix, if the LED's share neither a row nor a column:
+
+![[Pasted image 20260110161749.png]]
+
+
+As if you try that, you get 4 LED's lit up. So there were a bunch of interactions with the PWM peripheral where the pwm edge would only be updated after the end of a pwm period, and then when you switched between LED bars this would cause a momentary glitch on the other LED's and blah blah blah.
+
+## Brightness consistency
+
+To my eye, the interpolation between adjacent LED bars was not perfect, there was some variation in brightness. Fortunately since we have an ambient light sensor this is easy to measure by just putting the PCB in a box. This results in these plots:
+
+![[Pasted image 20260110162045.png]]
+
+Easy to see the pattern here, though there is a bunch of random spikes in the signal for some reason.
+
+![[Pasted image 20260110162022.png]]
+
+![[Pasted image 20260110162152.png]]
+
+However it appears my eyes tell a lie - The the overall rotational speed of the pattern itself is clearly visible, but the interpolation between adjacenet LED's is not. The LED is in the corner of the PCB, and so the brighness varies periodically as the pattern rotates:
+
+![[Pasted image 20260110164212.png]]
+
+But if you look at the FFT of the brightness, there is absolutely zilch at 12 * the overall speed.
