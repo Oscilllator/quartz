@@ -21,7 +21,7 @@
 - [x] move the USB C connector down the bottom, like a phone
 - [x] round the corners on the PCB
 - [x] Figure out why the first time it's powered on to a power bank, it just hangs.
-- [ ] make is so that when the board is booting, the LED's are off.
+- [x] make is so that when the board is booting, the LED's are off.
 
 # Schematic
 
@@ -260,4 +260,4 @@ However it appears my eyes tell a lie - The the overall rotational speed of the 
 
 ![[Pasted image 20260110164212.png]]
 
-But if you look at the FFT of the brightness, there is absolutely zilch at 12 * the overall speed.
+But if you look at the FFT of the brightness, there is absolutely zilch at 12 * the overall speed. So this means that the overall brightness is not changing as the LED rotates.
