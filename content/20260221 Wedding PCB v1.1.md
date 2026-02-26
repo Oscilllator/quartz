@@ -43,6 +43,6 @@ Here is the box in operation:
 
 ![[Pasted image 20260222173324.png]]
 
-Nice and toasty..
+Nice and toasty.
 
 
