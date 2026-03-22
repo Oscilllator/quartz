@@ -45,4 +45,28 @@ Here is the box in operation:
 
 Nice and toasty.
 
+# Importance of esp32 antenna PCB cutout
 
+The layout guidelines for the esp32 module said that there should be a cutout in the PCB around the antenna, so the first revision of the board included this:
+
+![[Pasted image 20260301205403.png]]
+
+Since the first revision of the board did not use any wifi features, and the cutout was kind of annoying, and I figured surely it wouldn't be that important anyway, I removed it for the second revision of the board and didn't even bother to pull the ground plane away:
+
+![[Pasted image 20260301205530.png]]
+
+However I just added a cool new feature to the PCB whereby all the boards would continuously broadcast and listen for each other. Then when another was found, they would use the compass feature to point to each other so you could find another wedding attendee in e.g. the airport, which would be cool.
+
+However the signal drops out after moving only ~10m or so away, so I asked mr claude to write a simple script that measured the rssi between two of the PCB's, and I made this measurement with the two of the new revision PCB's, and then one old and one new:
+```
+  ┌──────────────────┬────────────────────────────┬────────────────────────────┐                                                                              
+  │                  │ A sees B (B's TX → A's RX) │ B sees A (A's TX → B's RX) │
+  ├──────────────────┼────────────────────────────┼────────────────────────────┤
+  │ Old B (AE:E0:04) │ -66 dBm                    │ -67 dBm                    │
+  ├──────────────────┼────────────────────────────┼────────────────────────────┤
+  │ New B (B0:64:E0) │ -43 dBm                    │ -46 dBm                    │
+  ├──────────────────┼────────────────────────────┼────────────────────────────┤
+  │ Difference       │ +23 dB                     │ +21 dB                     │
+  └──────────────────┴────────────────────────────┴────────────────────────────┘
+```
+Well then. Looks like the antenna is like 11dB better (\*2 for tx->rx), so between two of the same PCB there is a 22dB difference in signal strength from changing just one of the boards. So presumably if both boards had the cutout it would be 44dB.
