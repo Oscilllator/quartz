@@ -40,3 +40,11 @@ Perhaps ~10xing the input capacitance of the amplifier made it unstable. The inp
 
 ![[Pasted image 20260322153034.png]]
 
+
+## Schematic
+
+Not particularly complete
+
+![[Pasted image 20260325212250.png]]
+
+![[Pasted image 20260325212233.png]]
