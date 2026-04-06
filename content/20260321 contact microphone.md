@@ -45,6 +45,52 @@ Perhaps ~10xing the input capacitance of the amplifier made it unstable. The inp
 
 Not particularly complete
 
-![[Pasted image 20260325212250.png]]
+![[Pasted image 20260404094645.png]]
 
 ![[Pasted image 20260325212233.png]]
+
+# Crosstalk
+
+The above board has a "feature" whereby the output is disabled and instead run into some tuner thing so it can tell you if your ukulele is in tune. To get rid of this I disconnected the output and then wired up the OUT2 of the LM358 through a cap into the output directly. No more problems here.
+
+Now onto the recording. I powered the PCB off of a USB 5V rail, to which I also had a teensy attached with an audio shield. That way I can do actual recordings of the tummy rumbles and have a way of correlating food with rumble times and so on. Only problem is, there is:
+a) Huuuuge mains crosstalk
+b) Also a lot of crosstalk directly from the power supply. Asking mr claude to make a script that turns the CPU from max load to 0 at 300Hz results in a very loud noise in the headphones:
+
+
+![[Pasted image 20260404095116.png]]
+
+My vague understanding was that stuff like "power supply rejection ratio" of op amps was supposed to solve this, but clearly not.
+
+...turns out that the ground side for the bias midpoint of the first op-amp was hooked up directly to the RING connection of the aux jack that plugged in. Because of my odd wiring, this output was disconnected and so the bias was pulled to one of the rails, which caused the strong coupling from the power supply rail. after shorting this line to ground, the noise from the teensy disappeared.
+
+### Output measuring heartrate again:
+
+![[Pasted image 20260404110716.png]]
+
+The system is extremely sensitive now, though it seems to have a huge amount of high frequency noise in it. this seems to be mostly outside the audible range so hopefully won't cause too many problems. In the headphones, the heartbeat is accompanied by a bit of clicking so I think it might actually be saturating at one of the amplification stages.
+
+## At each stage
+
+### Directly measuring piezo:
+
+![[Pasted image 20260404111601.png]]
+
+### Output of stage 1:
+
+![[Pasted image 20260404111832.png]]
+
+...yeah that's already pretty bad. what's going on??
+
+This whole circuit has 4 stages of amplification for some reason. I think I just need to rewire it so it has one, and cut out all the funny business.
+
+### Simple buffer
+
+Let's rewire to try to get this, and see how it goes:
+
+![[Pasted image 20260404114548.png]]
+
+...nope, the power supply noise is super audible. I got claude to change the cpu loading so it ramped between 100 and 300Hz over a few seconds, which created a distinct siren noise in the headphones. This is what the FFT of the power supply rail looks like:
+
+![[Pasted image 20260404123236.png]]
+
