@@ -94,3 +94,14 @@ Let's rewire to try to get this, and see how it goes:
 
 ![[Pasted image 20260404123236.png]]
 
+# new amplifier, new problems.
+
+I replaced the old guitar amplifier with a AD620 instrumentation amplifier from [amazon](https://www.amazon.com/dp/B0B6VJ7V45?ref=ppx_yo2ov_dt_b_fed_asin_title):
+
+![[Pasted image 20260408075421.png]]
+
+This new one has two problems:
+- It has a charge pump, and there is massive coupling between the charge pump switching and the output. The BOOST pin seems to have alleviated this somewhat
+- There is much stronger coupling in this design between the power rail of the teensy and the output. The above mentioned triangle siren ramp is extremely loud. Putting a but electrolytic on the 5V rail and on the -5V rail did not help with this. Probing the rail with a scope suggessts there is ~20mV of noise.
+On this last part, it's unclear to me if the issue here relates to the actual power supply, or some kind of grounding problem between the output of the amplifier and the mic ground of the teensy, since presumably the two are coupled.
+
