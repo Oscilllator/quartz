@@ -105,3 +105,21 @@ This new one has two problems:
 - There is much stronger coupling in this design between the power rail of the teensy and the output. The above mentioned triangle siren ramp is extremely loud. Putting a but electrolytic on the 5V rail and on the -5V rail did not help with this. Probing the rail with a scope suggessts there is ~20mV of noise.
 On this last part, it's unclear to me if the issue here relates to the actual power supply, or some kind of grounding problem between the output of the amplifier and the mic ground of the teensy, since presumably the two are coupled.
 
+
+### Teensy audio shield grounding oddity
+
+For some reason the MIC GND of the teensy audio shield is wired out to a GND pin on the header, and that pin on the CPU board is a regular power ground, resulting in the MIC GND being shorted to the power GND:
+
+![[Pasted image 20260408200951.png]]
+
+Seems like that might cause some issues.
+
+## Solution
+
+The above AD620 eval board had a potentiometer and buffer to adjust the null point, the output of which went into the ref pin. The output of the AD620 is referenced to this pin, so power supply noise was directly coupled in. instead, the pin was shorted to the MIC ground which handily removed all the power supply noise.
+
+Now I can get these great plots:
+
+![[Pasted image 20260408205129.png]]
+
+So far, I've been trying to keep the amplifier working down to as low of a frequency as possible. I'm seeing now though that this isn't a great idea. the amplifier can easily sit at a large offset for many seconds, during which the output is completely saturated.
