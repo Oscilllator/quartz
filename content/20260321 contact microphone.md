@@ -134,3 +134,36 @@ Here is a section of the audio signal loaded into audacity, showing the periodic
 ![[Pasted image 20260411102221.png]]
 
 ![[rec_019_periodic.wav]]
+
+I can only assume that means that somehow the heartbeat is saturating some part of the pipeline. This is more or less what the circuit looks like now, from my best guess as to what is in the amazon schematic.
+
+![[Pasted image 20260411103809.png]]
+
+so it's:
+- The long time constant of the RC piezo mic-R23 discharge resistor. I tried to adjust this to a <1s time constant though.
+- Some other DC drift in the sytem, perhaps from the 10M from the piezo to ground.
+- Nonlinearity in the piezo mic. If the piezo mic is compressed by my heartbeat, then perhaps whilst it is compressed then it is less sensitive. If you look at the above spectrogram though, the white noise also reduces which is presumably amplifier noise, so I think this is unlikely.
+I can't think of anything else that has a >1s time constant like that.
+
+There is also some DSP processing happening in an attempt to de-emphasise the very loud heartbeat signal that I had claude add:
+```c++
+    codec.enable();
+    codec.inputSelect(AUDIO_INPUT_MIC);
+    codec.micGain(20);
+    codec.volume(0.45);
+    codec.eqSelect(GRAPHIC_EQUALIZER);
+    //                         115Hz  330Hz  990Hz  3kHz  9.9kHz
+    codec.eqBands(              0,     10,    10,    10,   10);
+    codec.lineOutLevel(13);
+```
+
+## Live streaming audio over USB
+
+Downloaded friture which is pretty good. Here is a trace showing the piezo attached on the last rib of the ribcage:
+
+![[Pasted image 20260411110137.png]]
+
+This is a heartbeat, and you can quite clearly see that the pipeline is saturated in at least two places. The clean noise-free RC decay there indicates that somewhere is hitting the rail, and then it hits the actual rail of the microphone at the bottom. 
+
+Just turning the gain potentiometer on the AD620 down gets rid of both saturations. The RC decay saturation is from the diodes clamping the rail, as determined by probing on top of the diodes. it's a bit surprising though, because the mic gain is also set to 20dB, and you would think that clamping at +/- 0.6v (1.2vpp) would mean the mic would need 0dB of gain.
+
