@@ -123,3 +123,14 @@ Now I can get these great plots:
 ![[Pasted image 20260408205129.png]]
 
 So far, I've been trying to keep the amplifier working down to as low of a frequency as possible. I'm seeing now though that this isn't a great idea. the amplifier can easily sit at a large offset for many seconds, during which the output is completely saturated.
+
+# Recorded audio
+I've now got things to the point where I can clearly hear tummy rumbles in the pickup mic, whilst sitting still. There are couple of weird things to iron out though
+- Sometimes the audio signal fades out periodically. This may be due to heartbeat
+- Noise from clothes and so on remains extremely high.
+
+Here is a section of the audio signal loaded into audacity, showing the periodic fading clearly:
+
+![[Pasted image 20260411102221.png]]
+
+![[rec_019_periodic.wav]]
