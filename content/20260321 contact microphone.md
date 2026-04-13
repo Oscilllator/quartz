@@ -167,3 +167,41 @@ This is a heartbeat, and you can quite clearly see that the pipeline is saturate
 
 Just turning the gain potentiometer on the AD620 down gets rid of both saturations. The RC decay saturation is from the diodes clamping the rail, as determined by probing on top of the diodes. it's a bit surprising though, because the mic gain is also set to 20dB, and you would think that clamping at +/- 0.6v (1.2vpp) would mean the mic would need 0dB of gain.
 
+Here is the spectrogram of an exceptionally loud rumble:
+
+![[Pasted image 20260412103902.png]]
+
+
+## New piezo mic
+
+![[Pasted image 20260412102847.png]]
+
+Hopefully this should isolate it from external vibrations somewhat. If you think about it though, if the piezo disc was massless, and suspended from external forces but still stuck onto the stomach, then it wouldn't measure anything because there would be no way for the piezo to be squeezed when the stomach rumbled upwards:
+
+![[Pasted image 20260412104623.png]]
+
+It's only the inertia of the piezo disc, and the loading from the sponge, that cause it to be compressed and generate a signal. So maybe attaching a large-ish mass to the mic would help with getting a better signal.
+
+So I added two copper plates with a total mass of 41g:
+
+
+![[Pasted image 20260412112030.png]]
+
+This increased the signal by quite a bit it seems, but did not seem to increase the isolation of the mic from interference from tapping on the casing and so on. I still have this huge noise/heartbeat band at low frequencies too:
+
+![[Pasted image 20260412111928.png]]
+
+That saturates before anything interesting can be found at the higher frequencies, so I think that needs to be reduced down a bunch first.
+
+## Mic rev 2
+
+![[Pasted image 20260412211356.png]]
+
+I noticed with the previous revision of the mic that I needed to touch the ground of the connector to get rid of mains hum, so on the next revision I set the brass plate that is one side of the piezo disc to be against the tummy. 
+## Specter of power supply noise
+
+I left in the previously mentioned ramp up and down, and you can now actually see it just barely:
+
+![[Pasted image 20260412211150.png]]
+
+If you know what to listen for you can also hear it. 
