@@ -47,3 +47,9 @@ With one arm of the interferometer blocked, I get this:
 ...I guess the signal is just modulation of the laser power...
 
 ## Michelson -> Mach zehnder
+
+I figured that perhaps the above wild fluctuations were due to either a horrible power supply (almost guaranteed) or strong back reflections from my plain glass beam splitter. I can't find any good cheap laser drivers online unfortunately so I figured I would change the setup to a Mach zehnder interferometer, as those don't create back reflections for the laser. It looks like this now:
+
+![[Pasted image 20260428213540.png]]
+
+But unfortunately I can't get any fringes at all, no matter how I wiggle and woggle things. part of what makes this difficult I think is that it's a lot harder to adjust the path length in this configuration and hence hard to get fringes, since the coherence length of the laser is presumably very short with this bad power supply.
