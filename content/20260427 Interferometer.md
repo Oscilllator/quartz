@@ -53,3 +53,19 @@ I figured that perhaps the above wild fluctuations were due to either a horrible
 ![[Pasted image 20260428213540.png]]
 
 But unfortunately I can't get any fringes at all, no matter how I wiggle and woggle things. part of what makes this difficult I think is that it's a lot harder to adjust the path length in this configuration and hence hard to get fringes, since the coherence length of the laser is presumably very short with this bad power supply.
+
+# Retroreflector Michelson interferometer
+
+Following [this](https://www.rp-photonics.com/michelson_interferometers.html) guide here, I switched back to a michelson interferometer but with retroreflectors at the end instead of plain mirrors, so the return beam is displaced sideways. This seems to work well, and looks like this:
+
+![[Pasted image 20260503095756.png]]
+
+In particular the return beam is no longer shooting back into the laser cavity:
+
+![[Pasted image 20260503095837.png]]
+
+The interference fringes look like this:
+
+![[PXL_20260503_162357990.LS.mp4]]
+
+
