@@ -68,4 +68,13 @@ The interference fringes look like this:
 
 ![[PXL_20260503_162357990.LS.mp4]]
 
+When I give one of the retroreflectors a tiiiny tap with my fingers, I get this response:
+
+![[Pasted image 20260503102104.png]]
+
+When the same tap is given with one of the arms obscured, the magnitude of the response is miniscule by comparison.
+
+## Bandwidth of detector.
+
+In the above graph I have a plain photodiode, a PD15-22C that I've stuck in the thorlabs case. When this is put into the scope with a 50R impedance input, the amplitude of the signal is way below the noise floor of the scope, which is sad. So it's on a 1MOhm impedance, which is for sure killing the bandwidth, as you can see from the above plot - the amplitude of the signal out of the interferometer should be constant, the only thing that is changing is the frequency.
 
