@@ -78,3 +78,28 @@ When the same tap is given with one of the arms obscured, the magnitude of the r
 
 In the above graph I have a plain photodiode, a PD15-22C that I've stuck in the thorlabs case. When this is put into the scope with a 50R impedance input, the amplitude of the signal is way below the noise floor of the scope, which is sad. So it's on a 1MOhm impedance, which is for sure killing the bandwidth, as you can see from the above plot - the amplitude of the signal out of the interferometer should be constant, the only thing that is changing is the frequency.
 
+The datasheet says this about the junction capacitance:
+
+![[Pasted image 20260503102554.png]]
+
+So at my reverse bias of 8V I should be getting about 5pF. At 1Mohm that's 16kHz. Let's measure the 3dB point by zooming into the above scope trace to crosscheck that:
+
+![[Pasted image 20260503102830.png]]
+
+190us == 5.2kHz. That's ballpark the same I suppose, but would have been nice to be a bit closer to the datasheet. Actually the SMA cable has a capacitance of 30pF/ft apparently, and it's a 3ft cable, so that would imply a bandwidth of a few hundred Hz, which is clearly way off. 
+
+### Noise density
+
+This is what the output spectrum looks like:
+
+![[Pasted image 20260503191152.png]]
+
+It actually seems to be mostly invariant with how long I make the different arms of the interferometer - what should instead be happening is the output becomes the linewidth of the laser, I think. Since the linewidth is most assuredly not 1kHz here, perhaps there is some other rolloff happening somehow somewhere. Or maybe the laser is modehopping with this spectrum.
+
+### Vibration "isolation":
+
+I propped up the whole breadboard on some folded packing foam, and this is the change in spectrum that resulted:
+
+![[Pasted image 20260503215655.png]]
+
+Not too surprising really, but good to see it demonstrated and pretty conclusive. [[20260321 contact microphone|The grumblephone]] I built previously picked up a huge amount of noise when it was firmly attached to the desk, so that's a nother 
