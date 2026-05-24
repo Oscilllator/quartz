@@ -28,4 +28,44 @@ So it's not in the flat part of the force-displacement curve.
 
 ### Results
 
+It does something, but still pretty bad. But as mentioned it's not being operated at the right point.
+
 ![[Pasted image 20260521214052.png]]
+
+## Proper balancing.
+
+You can see from the above pics that there are 4 1/2" steel rods holding everything up. I removed these and replaced it with 3d printed 1/2" rods to cut down on the weight. This was enough to (just) bring it below the operating points. On thorlabs mirror stage, one 4mm allen key, and one 1/4"-20 bolt  on top of that puts it in the sweet spot.
+
+
+### Vibration isolated - Spectrum
+
+![[Pasted image 20260523115241.png]]
+
+### Vibration isolated - time series
+
+This makes the difference abundantly clear:
+
+![[Pasted image 20260523115743.png]]
+
+
+![[Pasted image 20260523114837.png]]
+
+### Power supply sensitivity
+
+Here is a plot of me twisting the knob on the power supply back and forth to modulate the current going into the laser:
+
+![[Pasted image 20260523121436.png]]
+
+Considering I was swinging the power back and forth by quite a bit, I would estimate many 10s of mA, this actually points away from the residual noise being power supply related I think since that implies that the benchtop power supply is implausibly noisy.
+
+### Vibration correlation
+
+If the remaining noise in the interferometer output was due to vibration, then perhaps there would be a correlation between the voltage across a piezo mic and the output of the interferometer. You might be able to see this in the xy mode of a scope:
+
+![[Pasted image 20260523123940.png]]
+
+...or, perhaps not. This isn't a definitive proof though. I don't think that the piezo voltage is linearly proportional to the displacement of the system 
+
+Pic of setup:
+
+![[Pasted image 20260523124527.png]]
