@@ -69,3 +69,19 @@ If the remaining noise in the interferometer output was due to vibration, then p
 Pic of setup:
 
 ![[Pasted image 20260523124527.png]]
+
+
+## Back to sim
+
+I got claude to switch from the DIY version of the sim to a Calculix based one. Apparently regular grid-based FEA just doesn't work very well with super long aspect ratio buckling type simulations, so this uses some other method.
+
+Here is what the results look like now:
+
+![[Pasted image 20260526210519.png]]
+
+![[Pasted image 20260526210530.png]]
+
+![[Pasted image 20260526210545.png]]
+
+This looks more in line with the literature I think, though I don't really know how plausible it is. 
+
