@@ -109,3 +109,53 @@ The white noise indeed looks fairly white per the spectroid app, so this might b
 Here is a human speech sample:
 
 ![[2026-06-06 20-42-14.mp4]]
+
+
+### Proper mirror
+
+Both the aluminium foil and the copper foil have a 'brushed' appearance, presumably from the rolling used to manufacture them. So a real mirror is needed, but lightweight so it can be moved back and forth by sound. Since this is just an intermediary step on the way to bouncing off a lambertian target I don't want to spend too much time on it.
+
+Here I have taken a tiny chip of gold plated glass struck off a larger scrap gold plated first surface mirror:
+
+![[Pasted image 20260607112948.png]]
+
+This actually cause a constant max amplitude signal, even with the vibration isolation:
+
+![[Pasted image 20260607101826.png]]
+
+You can see a bunch of resonant peaks here.
+
+In particular the above setup many seconds for the signal to settle down after receiving an impulse. But it was also completely insensitive to sound. Chopping the long cantilever left off, and adding a piece of foil to catch more air gives this:
+
+![[Pasted image 20260607113244.png]]
+
+But this too takes a long time to settle down:
+
+![[Pasted image 20260607113418.png]]
+
+So I think these undamped setups are just really bad. I placed a small dot of UV glue here:
+
+![[Pasted image 20260607115749.png]]
+
+Which was designed to stop the 'undamped cantilever' action that was clearly happening earlier. I can see that the decay time is improved, it's now around ~1s, but it is still clearly not good enough. Not only is 1s longer than I would like, but also the setup is quite insensitive to sound. The cantilever + glue drop + glass mirror chip is way higher mass, I guess.
+
+### Kirkland seafood snack bag
+
+The inner surface of this has the exact same brushed surface as aluminium foil, and there is a corresponding grating like effect too whereby the reflected light is elongated in a single direction. I had always thought these were deposited in a vacuum, but I guess not.
+
+### Voodoo chips bag
+
+![[Pasted image 20260607130947.png]]
+
+
+This one clearly did not have a brushed finish, and indeed it focuses down reasonably well onto the photodiode:
+
+![[Pasted image 20260607130656.png]]
+
+But the output is picking up a lot of noise from somewhere:
+
+![[Pasted image 20260607131053.png]]
+
+This is interesting. The Chip packet is obviously very light, that's the point. So I would have thought that the only thing it was capable of picking up would be audible noise transmitted through the air. I know that the baseplate is not vibrating too much, that's what [[20260528 Vibration isolation mechanical#Rigid mounts|this section]] showed (I thought). This lined up with what I saw with the copper tape above, where when there was no ambient noise there was also not much in the way of signal output.
+
+Obviously that is not the case though
