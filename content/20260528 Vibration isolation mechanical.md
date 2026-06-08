@@ -156,6 +156,6 @@ But the output is picking up a lot of noise from somewhere:
 
 ![[Pasted image 20260607131053.png]]
 
-This is interesting. The Chip packet is obviously very light, that's the point. So I would have thought that the only thing it was capable of picking up would be audible noise transmitted through the air. I know that the baseplate is not vibrating too much, that's what [[20260528 Vibration isolation mechanical#Rigid mounts|this section]] showed (I thought). This lined up with what I saw with the copper tape above, where when there was no ambient noise there was also not much in the way of signal output.
+This is interesting. The Chip packet is obviously very light, that's the point. So I would have thought that the only thing it was capable of picking up would be audible noise transmitted through the air. I know that the baseplate is not vibrating too much, that's what [[20260528 Vibration isolation mechanical#Rigid mounts|this section]] showed (I thought). This lined up with what I saw with the copper tape above, where when there was no ambient noise there was also not much in the way of signal output, though there [[20260528 Vibration isolation mechanical#A voice|was some noise]] in this speech output.
 
 Obviously that is not the case though
