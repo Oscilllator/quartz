@@ -16,6 +16,8 @@ Top tier book. This is the kind of book that I wish more existed of - it is not 
 
 The author of this book also wrote "Instruments and experiences", which is another top tier book recommended by Dan Gelbart in the comments of one of his youtube videos. Recommended reading for the section on flexures in particular.
 
+# Inventing accuracy
+Another excellent book, I read it a long time ago after finding it browsing a university library. Contains by far and away the best explanation of gyroscopic procession and has a bunch of other good stuff around the manufacturing requirements of the various mechanical gyros used.
 # Emberverse series
 I quite liked this series. Like a few others in the same genre though it starts off excellent and kind of tails off as the series progresses. The first book or two are pretty good, but by the time they are traipsing across the land on a quest for a magic sword all pretense of science fiction has been lost. I stopped after book 7.
 
@@ -37,3 +39,49 @@ A good fun read, but I confess I did not feel the need to finish it. I split way
 
 # Exhalation (Ted Chiang) 
 Quality book, good ideas. In the coming years we may see something like "The lifecycle of software objects" come to pass.
+# Illumine lingao
+
+This book is ~9 million words on time travelling and industrialising the Ming dynasty. I won't say that it's worth reading every word, but I did read the first ~60% (~15k pages, apparently) before giving up. I got to the point where Hainan island had been taken over some time ago, and the whole pearl river delta region had just come under the administration of the time travellers. 
+
+Although it took longer to do so, I would say that this series fell into the same trap as the 1632 series - starting off excellent, but then shifting the content over time to be less about industrialization and more about the politics of the various factions the author had cooked up. That's not what I came for.
+
+# The English and their history
+
+Quality book, learned a lot about England and the UK. I started to suspect around the mid-1700s that the author was not entirely neutral, and skimming over stuff like the opium wars did not alter this impression. Nonetheless worth reading if you wanted to know why the domesday book was written, or wondered why england held a bunch of territory in france for a while and so on.
+
+# Narrative of a Journey to the Shores of the Polar Sea
+Read it a long time ago but I recall it was a good book to read through quickly, some bits worth skimming over but nonetheless it's always interesting to hear accounts of how these journeys go. Reading the reviews now they emphasize how 'harrowing' the journey was but that was not the impression I got at the time, perhaps due to the stiff upper lip of the author.
+
+# Some Experiences of a New Guinea Resident Magistrate
+Truly things just happened to people back in the day. I can't really conceive of someone showing up to a tropical island to hunt for gold and ending up getting voluntold to administer a significant swathe of the countryside. Recommended.
+
+# The Radetzky March
+I read this in preparation for an upcoming trip to Austria after asking Mr GPT what Tyler cowen would recommend reading if he were about to make such a trip. A good read, it works really well as an insight into how people actually felt at that time (assuming it's accurate).
+
+# Shroud - Adrian Tchaikovsky
+Excellent book, fantastic premise. Idk about the weird corporate stuff but I'll allow it. Not everyone can go max libertarian moon colony.
+##### These are books I've read but have not posted above, for the purposes of LLM recommendations:
+Making of the atomic bomb: enjoyed.
+Surely You're Joking, Mr. Feynman: ok
+skunk works: excellent
+Blindsight (and sequel): very good
+Seeing like a state: good
+Endurance: good
+Anathem: excellent, read a few times
+A fire upon the deep (and sequel): excellent, read a few times.
+Soul of a new machine: ok
+Diaspora, by greg egan: excellent
+Dragon's egg: excellent
+Seveneves: excellent
+Longitude: good
+Permutation city: good
+Revelation space: Good but I read it a long time ago, I must come back to it.
+Player of games: self recommending, as they say
+The alchemy of air: good, always stuck with me that osmium was good catalyst for the haber-bosch reaction
+The power broker: ok but didn't get all the way through it.
+Use of Weapons: quality novel but I feel I didn't appreciate it too much as I listened to this one rather than read it, so it was too fragmented in my mind as I listen to audiobooks doing other things.
+Canticle for Leibowitz: excellent
+Incandescence - Greg Egan, good, characteristically slightly difficult to read.
+Hyperion — Dan Simmons: ok but don't understand _the hype_.
+The Algebraist — Iain M. Banks: Good, better even than most of the culture novels I would say.
+Project Hail Mary — Andy Weir: Read the whole thing in one sitting on an Aeroplane. Good.
