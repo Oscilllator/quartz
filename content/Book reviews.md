@@ -60,6 +60,10 @@ I read this in preparation for an upcoming trip to Austria after asking Mr GPT w
 
 # Shroud - Adrian Tchaikovsky
 Excellent book, fantastic premise. Idk about the weird corporate stuff but I'll allow it. Not everyone can go max libertarian moon colony.
+# House of suns
+Good SF book to rip through as entertainment. Overall the book was good but it was riddled with "why would you do that??" or "that's not what would happen!" type moments which undermined it a bit.
+# Exactly: How Precision Engineers Created the Modern World
+Maybe a good book if you know nothing about precision or engineering, but not a good one if you do. Mostly a connection of common engineering stories connected together with effusive praise of whatever stage of engineering was being described.
 ##### These are books I've read but have not posted above, for the purposes of LLM recommendations:
 Making of the atomic bomb: enjoyed.
 Surely You're Joking, Mr. Feynman: ok
