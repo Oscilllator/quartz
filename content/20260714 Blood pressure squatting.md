@@ -4,3 +4,4 @@ Here I measured my blood pressure with a blood pressure cuff immediately before 
 
 ![[Pasted image 20260714074823.png]]
 
+My resting bp is normally about 123/80 and heart rate is about 65. The measurements here were taken standing up with the left arm dangling down so they are slightly different from what you would get in the regular sitting position.
