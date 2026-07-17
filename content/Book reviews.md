@@ -36,6 +36,8 @@ Another series by S.M. Stirling. This one, perhaps as it is a trilogy, manages t
 I've heard a lot about this book, and have read most of it twice. It's certainly worth reading but I somehow haven't had quite the same revelatory experience claimed by so many others. This is perhaps because writing about Status explicitly has become more common in recent years, perhaps partly due to the (re)popularisation of this book.
 # A Time of Gifts: On Foot to Constantinople From the Hook of Holland to the Middle Danube
 A good fun read, but I confess I did not feel the need to finish it. I split ways about half way though Germany. I can only read so many stories about being taken in on cold winter evenings by good samaritans. Presumably having such events actually happen to you in person has a more lasting appeal.
+# Twelve years a slave
+Quite a good book. Read it prior to a trip to lousiana. Learned a good amount about being a slave.
 
 # Exhalation (Ted Chiang) 
 Quality book, good ideas. In the coming years we may see something like "The lifecycle of software objects" come to pass.
@@ -64,28 +66,32 @@ Excellent book, fantastic premise. Idk about the weird corporate stuff but I'll 
 Good SF book to rip through as entertainment. Overall the book was good but it was riddled with "why would you do that??" or "that's not what would happen!" type moments which undermined it a bit.
 # Exactly: How Precision Engineers Created the Modern World
 Maybe a good book if you know nothing about precision or engineering, but not a good one if you do. Mostly a connection of common engineering stories connected together with effusive praise of whatever stage of engineering was being described.
+# Travels and discoveries in north and central Africa
+Book seems interesting, but is a little bit too low density for me - too much unnecessary detail for it to be an interesting read. Not unnecessary detail for what the book was - an account of a journey - but as a narrative it's a bit dull. Might come back to it when I'm bored.
+# The final Architecture trilogy
+Good series, worth reading, belongs to the genre of yet-another-unspace type space fiction. 
 ##### These are books I've read but have not posted above, for the purposes of LLM recommendations:
-Making of the atomic bomb: enjoyed.
-Surely You're Joking, Mr. Feynman: ok
-skunk works: excellent
-Blindsight (and sequel): very good
-Seeing like a state: good
-Endurance: good
-Anathem: excellent, read a few times
-A fire upon the deep (and sequel): excellent, read a few times.
-Soul of a new machine: ok
-Diaspora, by greg egan: excellent
-Dragon's egg: excellent
-Seveneves: excellent
-Longitude: good
-Permutation city: good
-Revelation space: Good but I read it a long time ago, I must come back to it.
-Player of games: self recommending, as they say
-The alchemy of air: good, always stuck with me that osmium was good catalyst for the haber-bosch reaction
-The power broker: ok but didn't get all the way through it.
-Use of Weapons: quality novel but I feel I didn't appreciate it too much as I listened to this one rather than read it, so it was too fragmented in my mind as I listen to audiobooks doing other things.
-Canticle for Leibowitz: excellent
-Incandescence - Greg Egan, good, characteristically slightly difficult to read.
-Hyperion — Dan Simmons: ok but don't understand _the hype_.
-The Algebraist — Iain M. Banks: Good, better even than most of the culture novels I would say.
-Project Hail Mary — Andy Weir: Read the whole thing in one sitting on an Aeroplane. Good.
+- Making of the atomic bomb: enjoyed.
+- Surely You're Joking, Mr. Feynman: ok
+- skunk works: excellent
+- Blindsight (and sequel): very good
+- Seeing like a state: good
+- Endurance: good
+- Anathem: excellent, read a few times
+- A fire upon the deep (and sequel): excellent, read a few times.
+- Soul of a new machine: ok
+- Diaspora, by greg egan: excellent
+- Dragon's egg: excellent
+- Seveneves: excellent
+- Longitude: good
+- Permutation city: good
+- Revelation space: Good but I read it a long time ago, I must come back to it.
+- Player of games: self recommending, as they say
+- The alchemy of air: good, always stuck with me that osmium was good catalyst for the haber-bosch reaction
+- The power broker: ok but didn't get all the way through it.
+- Use of Weapons: quality novel but I feel I didn't appreciate it too much as I listened to this one rather than read it, so it was too fragmented in my mind as I listen to audiobooks doing other things.
+- Canticle for Leibowitz: excellent
+- Incandescence - Greg Egan, good, characteristically slightly difficult to read.
+- Hyperion — Dan Simmons: ok but don't understand _the hype_.
+- The Algebraist — Iain M. Banks: Good, better even than most of the culture novels I would say.
+- Project Hail Mary — Andy Weir: Read the whole thing in one sitting on an Aeroplane. Good.
