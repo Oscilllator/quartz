@@ -11,6 +11,14 @@ One of those books that I think would have had a much larger impact if I had rea
 Top tier classic, everyone seems to have read it by now. It updated me in the direction that unions can be quite effective. They did a great job of delaying the rollout of containers. Hearing the shenanigans going on in the port of LA, I am not surprised thanks to having read this.
 # The dark forest
 I now believe we should stop all radio emissions from earth. I'm serious.
+# Children of time (and sequels)
+Top quality science fiction of the kind that you still think about every now and again. There's much to be done in the world of octopus augmentation.
+# The mote in gods eye
+Even better than the children of time series, one of my all-time favourites. Read it a couple of times.
+# Marooned in Realtime
+Excellent book and series, the best book I've read for inducing an emotional reaction of just how long time can be. And I've read Diaspora.
+# Cryptonomicon
+I read this a long time ago and remember it was excellent, I should read it again
 # Most secret war
 Top tier book. This is the kind of book that I wish more existed of - it is not a textbook, but neither is it a narrative of a series of events devoid of detail. If one wishes to learn about putting antireflective IR coatings on submarines to fool IR sensors during WWII, or how the progress of the V-1 bomb program was tracked, and how preparations were made for their arrival prior to any actually being launched at london, this is a book to read.
 
@@ -95,3 +103,11 @@ Good series, worth reading, belongs to the genre of yet-another-unspace type spa
 - Hyperion — Dan Simmons: ok but don't understand _the hype_.
 - The Algebraist — Iain M. Banks: Good, better even than most of the culture novels I would say.
 - Project Hail Mary — Andy Weir: Read the whole thing in one sitting on an Aeroplane. Good.
+- Ignition! - Every bit as good as people make it out to be, read it a long time ago downloaded from the sciencemadness forums
+- Dark Sun - Good book, but not as engaging as Making of the Atomic Bomb.
+- Command and control - good book, lots of amusing stories about narrow escapes.
+- The Forever war: good
+- Lucifers hammer: I simply cannot resist post-apocalyptic novels
+- Footfall: Started listening to audiobook but couldn't get into it for some reason
+- Alas, Babylon: Another good one
+- Day of the triffids: wacky, a classic
