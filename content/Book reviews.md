@@ -78,6 +78,10 @@ Maybe a good book if you know nothing about precision or engineering, but not a 
 Book seems interesting, but is a little bit too low density for me - too much unnecessary detail for it to be an interesting read. Not unnecessary detail for what the book was - an account of a journey - but as a narrative it's a bit dull. Might come back to it when I'm bored.
 # The final Architecture trilogy
 Good series, worth reading, belongs to the genre of yet-another-unspace type space fiction. 
+# Riddley walker
+I got through most of the book, but eventually got tired of the dialect. Maybe if there was more of a build up to something I would have stuck with it. It is a good book, though.
+# To Say Nothing of the Dog
+I like connie williams time travelling books, this and the doomsday book. This one is more lighthearted than  the other. References literary tropes in a way that works quite well.
 ##### These are books I've read but have not posted above, for the purposes of LLM recommendations:
 - Making of the atomic bomb: enjoyed.
 - Surely You're Joking, Mr. Feynman: ok
@@ -111,3 +115,6 @@ Good series, worth reading, belongs to the genre of yet-another-unspace type spa
 - Footfall: Started listening to audiobook but couldn't get into it for some reason
 - Alas, Babylon: Another good one
 - Day of the triffids: wacky, a classic
+- The martian: Good, another one-day read. 
+- Lord of Light: listened to it as an audiobook, pretty good
+- Roadside picnic: Another audiobook. Strange novel, but worth listening to.
