@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heise — A Contribution to the Further Development of Pulsejet Engines (1973)</title>
+<style>
+  :root{
+    --paper:#f6f1e2;
+    --paper-edge:#e8e0cb;
+    --ink:#1d1a14;
+    --ink-soft:#4a4436;
+    --rule:#2a251c;
+    --serif: "Palatino Linotype","Book Antiqua",Palatino,"URW Palladio L",Georgia,serif;
+    --sans: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:2rem 1rem 5rem;
+    background:#6d6a60;
+    font-family:var(--serif);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---- paper sheets ---------------------------------------------- */
+  .sheet{
+    width:min(100%, 940px);
+    margin:0 auto 2rem;
+    background:var(--paper);
+    padding:46px 54px 56px;
+    box-shadow:0 2px 14px rgba(0,0,0,.35);
+    border:1px solid var(--paper-edge);
+  }
+  .runhead{
+    display:flex; align-items:baseline; gap:1em;
+    font-family:var(--sans); font-size:11.5px;
+    padding-bottom:4px; margin-bottom:22px;
+    border-bottom:1.6px solid var(--rule);
+  }
+  .runhead .folio{font-weight:700}
+  .runhead .cite{font-weight:700; letter-spacing:-.1px}
+  .runhead .art{font-family:var(--serif); font-style:italic; font-size:13px}
+  .runhead .art b{font-style:italic; font-weight:400}
+  .runhead .sp{flex:1}
+  .runhead.right{text-align:right}
+
+  /* ---- two-column body ------------------------------------------- */
+  .cols{ column-count:2; column-gap:30px; column-rule:none; }
+  .cols > *{ break-inside:avoid-column; }
+  .cols > p{ break-inside:auto; }
+  p{
+    margin:0 0 .62em; font-size:15px; line-height:1.36;
+    text-align:justify; hyphens:auto;
+  }
+  p + p{ text-indent:0; }
+  h2{
+    font-family:var(--sans); font-size:14px; font-weight:700;
+    margin:1.25em 0 .55em; break-after:avoid-column;
+  }
+  h2:first-child{margin-top:0}
+  h3{
+    font-family:var(--sans); font-size:13.5px; font-weight:400;
+    letter-spacing:1.6px;
+    margin:1.1em 0 .5em; break-after:avoid-column;
+  }
+  i,em{font-style:italic}
+
+  /* ---- article opener -------------------------------------------- */
+  .masthead{ margin-bottom:26px; position:relative; }
+  .masthead h1{
+    font-family:var(--sans); font-weight:700; font-size:27px;
+    letter-spacing:1.2px; margin:0 0 10px;
+  }
+  .masthead .org{
+    font-family:var(--sans); font-size:12.5px; letter-spacing:1.4px;
+    line-height:1.75; color:var(--ink);
+  }
+  .masthead .org .sm{font-size:10.5px; letter-spacing:1.2px}
+  .masthead .issue{
+    display:flex; font-family:var(--sans); font-size:13px;
+    letter-spacing:.6px; margin-top:14px; padding-top:7px;
+    border-top:1.6px solid var(--rule);
+  }
+  .masthead .issue .mid{flex:1; text-align:center; letter-spacing:2.4px}
+  .zfw{
+    position:absolute; top:-4px; right:0;
+    font-family:var(--serif); font-style:italic; font-weight:700;
+    font-size:58px; letter-spacing:-6px; color:var(--ink);
+    opacity:.85; line-height:1;
+  }
+  .byline{
+    display:flex; align-items:baseline; margin:38px 0 14px;
+    font-size:16px; font-style:italic; letter-spacing:.6px;
+  }
+  .byline .dk{
+    margin-left:auto; font-style:normal; font-family:var(--serif);
+    font-size:14.5px; letter-spacing:.3px;
+  }
+  .title{
+    font-family:var(--sans); font-weight:700; font-size:21px;
+    margin:0 0 22px; line-height:1.25;
+  }
+  .abstract{
+    margin:0 0 8px 8%;
+    font-style:italic; font-size:14.5px; line-height:1.45; text-align:justify;
+  }
+  .abstract p{font-style:italic; font-size:14.5px; text-align:justify; margin-bottom:.7em}
+  .abstract .lbl{font-style:italic}
+
+  .footnotes{
+    margin-top:26px; padding-top:6px; font-size:12.5px; line-height:1.35;
+  }
+  .footnotes:before{
+    content:""; display:block; width:150px; height:0;
+    border-top:1.6px solid var(--rule); margin-bottom:7px;
+  }
+  .footnotes p{font-size:12.5px; margin-bottom:.3em; text-align:left}
+
+  /* ---- figures ---------------------------------------------------- */
+  figure{ margin:1.1em 0 1.2em; break-inside:avoid-column; }
+  figure img{
+    display:block; width:100%; height:auto;
+    mix-blend-mode:multiply;
+  }
+  figcaption{
+    font-size:12.5px; line-height:1.32; margin-top:6px; text-align:left;
+  }
+  figcaption .n{font-weight:400}
+  figcaption .sub{display:block; margin-top:.25em}
+  .legend{
+    margin-top:.4em; font-size:12.5px; line-height:1.5;
+    display:grid; grid-template-columns:auto 1fr; gap:0 .7em; align-items:center;
+  }
+  .legend .k{
+    width:64px; height:0; align-self:center;
+    border-top:1.4px solid var(--ink);
+  }
+  .legend .k.dash{border-top-style:dashed; border-top-width:1.6px}
+  .legend .k.dot{border-top-style:dotted; border-top-width:2px}
+  .legend .k.fine{border-top-style:dotted; border-top-width:1px}
+
+  /* ---- nomenclature ---------------------------------------------- */
+  .nom{ font-size:14.5px; line-height:1.42; }
+  .nom dl{ display:grid; grid-template-columns:3.1em 4.4em 1fr; gap:0 .3em; margin:0; }
+  .nom dt{ font-style:italic; }
+  .nom .u{ font-size:12px; color:var(--ink-soft); font-style:normal; padding-top:.15em; }
+  .nom dd{ margin:0 0 .12em; }
+
+  /* ---- table 1 ---------------------------------------------------- */
+  .tab{ font-size:12.5px; break-inside:avoid-column; margin:1em 0 1.2em; }
+  .tab .cap{ font-size:12.5px; line-height:1.32; margin-bottom:.5em; }
+  .tab .cap i{font-style:italic}
+  table{ border-collapse:collapse; width:100%; }
+  table th, table td{
+    border:.7px solid var(--rule); padding:3px 5px;
+    text-align:left; vertical-align:middle; line-height:1.22;
+  }
+  table th{ font-weight:400; text-align:center; }
+  table td.num{ text-align:center; width:2.1em; }
+  table td.grp{
+    writing-mode:vertical-rl; transform:rotate(180deg);
+    text-align:center; width:1.6em; padding:5px 2px; white-space:nowrap;
+  }
+
+  /* ---- equations -------------------------------------------------- */
+  .eq{
+    display:grid; grid-template-columns:2.6em 1fr;
+    align-items:center; margin:.85em 0 .95em;
+    font-size:15px; break-inside:avoid-column;
+  }
+  .eq .tag{font-size:14px}
+  .eq .body{text-align:center; font-style:italic;}
+  .frac{
+    display:inline-flex; flex-direction:column; text-align:center;
+    vertical-align:middle; margin:0 .18em;
+  }
+  .frac > span:first-child{ border-bottom:1px solid currentColor; padding:0 .3em .06em; }
+  .frac > span:last-child{ padding:.06em .3em 0; }
+  .intg{
+    display:inline-flex; flex-direction:column; align-items:center;
+    vertical-align:middle; font-style:normal; margin:0 .15em;
+  }
+  .intg .s{font-size:2.15em; line-height:.75; font-family:var(--serif);}
+  .intg .hi,.intg .lo{font-size:.62em; font-style:italic; line-height:1}
+  sub,sup{font-size:.68em; line-height:0}
+  .rm{font-style:normal}
+  .paren{
+    display:inline-flex; align-items:center; vertical-align:middle;
+  }
+  .paren > .g{ font-size:2.1em; font-style:normal; line-height:.7; font-weight:300; }
+  .brk{
+    display:inline-flex; align-items:center; vertical-align:middle;
+  }
+  .brk > .g{ font-size:2.6em; font-style:normal; line-height:.62; font-weight:300; }
+
+  /* ---- editorial ------------------------------------------------- */
+  .ednote{
+    width:min(100%,940px); margin:0 auto 2rem;
+    background:#efe9d8; border-left:4px solid #8a7f5f;
+    padding:16px 22px; font-size:13.5px; line-height:1.45; color:var(--ink-soft);
+  }
+  .ednote h4{
+    font-family:var(--sans); font-size:12px; letter-spacing:1.4px;
+    text-transform:uppercase; margin:0 0 .55em; color:#6d6244;
+  }
+  .ednote p{font-size:13.5px; text-align:left; margin-bottom:.5em}
+  .ednote a{color:#5a5138}
+  .ed{ font-style:normal; color:var(--ink-soft); }
+
+  .refs{ font-size:13px; line-height:1.34; }
+  .refs ol{ margin:0; padding:0; list-style:none; counter-reset:r; }
+  .refs li{
+    margin:0 0 .5em; padding-left:2.2em; text-indent:-2.2em;
+    text-align:justify; hyphens:auto;
+  }
+  .refs .gl{ font-size:.88em; color:var(--ink-soft); font-style:italic; }
+  .received{ text-align:center; font-size:13px; margin-top:1.4em; }
+
+
+  @media (max-width:760px){
+    body{padding:.8rem .5rem 3rem}
+    .sheet{padding:24px 20px 30px}
+    .cols{column-count:1}
+    .zfw{font-size:40px}
+    .abstract{margin-left:0}
+  }
+  @media print{
+    body{background:#fff; padding:0}
+    .sheet{box-shadow:none; border:0; margin:0; width:100%}
+    .ednote{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="ednote">
+  <h4>About this document</h4>
+  <p>English translation and re-typesetting of <i>Georg Heise, „Ein Beitrag zur Weiterentwicklung von
+  Pulsationstriebwerken“, Zeitschrift für Flugwissenschaften <b>21</b> (1973), Heft 6, pp. 189–195</i>,
+  OCR'd from a scan of the printed journal. The original layout, figure placement and running heads are
+  reproduced; all nine figures and the oscillogram are cropped from the scan at its native 300 dpi and are
+  otherwise unretouched, so their axis labels remain in German — German words appearing inside a figure are
+  glossed in its caption. Equations, the nomenclature and Table 1 have been re-typeset.
+  Editorial additions by the translator are marked <span class="ed">[like this]</span>.</p>
+</div>
+
+<!-- ============================== p. 189 ============================== -->
+<section class="sheet">
+
+  <div class="masthead">
+    <div class="zfw">ƶſw</div>
+    <h1>ZEITSCHRIFT FÜR FLUGWISSENSCHAFTEN</h1>
+    <div class="org">
+      <div class="sm">JOURNAL OF AERONAUTICAL SCIENCES</div>
+      <div class="sm">ORGAN OF THE</div>
+      <div>GERMAN SOCIETY FOR AIR AND SPACE TRAVEL (DGLR)</div>
+      <div class="sm">AND OF THE</div>
+      <div>GERMAN RESEARCH AND TEST ESTABLISHMENT</div>
+      <div>FOR AIR AND SPACE TRAVEL (DFVLR)</div>
+    </div>
+    <div class="issue">
+      <span>Volume 21, Issue 6</span>
+      <span class="mid">Braunschweig</span>
+      <span>June 1973</span>
+    </div>
+  </div>
+
+  <div class="byline">
+    <span><i>Georg Heise, Langenargen</i> *)</span>
+    <span class="dk">DK 629.7.036.24.001.6</span>
+  </div>
+
+  <h1 class="title">A Contribution to the Further Development of Pulsejet Engines **)</h1>
+
+  <div class="abstract">
+    <p><span class="lbl">Abstract:</span> It is shown that pulse jet engines in the thrust category below
+    500 daN have some advantages over turbojet engines. However, they are no longer used for some time, as
+    the flying speed attainable by these engines does not exceed 800 km/h. This speed limit is due to the
+    interaction between the instationary gas motion and the combustion process. An experimental engine
+    developed on the basis of these considerations is described and the test results obtained in a simulated
+    range of Mach numbers of M<sub>s</sub> = 0 to 1.5 are indicated.
+    <span class="ed">[The author's own English summary, printed in the original alongside German and
+    French versions.]</span></p>
+  </div>
+
+  <div class="cols" style="margin-top:26px">
+
+    <h2>1. Introduction</h2>
+    <p>Pulsejet engines were built in large numbers in Germany during the Second World War and, after 1945,
+    particularly in the USA and France. They were applied mainly in missiles and helicopters. Because they
+    are operable only up to relatively low flight speeds, however, they have long since ceased to be in
+    demand as a propulsion unit. The operating limit lay at at most 800 km/h for the V 1 engine [1], and
+    considerably lower still for the tubes with aerodynamic valves developed by SNECMA [2]. In view of the
+    numerous advantages over other propulsion systems it nevertheless seemed worthwhile to analyse the
+    causes of this operating limit for once, and to examine possible countermeasures in theoretical and
+    experimental work. On the basis of this work an experimental engine was developed which differs from
+    conventional pulsejet engines only in its geometric layout, but which is operable from static conditions
+    into the supersonic range. The measured performance data of this experimental engine make further
+    development into an operational propulsion system appear promising. The pulsejet engine could thus
+    become attractive again, in particular for use in smaller aircraft.</p>
+
+    <h2>2. Nomenclature</h2>
+    <div class="nom">
+      <dl>
+        <dt>A<sub>R</sub></dt><dd class="u">[m²]</dd><dd>cross-sectional area of the cylindrical engine</dd>
+        <dt>A<sub>V</sub></dt><dd class="u">[m²]</dd><dd>free opening cross-section of the valve</dd>
+        <dt>a<sub>D</sub></dt><dd class="u">[–]</dd><dd>nozzle area of the back-pressure section, referred to
+          the exit cross-section of the base engine</dd>
+        <dt>b<sub>F</sub></dt><dd class="u">[kg/daN·h]</dd><dd>specific fuel consumption</dd>
+        <dt>D<sub>B</sub></dt><dd class="u">[mm]</dd><dd>bore of the injection nozzles</dd>
+        <dt>F</dt><dd class="u">[daN]</dd><dd>thrust</dd>
+        <dt>κ</dt><dd class="u">[–]</dd><dd>ratio of the specific heats</dd>
+        <dt>M<sub>s</sub></dt><dd class="u">[–]</dd><dd>simulated flight <i>Mach</i> number</dd>
+        <dt>ṁ</dt><dd class="u">[kg/s]</dd><dd>mass flow rate</dd>
+        <dt>p</dt><dd class="u">[N/m²]</dd><dd>pressure</dd>
+        <dt>p<sub>∞</sub></dt><dd class="u">[N/m²]</dd><dd>ambient pressure</dd>
+        <dt>q</dt><dd class="u">[J/kg]</dd><dd>heat added per unit mass</dd>
+        <dt>R</dt><dd class="u">[J/kg·K]</dd><dd>gas constant</dd>
+        <dt>T</dt><dd class="u">[K]</dd><dd>temperature</dd>
+        <dt>T<sub>E</sub></dt><dd class="u">[K]</dd><dd>temperature of the supplied air</dd>
+        <dt>t</dt><dd class="u">[s]</dd><dd>time</dd>
+        <dt>t<sub>P</sub></dt><dd class="u">[s]</dd><dd>period time</dd>
+        <dt>X</dt><dd class="u">[–]</dd><dd>dimensionless distance</dd>
+        <dt>Z</dt><dd class="u">[–]</dd><dd>dimensionless time</dd>
+      </dl>
+      <p style="font-size:12.5px;margin-top:.6em" class="ed">[Units in brackets are an editorial addition;
+      the original nomenclature lists symbols and meanings only. κ is printed as ϰ in the original.]</p>
+    </div>
+
+    <h2>3. Comparison with Turbojet Engines</h2>
+    <p>Pulsejet engines are distinguished by an extremely simple construction. They are therefore cheap to
+    buy, easy to operate, virtually maintenance-free, and have a high thrust-to-weight ratio. On account of
+    their very stable mode of operation they can be throttled over wide limits (control range up to 1 : 7)
+    and are insensitive to strong longitudinal and transverse accelerations. Since no rotating parts are
+    present, the starting process takes only about 1 sec and traversing the whole control range about 2 sec.
+    With turbojet engines these times are many times greater. Insensitivity to the type of fuel used [3]
+    should likewise be emphasised as an advantage.</p>
+  </div>
+
+  <div class="footnotes">
+    <p>*) Dornier AG, Test Division (Director: Dr. C. J. <i>Winter</i>).</p>
+    <p>**) The theoretical and experimental investigations described in this work were financially supported
+    by the Federal Ministry of Defence.</p>
+  </div>
+</section>
+
+<!-- ============================== p. 190 ============================== -->
+<section class="sheet">
+  <div class="runhead">
+    <span class="folio">190</span>
+    <span class="art"><i>G. Heise</i>, Further Development of Pulsejet Engines</span>
+    <span class="sp"></span>
+    <span class="cite">Z. Flugwiss. 21 (1973), Issue 6</span>
+  </div>
+
+  <div class="cols">
+    <p>The overhaul interval is, in the case of mechanical valves, set by their durability. Whereas the
+    spring flaps of the V 1 engine were already largely destroyed after a flight time of about 0.5 h [4], a
+    durability of 200 h was later achieved in the USA by sandwich construction [5]. For application in
+    expendable missiles, however, simple valves of correspondingly lower durability will suffice. In these
+    and similar cases the service life of a turbojet engine often bears no relation to the required operating
+    time.</p>
+
+    <p>Table 1 assembles some turbojet and pulsejet engines which are compared with one another in Fig. 1
+    with respect to frontal-area thrust and specific consumption. Turbojet engines of the lower thrust class
+    were considered, which are at present used in missiles or are envisaged for such an application. The
+    pulsejet engines are exclusively tubes with mechanical valves from the period 1940 to 1955. As Fig. 1
+    shows, the frontal-area thrust of pulsejet engines is markedly higher, while turbojet engines have a more
+    favourable specific consumption. The engine listed under No. 8, however, shows that an acceptable
+    consumption can be achieved with a pulsejet engine as well.</p>
+
+    <div class="tab">
+      <div class="cap"><i>Table</i> 1. &nbsp;Compilation of the turbojet and pulsejet engines compared in
+      Fig. 1</div>
+      <table>
+        <thead>
+          <tr><th></th><th>No.</th><th>Manufacturer</th><th>Designation</th><th>Application</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="grp" rowspan="7">Turbojet engines</td><td class="num">1</td><td>Rover</td><td>TJ 125</td><td>Epervier X–4 (reconnaissance drone)</td></tr>
+          <tr><td class="num">2</td><td>Dreher</td><td>TJD–79 A</td><td>Sailplanes, intended for drones</td></tr>
+          <tr><td class="num">3</td><td>Williams</td><td>WR 24–6</td><td>NV–105 Chukar (target drone)</td></tr>
+          <tr><td class="num">4</td><td>Microturbo</td><td>Eclair</td><td>Sailplanes</td></tr>
+          <tr><td class="num">5</td><td>SERMEL</td><td>TRS 12</td><td>none as yet</td></tr>
+          <tr><td class="num">6</td><td>SERMEL</td><td>TRS 18</td><td>none as yet</td></tr>
+          <tr><td class="num">7</td><td>Turboméca</td><td>Marboré VI</td><td>Nord M. 20 (target drone)</td></tr>
+          <tr><td class="grp" rowspan="9">Pulsejet engines</td><td class="num">8</td><td>Saunders Roe</td><td>PJ 1</td><td>Helicopter</td></tr>
+          <tr><td class="num">9</td><td>NACA</td><td>—</td><td>Helicopter</td></tr>
+          <tr><td class="num">10</td><td>American Helicopter Co.</td><td>AJ–8–75 C</td><td>Helicopter</td></tr>
+          <tr><td class="num">11</td><td>McDonnel</td><td>10–50001</td><td>KDD–1 (target drone)</td></tr>
+          <tr><td class="num">12</td><td>McDonnel</td><td>J 12</td><td>Experimental engine</td></tr>
+          <tr><td class="num">13</td><td>McDonnel</td><td>J 9</td><td>Experimental engine</td></tr>
+          <tr><td class="num">14</td><td>Arsenal</td><td>Pulso-réacteur</td><td>Target drone</td></tr>
+          <tr><td class="num">15</td><td>P. Schmidt</td><td>Sr 500</td><td>Experimental engine</td></tr>
+          <tr><td class="num">16</td><td>P. Schmidt</td><td>Sr 565</td><td>Experimental engine</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <img src="figures/fig1.png" alt="Two stacked graphs: specific consumption b_F and frontal-area thrust F_S against maximum engine diameter D_max, with hatched bands for turbojets and pulsejets.">
+      <figcaption>
+        <span class="n"><i>Fig.</i> 1. &nbsp;Comparison of turbojet and pulsejet engines</span>
+        <span class="sub">Specific consumption <i>b<sub>F</sub></i> and frontal-area thrust
+        <i>F<sub>S</sub></i> as a function of the maximum engine diameter <i>D</i><sub>max</sub>
+        (static sea-level case)</span>
+        <span class="sub">○ &nbsp;Turbojet engines, &nbsp;&nbsp; ▽ &nbsp;Pulsejet engines</span>
+      </figcaption>
+    </figure>
+
+    <p>Very good specific consumptions can be attained with the use of aerodynamic valves. With the
+    “Ecrevisse” developed by SNECMA a value of 1.45 kg/daN·h was reached [2], which could later be improved
+    to 0.85 kg/daN·h in the USA [6]. Tubes with aerodynamic valves have not been considered here, however,
+    since they deliver high static thrusts only in a form bent through 180°. This, however, results on the
+    one hand in a large frontal area and on the other in a strong reduction of the attainable flight
+    speed [2].</p>
+
+    <h2>4. Theoretical Fundamentals</h2>
+    <h3>4.1 Wave and Gas Motion</h3>
+    <p>The unsteady flow processes in pulsejet engines can be calculated with the aid of the graphical method
+    of characteristics [7, 8]. Fig. 2 shows the result of such a calculation in a time–distance diagram
+    (dimensionless time <i>Z</i>, dimensionless distance <i>X</i>, the distance <i>x</i> having been made
+    dimensionless with the tube length <i>L</i> and the time <i>t</i> with the time for the first period
+    <i>t</i><sub>P1</sub>). As is evident from the diagram, finite combustion times and the temperature
+    discontinuities occurring at the two inflow regions were taken into account.</p>
+
+    <p>The processes are to be triggered at the instant <i>Z</i> = 0 by a single external ignition. The
+    pressure rise on combustion causes a pressure wave <i>a</i><sub>1</sub> to run towards the open tube end,
+    and a corresponding rarefaction wave to run towards the valve, where it is in turn reflected as
+    rarefaction wave <i>b</i><sub>1</sub>.</p>
+  </div>
+</section>
+
+<!-- ============================== p. 191 ============================== -->
+<section class="sheet">
+  <div class="runhead">
+    <span class="cite">Z. Flugwiss. 21 (1973), Issue 6</span>
+    <span class="art"><i>G. Heise</i>, Further Development of Pulsejet Engines</span>
+    <span class="sp"></span>
+    <span class="folio">191</span>
+  </div>
+
+  <div class="cols">
+    <figure>
+      <img src="figures/fig2.png" alt="Wave diagram: dimensionless time Z against dimensionless distance X, showing compression waves a, b, d, rarefaction waves c, e, particle paths and contact surfaces over three cycles; below, a schematic of the tube with the valve at the left end and length L.">
+      <figcaption>
+        <span class="n"><i>Fig.</i> 2. &nbsp;Wave and gas motion in the pulsejet engine</span>
+        <span class="ed" style="display:block;margin-top:.25em">[In the tube schematic, <i>Ventil</i> =
+        valve; <i>L</i> = tube length.]</span>
+        <span class="legend">
+          <span class="k"></span><span>compression wave,</span>
+          <span class="k dash"></span><span>rarefaction wave,</span>
+          <span class="k dot"></span><span>path of a gas particle,</span>
+          <span class="k fine"></span><span>temperature discontinuity</span>
+        </span>
+      </figcaption>
+    </figure>
+
+    <p>Wave <i>a</i><sub>1</sub> initiates the outflow process at the open tube end and is in doing so
+    totally reflected as rarefaction wave <i>c</i><sub>1</sub>. Wave <i>b</i><sub>1</sub> terminates the
+    outflow process. It is totally reflected as compression wave <i>d</i><sub>1</sub>, which steepens
+    strongly during its run towards the valve. Wave <i>c</i><sub>1</sub> produces a negative pressure at the
+    valve, so that the latter opens and fresh mixture flows in. This process can be recognised from the
+    dotted particle path. Wave <i>d</i><sub>1</sub> decelerates the inflowing mixture so strongly that a
+    precompression to about ambient pressure takes place. At the same time the self-ignition described in
+    more detail below sets in, so that a new pressure wave <i>a</i><sub>2</sub> is formed and the processes
+    repeat in the same form.</p>
+
+    <p>The rarefaction wave <i>c</i><sub>1</sub> is reflected partly at the contact surface between the
+    inflowing mixture and the hot gas, and partly at the valve as rarefaction wave <i>e</i><sub>1</sub>.
+    Wave <i>e</i><sub>1</sub> likewise produces an intake process at the open tube end, so that a second
+    contact surface arises there. At this surface the compression wave <i>a</i><sub>2</sub> is partially
+    reflected as compression wave <i>c</i><sub>2</sub>′, whereby the characteristic second pressure peak
+    (here at <i>Z</i> = 1.55; see also Fig. 4) is formed.</p>
+
+    <p>The back-suction process occurring at the tube end produces a negative thrust component. The total
+    thrust thus follows from the time-varying momenta of the outflowing and inflowing gas masses, a positive
+    mean value being obtained by integration. As regards the pulsejet engine, however, it is simpler to
+    understand the thrust as the sum of those pressure and friction forces which are transmitted from the
+    internal flow to the engine. For a cylindrical tube the static thrust <i>F</i><sub>0</sub> is then
+    obtained, neglecting friction and the pressure fluctuations upstream of the valve, as</p>
+
+    <div class="eq">
+      <span class="tag">(1)</span>
+      <span class="body">
+        F<sub>0</sub> =
+        <span class="frac"><span>1</span><span>t<sub>P</sub></span></span>
+        <span class="intg"><span class="hi">t<sub>P</sub></span><span class="s">∫</span><span class="lo">0</span></span>
+        [p (t) − p<sub>∞</sub>] A (t) dt .
+      </span>
+    </div>
+
+    <p>Here <i>p</i>(<i>t</i>) is the pressure history in the combustion chamber, which can be calculated by
+    means of the method of characteristics. For a constant valve opening cross-section <i>A</i>(<i>t</i>)
+    becomes a rectangular function satisfying the conditions <i>A</i>(<i>t</i>) = <i>A<sub>R</sub></i> for
+    <i>p</i>(<i>t</i>) ≧ <i>p</i><sub>∞</sub> and <i>A</i>(<i>t</i>) = <i>A<sub>R</sub></i> −
+    <i>A<sub>V</sub></i> for <i>p</i>(<i>t</i>) &lt; <i>p</i><sub>∞</sub>. The negative thrust component thus
+    depends on the free opening cross-section of the valve. It could be avoided entirely if the valve, in the
+    opened state, released the whole tube cross-section. In that case the back-suction no longer occurs,
+    since wave <i>c</i><sub>1</sub> would then be reflected with opposite sense, that is, as a compression
+    wave. As will be shown later, however, it is precisely the back-suction that is an important criterion
+    for the functioning of these engines.</p>
+
+    <p>For a cylindrical pulsejet engine with an aerodynamic valve, Eq. (1) simplifies to</p>
+
+    <div class="eq">
+      <span class="tag">(2)</span>
+      <span class="body">
+        F<sub>0</sub> =
+        <span class="frac"><span>A<sub>R</sub> − A<sub>V</sub></span><span>t<sub>P</sub></span></span>
+        <span class="intg"><span class="hi">t<sub>P</sub></span><span class="s">∫</span><span class="lo">0</span></span>
+        [p (t) − p<sub>∞</sub>] dt .
+      </span>
+    </div>
+
+    <p>The thrust is here considerably smaller than with the use of mechanical valves, since the overpressure
+    can be supported only on the area <i>A<sub>R</sub></i> − <i>A<sub>V</sub></i>. It cannot yet be decided,
+    however, which type of valve is the more advantageous for a supersonic pulsejet engine.</p>
+
+    <p>Fig. 3 shows the pressure histories measured with quartz transducers at three different stations of
+    the tube, and the valve motion recorded with a photodiode. The pressure histories at the stations
+    <i>X</i> = 0 and <i>X</i> = 0.9 are presented in Fig. 4 together with the pressure histories calculated
+    from Fig. 2 for the same <i>X</i>-sections. Since the ambient pressure superimposed for <i>X</i> = 0 in
+    Fig. 3 evidently lies too high, it was corrected on transfer to Fig. 4 in accordance with the ambient
+    pressure at <i>X</i> = 0.1. Between calculated and measured pressure history a very good agreement is
+    obtained for <i>X</i> = 0.9, whereas for <i>X</i> = 0 the calculated expansion process proceeds somewhat
+    too rapidly and the amplitude of the intake wave becomes too large on account of the friction that was
+    not taken into account.</p>
+  </div>
+</section>
+
+<!-- ============================== p. 192 ============================== -->
+<section class="sheet">
+  <div class="runhead">
+    <span class="folio">192</span>
+    <span class="art"><i>G. Heise</i>, Further Development of Pulsejet Engines</span>
+    <span class="sp"></span>
+    <span class="cite">Z. Flugwiss. 21 (1973), Issue 6</span>
+  </div>
+
+  <div class="cols">
+    <figure>
+      <img src="figures/fig3.png" alt="Oscillogram: four bright traces on a dark grid showing pressure histories at three tube stations and the valve motion over roughly two cycles.">
+      <figcaption>
+        <span class="n"><i>Fig.</i> 3. &nbsp;Pressure history at the stations <i>X</i> = 0.9, 0.1, 0 and
+        valve motion (from top to bottom)</span>
+        <span class="sub">Pressure scale: &nbsp;0.5 · 10<sup>5</sup> N/m² per grid unit</span>
+        <span class="sub">Time scale: &nbsp;2 msec per grid unit</span>
+      </figcaption>
+    </figure>
+
+    <h3>4.2 Ignition Process</h3>
+    <p>As can be recognised from measured pressure histories (e.g. Fig. 3, or very clearly in [9], Fig. 12),
+    combustion begins after the compression wave <i>d</i> has passed through the mixture. This wave must
+    therefore have an essential part in the ignition process. It cannot, however, bring it about directly,
+    since its amplitude of about 0.3 · 10<sup>5</sup> N/m² is by no means sufficient to compress the mixture
+    to self-ignition. (As tests have shown, even with shock-wave ignition the temperatures behind the shock
+    must be at least equal to the ignition temperatures determined by other means [8].) Only an ignition by
+    heat conduction and diffusion can therefore be present.</p>
+
+    <p>This raises the question of the ignition sources. One might at first suspect an axial through-ignition
+    which sets in at the contact surface between mixture and hot gas and then propagates towards the valve.
+    A simple consideration shows, however, that this is not the case. Within one period only a very limited
+    time is available for combustion, since certain times are also required for expansion and for the intake
+    process. In Fig. 2 the combustion time was assumed to be 29 % of the period time, which corresponds to a
+    statistical mean value from measurements of the pressure rise time. The apparent axial combustion
+    velocity following from this value amounts to about 70 m/sec, which is also largely confirmed by tests
+    [10, 11]. In a quiescent petrol–air mixture, however, combustion velocities of 2 to 5 m/sec, and at high
+    turbulence of 20 to 30 m/sec, are measured [12]. An axial through-ignition of the mixture can therefore
+    not be present in pulsating combustion.</p>
+
+    <p>Besides the hot gas at the contact surface, further ignition sources must therefore be present in the
+    combustion chamber. These can only be residual gas particles from the preceding combustion, which
+    maintain themselves there in spite of the high flow velocities. The geometry of combustion chamber, valve
+    and injection system must therefore be so constituted that sufficiently large dead-water regions arise
+    during combustion. If the inflowing mixture is now decelerated almost to standstill by wave <i>d</i>,
+    then the flame front can pass through the mixture at low velocity, since its propagation now takes place
+    essentially radially. This process is significantly supported by the strong turbulence behind wave
+    <i>d</i> [13].</p>
+
+    <figure>
+      <img src="figures/fig4.png" alt="Two stacked plots of pressure ratio against dimensionless time Z from 1.0 to 2.4: upper for station X = 0, lower for X = 0.9; solid line theory, dashed line experiment.">
+      <figcaption>
+        <span class="n"><i>Fig.</i> 4. &nbsp;Pressure history at the stations <i>X</i> = 0 and
+        <i>X</i> = 0.9 calculated from Fig. 2, and comparison with measurements according to Fig. 3</span>
+        <span class="legend" style="margin-top:.35em">
+          <span class="k"></span><span>Theory,</span>
+          <span class="k dash"></span><span>Experiment</span>
+        </span>
+      </figcaption>
+    </figure>
+
+    <h3>4.3 Combustion Pressure</h3>
+    <p>The necessary presence of hot residual gases in the combustion chamber leads to a considerable heating
+    of the inflowing mixture. As tests have shown [11], the length of the mixture column is thereby roughly
+    doubled compared with the value to be expected at ambient temperature, so that the true mixture
+    temperature is likely to lie at 600 K. This high initial temperature has a very unfavourable effect on
+    the combustion pressure. In what follows, the pressures attainable in pulsejet engines are therefore to
+    be estimated.</p>
+
+    <p>It is first assumed that combustion proceeds in infinitely short time, that is, at constant volume.
+    The combustion pressure ratio <i>p</i><sub>1</sub>/<i>p</i><sub>0</sub> then results as a function of the
+    heat added <i>q</i> and the initial temperature <i>T</i><sub>0</sub> as</p>
+
+    <div class="eq">
+      <span class="tag">(3)</span>
+      <span class="body">
+        <span class="paren"><span class="g">(</span>
+          <span class="frac"><span>p<sub>1</sub></span><span>p<sub>0</sub></span></span>
+        <span class="g">)</span></span><sub class="rm">v = const</sub>
+        &nbsp;=&nbsp;
+        <span class="frac"><span>q (κ − 1)</span><span>R T<sub>0</sub></span></span>
+        + 1 .
+      </span>
+    </div>
+
+    <p>Since experience shows that a stoichiometric combustion with an efficiency of 95 % may be assumed in
+    pulsejet engines, one obtains from Eq. (3) for petrol a pressure ratio of 11 and 6 for
+    <i>T</i><sub>0</sub> = 300 and 600 K respectively.</p>
+
+    <p>The amplitude of the pressure wave generated by an infinitely fast combustion can be obtained from the
+    fundamental equations for unsteady flow processes (e.g. [8]) as</p>
+
+    <div class="eq">
+      <span class="tag">(4)</span>
+      <span class="body">
+        <span class="paren"><span class="g">(</span>
+          <span class="frac"><span>p<sub>2</sub></span><span>p<sub>0</sub></span></span>
+        <span class="g">)</span></span><sub class="rm">v = const</sub>
+        &nbsp;=&nbsp;
+        <span class="brk"><span class="g">[</span>
+          <span class="frac">
+            <span>(p<sub>1</sub>/p<sub>0</sub>)<sub class="rm">v = const</sub><sup>(κ − 1)/2κ</sup> + 1</span>
+            <span>2</span>
+          </span>
+        <span class="g">]</span></span><sup>2κ/(κ − 1)</sup>
+      </span>
+    </div>
+
+    <p>where for simplification the same κ value as in Eq. (3) may be inserted, since its influence in Eq. (4)
+    is only slight. As Eq. (4) shows, even with infinitely small combustion time substantially higher
+    pressures occur in the combustion region than in the rest of the tube.</p>
+
+    <p>At finite combustion time a contact surface forms between the burning mixture and the hot residual
+    gases, at which pressure and velocity must be equal on</p>
+  </div>
+</section>
+
+<!-- ============================== p. 193 ============================== -->
+<section class="sheet">
+  <div class="runhead">
+    <span class="cite">Z. Flugwiss. 21 (1973), Issue 6</span>
+    <span class="art"><i>G. Heise</i>, Further Development of Pulsejet Engines</span>
+    <span class="sp"></span>
+    <span class="folio">193</span>
+  </div>
+
+  <div class="cols">
+    <p>both sides. If one now assumes a uniform pressure rise for the whole combustion region, then the
+    maximum pressure in the combustion region becomes equal to the amplitude of that compression wave which
+    is generated by the combustion. This assumption agrees well with measurements of the pressure history at
+    various stations of the tube (e.g. Fig. 3). On the other hand, to generate a pressure wave of amplitude
+    <i>p</i><sub>2</sub>/<i>p</i><sub>0</sub> at finite combustion time, at least as much energy should be
+    required as at infinitely small combustion time. The combustion pressure attainable in pulsejet engines
+    is therefore at most equal to the amplitude of that pressure wave which is generated by a combustion at
+    constant volume. It must therefore hold:</p>
+
+    <div class="eq">
+      <span class="tag">(5)</span>
+      <span class="body">
+        <span class="paren"><span class="g">(</span>
+          <span class="frac"><span>p<sub>1</sub></span><span>p<sub>0</sub></span></span>
+        <span class="g">)</span></span><sub class="rm">v ≠ const</sub>
+        &nbsp;≦&nbsp;
+        <span class="paren"><span class="g">(</span>
+          <span class="frac"><span>p<sub>2</sub></span><span>p<sub>0</sub></span></span>
+        <span class="g">)</span></span><sub class="rm">v = const</sub>
+      </span>
+    </div>
+
+    <p>This yields the combustion pressure ratio maximally attainable at finite combustion time as</p>
+
+    <div class="eq" style="grid-template-columns:2.6em 1fr">
+      <span class="tag">(6)</span>
+      <span class="body">
+        <span class="paren"><span class="g">(</span>
+          <span class="frac"><span>p<sub>1</sub></span><span>p<sub>0</sub></span></span>
+        <span class="g">)</span></span><sub class="rm">max</sub>
+        &nbsp;=&nbsp;
+        <span class="brk"><span class="g">[</span>
+          <span class="frac">
+            <span>[q (κ − 1)/R T<sub>0</sub> + 1]<sup>(κ − 1)/2κ</sup> + 1</span>
+            <span>2</span>
+          </span>
+        <span class="g">]</span></span><sup>2κ/(κ − 1)</sup>
+      </span>
+    </div>
+
+    <p>This relation is shown in Fig. 5 for the initial temperatures <i>T</i><sub>0</sub> = 300 and 600 K.
+    Since with the combustion chamber designs known hitherto a heating to about 600 K is unavoidable, peak
+    pressure ratios substantially above 2.5 are not to be expected in pulsejet engines. This is also
+    confirmed by evaluable oscillograms in the literature, which, depending on the tube form used, show
+    combustion pressure ratios of 1.6 to 2.5 (e.g. [4, 9, 10, 11, 13]).</p>
+
+    <figure>
+      <img src="figures/fig5.png" alt="Plot of maximum combustion pressure ratio against added heat q from 0.2 to 0.4 times 10^7 J/kg, with two rising straight lines for initial temperature 300 K and 600 K and dashed vertical markers for three fuels.">
+      <figcaption>
+        <span class="n"><i>Fig.</i> 5. &nbsp;Combustion pressure ratios attainable at finite combustion time
+        as a function of the heat added <i>q</i> and the initial temperature <i>T</i><sub>0</sub>
+        (stoichiometric combustion)</span>
+        <span class="ed" style="display:block;margin-top:.25em">[The three dashed fuel markers read, from
+        left to right: <i>Kohlenstaub</i> = coal dust, <i>Benzin</i> = petrol, <i>Wasserstoff</i> =
+        hydrogen.]</span>
+      </figcaption>
+    </figure>
+
+    <h2>5. Operating Criteria</h2>
+    <p>The flow processes in pulsejet engines could be regarded in Fig. 2, with sufficient accuracy, as
+    one-dimensional in the mean. For the combustion process this is not correct, since the combustion time is
+    composed of the time for the passage of wave <i>d</i> through the mixture and the time for the radial
+    flame propagation. It is accordingly dependent not only on the length and the temperature of the mixture
+    column, but also on its diameter. If, therefore, at a given tube length the diameter and correspondingly
+    also the valve cross-section of the pulsejet engine are enlarged, then the mixture length and the period
+    time do indeed remain constant, but the combustion time increases. The ratio of tube diameter to mixture
+    diameter must therefore not become too small. The mixture diameter corresponds approximately to the
+    diameter of the orifice plate which is fitted behind the valve and produces the required dead-water
+    regions.</p>
+
+    <p>The length of the mixture column is determined by the pressure ratio prevailing at the valve, the
+    inflow resistance and the mixture temperature. In static operation the pressure ratio follows from the
+    strength of the negative-pressure wave <i>c</i>, which arises by reflection of wave <i>a</i> at the open
+    tube end. If a strong cross-sectional constriction is situated there, then wave <i>c</i> is weakened. If,
+    therefore, a quite definite mixture length is to occur per period, then either a corresponding
+    cross-sectional constriction at the tube end or else a reduction of the inflow resistance, i.e. an
+    enlargement of the free valve cross-section, is required. By a cross-sectional constriction at the open
+    tube end, however, not only the negative-pressure wave <i>c</i> but also the compression wave <i>d</i> is
+    weakened. Since both the strength and the steepness of this wave have a considerable influence on the
+    combustion time, cross-sectional constrictions at the open tube end are fundamentally not advisable. The
+    experimental experience shows that even the slightest constrictions of the tube end lead to considerable
+    thrust losses or have complete failure as a consequence. This yields of necessity the requirement that
+    the inflow process must proceed with a certain minimum resistance, it being immaterial whether this
+    resistance is produced mainly by the valve or, for example, by a flame holder situated in the combustion
+    chamber. This resistance conditions the back-suction at the open tube end.</p>
+
+    <p>From the requirements named it can be recognised why conventional pulsejet engines are operable only
+    up to relatively low flight speeds. While with increasing flight speed the ram pressure bearing on the
+    valve rises strongly, the pressure ratio prevailing at the valve changes only slightly during the intake
+    phase because of the missing nozzle. The pressure ratio prevailing at the valve thus increases, whereby
+    in turn the length of the mixture column drawn in per period grows for so long until the combustion time
+    becomes too large in relation to the period time. The increase of the mixture length manifests itself at
+    first in a slight thrust improvement, which is then followed by a strong thrust drop. Depending on inflow
+    resistance and tube geometry, the engine then extinguishes at a flight speed of 500 to 800 km/h.</p>
+
+    <h2>6. Tests with an Experimental Engine</h2>
+    <p>After the foregoing considerations there are, for overcoming the speed limit, the two possibilities of
+    increasing the inflow resistance with increasing flight speed (or of not letting the full ram pressure
+    act on the valve), or of raising the pressure at the open tube end. The first-</p>
+  </div>
+</section>
+
+<!-- ============================== p. 194 ============================== -->
+<section class="sheet">
+  <div class="runhead">
+    <span class="folio">194</span>
+    <span class="art"><i>G. Heise</i>, Further Development of Pulsejet Engines</span>
+    <span class="sp"></span>
+    <span class="cite">Z. Flugwiss. 21 (1973), Issue 6</span>
+  </div>
+
+  <div class="cols">
+    <figure>
+      <img src="figures/fig6.png" alt="Colour photograph taken in darkness: a cylindrical engine glowing orange along its length, with a blue flame at the valve end and a faint red exhaust plume; the test rig frame glows dull red below.">
+      <figcaption>
+        <span class="n"><i>Fig.</i> 6. &nbsp;Pulsejet engine with back-pressure section during a test
+        run</span>
+      </figcaption>
+    </figure>
+
+    <p>named possibility was already proposed for the V 1 propulsion system [7]. It is, however, easy to see
+    that such an inlet throttling is bound up with a simultaneous thrust reduction. As could be estimated by
+    theoretical considerations, a pressure increase at the open tube end proportional to the ram pressure
+    causes, on the other hand, the net thrust to increase with rising flight <i>Mach</i> number. Such a
+    pressure increase can be achieved only if the tube end is connected to the atmosphere via a nozzle. It is
+    then necessary, on account of the reflection conditions, to interpose between tube end and nozzle a tube
+    of larger diameter, in which, with correctly designed nozzle area, a corresponding back pressure can
+    build up. This tube shall in the following be designated the back-pressure section.</p>
+
+    <p>Fig. 6 shows the engine conceived according to these considerations during a test run. The engine was
+    first tested in the Dornier test facility up to the speed of sound, and later in the compressor centre of
+    the DFVLR at Trauen in the supersonic range. In all tests the flight condition was simulated by the air
+    supply connected to the engine. This took place via two flexible 90° elbows, so that the exit momentum
+    could easily be measured. For the determination of the simulated flight <i>Mach</i> number and of the
+    inlet momentum, the gas condition upstream of the valve and the mass flow upstream of a vessel acting as
+    a damping element were measured. The temperature of the supplied air (<i>T<sub>E</sub></i>) was given by
+    the respective compressor plants used and was not variable, so that with different flight <i>Mach</i>
+    numbers different altitudes were simulated at the same time. <i>T<sub>E</sub></i> = 289 K is thereby no
+    longer realistic for flight <i>Mach</i> numbers <i>M<sub>s</sub></i> ≧ 1.3, since the ambient temperature
+    for altitudes above 11 km remains constant.</p>
+
+    <figure>
+      <img src="figures/fig7.png" alt="Plot of mass flow in kg/sec against simulated flight Mach number M_s from 0 to 1.6, rising from about 0.3 to 2.0 along a shaded band; inset key lists three test configurations.">
+      <figcaption>
+        <span class="n"><i>Fig.</i> 7. &nbsp;Pulsejet engine with back-pressure section</span>
+        <span class="sub">Mass flow as a function of the simulated flight <i>Mach</i> number</span>
+      </figcaption>
+    </figure>
+
+    <p>In Figs. 7 and 8 the measured curves of mass flow and gross thrust (exit momentum) are presented as a
+    function of the simulated flight <i>Mach</i> number. Fig. 9 shows the net thrust history calculated from
+    the measured quantities, together with the measured curve for the same engine without back-pressure
+    section. Whereas the engine without back-pressure section was, as expected, operable only up to
+    <i>M<sub>s</sub></i> = 0.7, with the back-pressure section flight <i>Mach</i> numbers up to
+    <i>M<sub>s</sub></i> = 1.5 could be simulated. Higher values</p>
+
+    <figure>
+      <img src="figures/fig8.png" alt="Plot of gross thrust in daN against simulated flight Mach number M_s from 0 to 1.6, rising steeply from near zero to about 140 daN; inset key lists three test configurations.">
+      <figcaption>
+        <span class="n"><i>Fig.</i> 8. &nbsp;Pulsejet engine with back-pressure section</span>
+        <span class="sub">Gross thrust (exit momentum) as a function of the simulated flight <i>Mach</i>
+        number</span>
+      </figcaption>
+    </figure>
+
+    <p>were unattainable only because of the missing cooling of the engine casing.</p>
+
+    <p>In carrying out the tests it emerged that on setting too lean or too rich a mixture, the flame broke
+    away behind the valve. In these cases a pulsating combustion resulted in the back-pressure section, the
+    thrust still amounting to about 80 % of the thrust in</p>
+
+    <figure>
+      <img src="figures/fig9.png" alt="Plot of net thrust in daN against simulated flight Mach number M_s from 0 to 1.6: curve a with back-pressure section rises to about 60 daN at M_s = 1.5, curve b without back-pressure section peaks near M_s = 0.6 and breaks off before 0.7.">
+        <figcaption>
+        <span class="n"><i>Fig.</i> 9. &nbsp;Net thrust as a function of the simulated flight <i>Mach</i>
+        number</span>
+        <span class="sub">a = pulsejet engine with back-pressure section,</span>
+        <span class="sub">b = pulsejet engine without back-pressure section (base engine to a)</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================== p. 195 ============================== -->
+<section class="sheet">
+  <div class="runhead">
+    <span class="cite">Z. Flugwiss. 21 (1973), Issue 6</span>
+    <span class="art"><i>G. Heise</i>, Further Development of Pulsejet Engines</span>
+    <span class="sp"></span>
+    <span class="folio">195</span>
+  </div>
+
+  <div class="cols">
+    <p>normal operation. With very lean mixture setting a transition from pulsating to continuous operation
+    (ramjet operation) could in some cases also be observed. At the same ram pressure upstream of the valve,
+    that is, the same flight <i>Mach</i> number, the exit momentum then amounted to about 50 % of the exit
+    momentum in pulsating operation. Since the valve is permanently open in this case, the net thrust becomes
+    considerably lower still on account of the higher mass throughput.</p>
+
+    <h2>7. Outlook</h2>
+    <p>With the experimental engine developed at the Dornier company, the experimental proof has been
+    furnished for the first time that the speed limit hitherto present in pulsejet engines can be
+    substantially exceeded, the net thrust rising with increasing flight <i>Mach</i> number. It is the goal
+    of future work to develop, on the basis of the experimental engine, a propulsion system which actually
+    attains in flight the <i>Mach</i> numbers hitherto simulated. The necessary changes will have to relate
+    in particular to the back-pressure section, since in its original form this causes an enlargement of the
+    engine diameter and thus a reduction of the frontal-area thrust.</p>
+
+    <p>This disadvantage could be avoided, for example, by having two base engines lying side by side work on
+    a common back-pressure section. The processes in the base engines would then proceed with a phase shift
+    of 180°, whereby a more uniform inlet and nozzle flow would establish itself. With correct design of the
+    back-pressure section, the extreme noise generation of conventional pulsejet engines could in this way
+    also be reduced to a tolerable level.</p>
+
+    <h2>8. References</h2>
+    <div class="refs">
+      <ol>
+        <li>[1] &nbsp;F. <i>Gosslau</i>: Development of the V–1 pulse jet. In: <i>Th. Benecke</i> and
+        <i>A. W. Quick</i> (eds.): History of German Guided Missiles Development. AGARDograph No. 20.
+        Verlag E. Appelhans &amp; Co., Braunschweig 1957, pp. 400–418.</li>
+
+        <li>[2] &nbsp;R. <i>Marchal</i>: Note sur le développement des pulso-réacteurs sans clapets.
+        Association Technique Maritime et Aéronautique, Session 1963.
+        <span class="gl">[On the development of valveless pulsejets.]</span></li>
+
+        <li>[3] &nbsp;M. W. <i>Thring</i> (ed.): Pulsating Combustion. The Collected Works of F. H. Reynst.
+        Pergamon Press, Oxford/London/New York/Paris 1961.</li>
+
+        <li>[4] &nbsp;L. B. <i>Edelmann</i>: The pulsating jet engine. Its evolution and future prospects.
+        SAE Quart. Trans. <b>1</b> (1947), pp. 204–216.</li>
+
+        <li>[5] &nbsp;W. R. <i>Cunningham</i> and D. V. <i>Liebermann</i>: Rotary wing, tip mounted pulse jet
+        engine structural, noise reduction, valve phasing and electrical analogy investigations. American
+        Helicopter Division, Fairchild Engine and Airplane Corporation, Rep. 194–J–1 (1954).</li>
+
+        <li>[6] &nbsp;R. M. <i>Lockwood</i>: Hiller pulse reactor lift engine. Hiller Aircraft Company,
+        Rep. ARD 308 (1963).</li>
+
+        <li>[7] &nbsp;F. <i>Schultz-Grunow</i>: Gasdynamische Untersuchungen am Verpuffungsstrahlrohr.
+        Deutsche Luftfahrtforschung, FB 2015, Parts 1 and 2 (1943/44).
+        <span class="gl">[Gasdynamic investigations on the deflagration jet tube.]</span></li>
+
+        <li>[8] &nbsp;H. <i>Oertel</i>: Stoßrohre. Springer-Verlag, Vienna/New York 1966.
+        <span class="gl">[Shock tubes.]</span></li>
+
+        <li>[9] &nbsp;P. <i>Schmidt</i>: On the history of development of the Schmidtrohr. In:
+        <i>Th. Benecke</i> and <i>A. W. Quick</i> (eds.): History of German Guided Missiles Development.
+        AGARDograph No. 20. Verlag E. Appelhans &amp; Co., Braunschweig 1957, pp. 375–399.</li>
+
+        <li>[10] &nbsp;F. <i>Staab</i>: Über Strahltriebwerke auf der Grundlage des Schmidtrohres.
+        Z. Flugwiss. <b>2</b> (1954), pp. 129–141.
+        <span class="gl">[On jet engines based on the Schmidt tube.]</span></li>
+
+        <li>[11] &nbsp;F. <i>Staab</i>: Vorgänge in pulsierenden Strahltriebwerken. Z. Flugwiss. <b>5</b>
+        (1957), pp. 77–87.
+        <span class="gl">[Processes in pulsating jet engines.]</span></li>
+
+        <li>[12] &nbsp;F. A. F. <i>Schmidt</i>: Verbrennungskraftmaschinen. Springer-Verlag,
+        Berlin/Heidelberg/New York 1967.
+        <span class="gl">[Internal combustion engines.]</span></li>
+
+        <li>[13] &nbsp;G. <i>Zhuber-Okrog</i>: Über die Wirkungsweise von Schmidt-Rohren. Deutsche Luft- und
+        Raumfahrt, FB 68–49 (1968).
+        <span class="gl">[On the mode of operation of Schmidt tubes.]</span></li>
+      </ol>
+      <p class="received">(Received 17 January 1972)</p>
+    </div>
+  </div>
+</section>
+
+
+</body>
+</html>
