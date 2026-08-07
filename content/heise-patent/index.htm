@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>US 3,678,692 &mdash; Pulsation Power Unit (Heise / Dornier, 1972)</title>
+<style>
+  :root{
+    --paper:#f6f1e2;
+    --paper-edge:#e8e0cb;
+    --ink:#1d1a14;
+    --ink-soft:#4a4436;
+    --rule:#2a251c;
+    --accent:#8c3a12;
+    --accent-soft:#8c3a1220;
+    --serif: "Palatino Linotype","Book Antiqua",Palatino,"URW Palladio L",Georgia,serif;
+    --sans: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:2rem 1rem 5rem;
+    background:#6d6a60;
+    font-family:var(--serif);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    width:min(100%, 940px);
+    margin:0 auto 2rem;
+    background:var(--paper);
+    padding:46px 54px 56px;
+    box-shadow:0 2px 14px rgba(0,0,0,.35);
+    border:1px solid var(--paper-edge);
+  }
+  @media (max-width:640px){ .sheet{padding:28px 20px 34px} }
+
+  /* ---- patent head ------------------------------------------------ */
+  .runhead{
+    display:flex; align-items:baseline; gap:1em;
+    font-family:var(--sans); font-size:11.5px;
+    padding-bottom:4px; margin-bottom:22px;
+    border-bottom:1.6px solid var(--rule);
+  }
+  .runhead .cite{font-weight:700}
+  .runhead .sp{flex:1}
+  .runhead .date{font-family:var(--serif); font-style:italic; font-size:13px}
+
+  h1{
+    font-family:var(--sans); font-weight:700; font-size:27px;
+    letter-spacing:1.2px; margin:0 0 12px; line-height:1.2;
+  }
+  .org{
+    font-family:var(--sans); font-size:12.5px; letter-spacing:.9px;
+    line-height:1.8; color:var(--ink-soft); margin:0;
+  }
+  .org b{color:var(--ink)}
+  .abstract{
+    margin:26px 0 0 6%; font-style:italic; font-size:14.5px;
+    line-height:1.45; text-align:justify;
+  }
+  .abstract .lbl{font-style:italic; font-weight:700}
+
+  h2{
+    font-family:var(--sans); font-size:13.5px; font-weight:400;
+    letter-spacing:1.6px; text-transform:uppercase;
+    margin:0 0 14px; padding-bottom:5px;
+    border-bottom:1.6px solid var(--rule);
+  }
+  .lede{
+    font-family:var(--sans); font-size:12.5px; color:var(--ink-soft);
+    margin:0 0 16px; line-height:1.5;
+  }
+
+  /* ---- figure ------------------------------------------------------ */
+  figure{margin:0}
+  .figbox{position:relative}
+  .figscroll{overflow-x:auto; -webkit-overflow-scrolling:touch;
+              border:1px solid var(--paper-edge); background:#fff}
+  .figinner{position:relative; min-width:720px}
+  .figinner img{display:block; width:100%; height:auto}
+
+  .hot{
+    position:absolute; transform:translate(-50%,-50%);
+    width:32px; height:32px; padding:0; margin:0;
+    border-radius:50%; cursor:help;
+    border:1.5px solid transparent; background:transparent;
+    transition:background .13s ease, border-color .13s ease, transform .13s ease;
+  }
+  .hot:hover, .hot:focus-visible, .hot.on{
+    background:var(--accent-soft); border-color:var(--accent);
+    outline:none; transform:translate(-50%,-50%) scale(1.12);
+  }
+
+  #tip{
+    position:absolute; z-index:20; width:min(350px,78vw);
+    background:var(--paper); color:var(--ink);
+    border:1px solid var(--rule);
+    box-shadow:0 3px 16px rgba(0,0,0,.4);
+    padding:11px 14px 13px;
+    opacity:0; visibility:hidden; transition:opacity .12s ease;
+    pointer-events:none;
+  }
+  #tip.show{opacity:1; visibility:visible}
+  #tip h3{
+    font-family:var(--sans); font-size:12.5px; font-weight:700;
+    letter-spacing:.4px; margin:0 0 6px; color:var(--accent);
+  }
+  #tip h3 b{display:inline-block; min-width:26px; color:var(--ink)}
+  #tip p{margin:0; font-size:13.5px; line-height:1.45; text-align:justify}
+
+  figcaption{
+    font-family:var(--sans); font-size:12px; line-height:1.55;
+    color:var(--ink-soft); margin-top:10px;
+  }
+  figcaption b{color:var(--ink)}
+
+  /* ---- numeral list ------------------------------------------------ */
+  ul.cards{
+    list-style:none; padding:0; margin:0;
+    column-count:2; column-gap:30px;
+  }
+  @media (max-width:700px){ ul.cards{column-count:1} }
+  .card{
+    break-inside:avoid; margin:0 0 14px;
+    border-left:2.5px solid var(--paper-edge); padding-left:11px;
+    transition:border-left-color .13s ease;
+  }
+  .card.on{border-left-color:var(--accent)}
+  .num{
+    font-family:var(--sans); font-weight:700; font-size:13px;
+    color:var(--accent); display:inline-block; min-width:26px;
+  }
+  .name{font-family:var(--sans); font-weight:700; font-size:13px}
+  .card p{margin:.35em 0 0; font-size:13.5px; line-height:1.42; text-align:justify; hyphens:auto}
+
+  .colophon{
+    font-family:var(--sans); font-size:11.5px; line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .colophon:before{
+    content:""; display:block; width:150px; height:0;
+    border-top:1.6px solid var(--rule); margin-bottom:8px;
+  }
+  .colophon a{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="runhead">
+    <span class="cite">UNITED STATES PATENT 3,678,692</span>
+    <span class="sp"></span>
+    <span class="date">Patented July 25, 1972</span>
+  </div>
+
+  <h1>PULSATION POWER UNIT</h1>
+  <p class="org">
+    Inventor: <b>Georg Heise</b>, Ailingen, Germany<br>
+    Assignee: <b>Dornier A.G.</b>, Friedrichshafen/Bodensee, Germany<br>
+    Filed 14 September 1970 &middot; Appl. No. 72,046 &middot; German priority P 19 64 226.3, 22 December 1969<br>
+    Int. Cl. F02k 7/04 &middot; U.S. Cl. 60/247, 60/271 &middot; 8 Claims, 4 Drawing Figures
+  </p>
+
+  <div class="abstract">
+    <p><span class="lbl">Abstract.</span> This invention relates to an improvement in a pulsation power
+    unit comprising an inlet, valve means, injection means, a combustion chamber and a combustion cowl,
+    the improvement comprising additional cowl means of larger diameter at the end of the combustion
+    cowl, said additional cowl means having a variable gas outlet cross-section.</p>
+  </div>
+</div>
+
+<div class="sheet">
+  <h2>Fig. 1 &mdash; annotated</h2>
+  <p class="lede">Cross-sectional view through the power unit. Hover or tap a reference numeral on the
+    drawing to read what the specification says about that part.</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="figscroll"><div class="figinner">
+        <img src="figures/fig1.png"
+             alt="Cross-sectional view of Heise's pulsation power unit, FIG. 1 of US 3,678,692">
+        <button class="hot" data-n="2" style="left:13.1%;top:26.8%" aria-label="2 &mdash; Air inlet"></button>
+        <button class="hot" data-n="4" style="left:17.5%;top:26.8%" aria-label="4 &mdash; Flap valves"></button>
+        <button class="hot" data-n="3" style="left:21.2%;top:26.8%" aria-label="3 &mdash; Injection device"></button>
+        <button class="hot" data-n="1" style="left:23.6%;top:26.8%" aria-label="1 &mdash; Combustion chamber"></button>
+        <button class="hot" data-n="5" style="left:25.4%;top:85.9%" aria-label="5 &mdash; Ignition device"></button>
+        <button class="hot" data-n="6" style="left:50.9%;top:12.0%" aria-label="6 &mdash; Combustion cowl"></button>
+        <button class="hot" data-n="6b" style="left:48.0%;top:31.8%" aria-label="6b &mdash; Cowl centre piece"></button>
+        <button class="hot" data-n="14" style="left:54.9%;top:22.6%" aria-label="14 &mdash; Casing"></button>
+        <button class="hot" data-n="6a" style="left:38.9%;top:86.5%" aria-label="6a &mdash; Transition member"></button>
+        <button class="hot" data-n="15" style="left:51.8%;top:81.4%" aria-label="15 &mdash; Displacing mechanism"></button>
+        <button class="hot" data-n="6c" style="left:64.0%;top:28.6%" aria-label="6c &mdash; Connecting piece"></button>
+        <button class="hot" data-n="10" style="left:64.3%;top:81.2%" aria-label="10 &mdash; Couple"></button>
+        <button class="hot" data-n="13" style="left:72.2%;top:29.6%" aria-label="13 &mdash; Cross-sectional step"></button>
+        <button class="hot" data-n="7" style="left:78.9%;top:28.6%" aria-label="7 &mdash; Widened portion"></button>
+        <button class="hot" data-n="12" style="left:83.3%;top:33.5%" aria-label="12 &mdash; Needle guide"></button>
+        <button class="hot" data-n="11" style="left:80.4%;top:80.8%" aria-label="11 &mdash; Lever"></button>
+        <button class="hot" data-n="8" style="left:90.8%;top:36.2%" aria-label="8 &mdash; Nozzle"></button>
+        <button class="hot" data-n="9" style="left:87.6%;top:81.5%" aria-label="9 &mdash; Jet needle"></button>
+      </div></div>
+      <div id="tip" role="tooltip"><h3></h3><p></p></div>
+    </div>
+    <figcaption>The valveless-end trick: the step <b>13</b>, where the flame tube meets the wider
+      section <b>7</b>, reflects pressure waves as if the tube were still open &mdash; so the engine keeps
+      cycling while ending in a variable nozzle <b>8</b> rather than a bare pipe.</figcaption>
+  </figure>
+</div>
+
+<div class="sheet">
+  <h2>Reference numerals</h2>
+  <ul class="cards">
+      <li class="card" data-n="1"><span class="num">1</span><span class="name">Combustion chamber</span><p>The combustion chamber. Because combustion happens close to the closed valves, it produces a strong shock wave running toward the open cowl end; the wave reflected back from that end reopens the valves. The compression front arriving on the heels of the low-pressure wave re-ignites the mixture against the residual flames still in the chamber, in a period short enough that combustion is very nearly constant-volume.</p></li>
+      <li class="card" data-n="2"><span class="num">2</span><span class="name">Air inlet</span><p>The air inlet, disposed ahead of the combustion chamber 1. Ambient air is drawn in through it each time the shock wave reflected from the cowl end returns as a low-pressure wave and pops the valves open. In the twin-tube embodiment of FIG. 2 a single inlet 2 is common to both combustion cowls, and it is given an elliptical cross-section so the front face of the unit stays as small as possible.</p></li>
+      <li class="card" data-n="3"><span class="num">3</span><span class="name">Injection device</span><p>The fuel injection device, positioned in the centre of the ring of flap valves 4. Fuel is admixed to the incoming air at the same instant the intake occurs, so the charge is already mixed as it enters the combustion chamber.</p></li>
+      <li class="card" data-n="4"><span class="num">4</span><span class="name">Flap valves</span><p>Flap valves between the air inlet 2 and the combustion chamber 1. They are what make the operation pulsating: they open to the low-pressure wave travelling back from the cowl, admit a fresh charge, and are slammed shut again by the following compression wave so that combustion takes place against a closed front end. They are uniformly distributed over the cross-section of the air inlet in the known manner.</p></li>
+      <li class="card" data-n="5"><span class="num">5</span><span class="name">Ignition device</span><p>An ignition device used only for starting the power unit. Once the cycle is self-sustaining the residual flames in the combustion chamber re-ignite each charge. The patent notes it &ldquo;may be disposed at a place not further designated in the drawing.&rdquo;</p></li>
+      <li class="card" data-n="6"><span class="num">6</span><span class="name">Combustion cowl</span><p>The combustion cowl, or flame tube, attached to the rear end of the combustion chamber 1 as its axial extension. It is built from three parts: the transition member 6a, the combustion cowl centre piece 6b and the connecting piece 6c. Its job is to reflect the compression waves discharging from the chamber back with the opposite sign and at sufficient intensity, which is only possible if the tube does not simply end in a taper or a nozzle.</p></li>
+      <li class="card" data-n="6a"><span class="num">6a</span><span class="name">Transition member</span><p>The transition member of the combustion cowl. It compensates for the difference in diameter between the combustion chamber 1 and the narrower combustion cowl centre piece 6b.</p></li>
+      <li class="card" data-n="6b"><span class="num">6b</span><span class="name">Cowl centre piece</span><p>The combustion cowl centre piece &mdash; the constant-diameter middle section of the cowl. Its diameter is slightly smaller than that of the combustion chamber 1. It is this cross-sectional area that the widened portion 7 must roughly double.</p></li>
+      <li class="card" data-n="6c"><span class="num">6c</span><span class="name">Connecting piece</span><p>The connecting piece at the end of the combustion cowl centre piece 6b. It is shaped in a diffuser-like manner and is secured to the widened portion 7.</p></li>
+      <li class="card" data-n="7"><span class="num">7</span><span class="name">Widened portion</span><p>The widened portion &mdash; the additional cowl of larger diameter fitted at the end of the combustion cowl 6, and the improvement the patent claims. Its cross-sectional area is approximately twice that of the combustion cowl centre piece 6b and its length about one-third that of the combustion cowl. Proportioned this way, the waves reflected at the nozzle 8 intensify the processes inside the cowl. Because pressure inside it varies with the dynamic flight pressure once the nozzle chokes, the operation of the flame tube becomes independent of flying speed &mdash; which is what lets the unit work from standstill into the transonic and supersonic range.</p></li>
+      <li class="card" data-n="8"><span class="num">8</span><span class="name">Nozzle</span><p>The nozzle mounted in the gas outlet of the widened portion 7. Its surface extension corresponds approximately to a spherical zone &mdash; in the twin-tube arrangement of FIG. 2 this shape prevents the common nozzle from reacting back onto the two tubes, whose cycles run 180&deg; out of phase and would otherwise have one wave intensified and the other cancelled.</p></li>
+      <li class="card" data-n="9"><span class="num">9</span><span class="name">Jet needle</span><p>The jet needle, or nozzle pin, sitting in the centre of the nozzle 8 and axially displaceable within the guide 12 to vary the final outlet cross-section. Thrust of a pulsation unit first rises with flying speed as the mixture volume grows, then falls off sharply once the nozzle flow becomes critical; the needle is therefore best moved at precisely the moment the mixture volume peaks, and thereafter set according to flight condition and fuel flow so that the volume drawn in per cycle stays at its optimum.</p></li>
+      <li class="card" data-n="10"><span class="num">10</span><span class="name">Couple</span><p>The couple &mdash; the connecting link running forward along the unit that ties the lever 11 to the displacing mechanism 15.</p></li>
+      <li class="card" data-n="11"><span class="num">11</span><span class="name">Lever</span><p>The lever to which the jet needle 9 is hingedly connected at its end; the lever is in turn connected through the couple 10 to the displacing mechanism 15.</p></li>
+      <li class="card" data-n="12"><span class="num">12</span><span class="name">Needle guide</span><p>The guide within which the jet needle 9 is axially displaceable.</p></li>
+      <li class="card" data-n="13"><span class="num">13</span><span class="name">Cross-sectional step</span><p>The cross-sectional jump, or step, at the point where the widened portion 7 joins the connecting piece 6c. This step is the heart of the invention: it reflects the compression waves with the correct sign and at sufficient intensity, so the combustion cowl behaves as though it still had an open end even though the unit as a whole now ends in a nozzle. A low-pressure wave running from the widened portion into the cowl intensifies the shock wave, which is then reflected as a low-pressure wave at this step.</p></li>
+      <li class="card" data-n="14"><span class="num">14</span><span class="name">Casing</span><p>The casing, or fairing, enclosing the entire propulsion unit. In the twin-tube embodiment of FIG. 2 the fairing is matched to the elliptical cross-sections of the air inlet 2 and the widened portion 7; FIGS. 3 and 4 are sections through it showing how it wraps the two flame tubes.</p></li>
+      <li class="card" data-n="15"><span class="num">15</span><span class="name">Displacing mechanism</span><p>The displacing mechanism that drives the jet needle 9, drawn as a hydraulic operating cylinder purely to make the arrangement easy to follow &mdash; the patent is explicit that other displacing mechanisms would serve. In the twin-tube version it sits between the two combustion cowls (in FIG. 1 it is on the underside of the unit), where the needle can be put in direct operative engagement with it and the lever 11 translation eliminated.</p></li>
+  </ul>
+</div>
+
+<div class="sheet">
+  <p class="colophon">
+    Descriptions condensed from the patent specification (columns 1&ndash;4). Drawing reproduced from the
+    USPTO facsimile,
+    <a href="https://patentimages.storage.googleapis.com/c6/47/e0/8ec7183ce39789/US3678692.pdf">US3678692.pdf</a>
+    &mdash; FIG. 1 rotated upright from the drawing sheet. FIGS. 2&ndash;4, which show a twin-tube
+    arrangement firing 180&deg; out of phase into a common nozzle and reuse the same numbering, are not
+    annotated here. See also the
+    <a href="/heise-pulsejet/index.htm">English translation of Heise's 1973 ZFW article</a>.
+  </p>
+</div>
+
+<script>
+var DATA = {"2": {"short": "Air inlet", "text": "The air inlet, disposed ahead of the combustion chamber 1. Ambient air is drawn in through it each time the shock wave reflected from the cowl end returns as a low-pressure wave and pops the valves open. In the twin-tube embodiment of FIG. 2 a single inlet 2 is common to both combustion cowls, and it is given an elliptical cross-section so the front face of the unit stays as small as possible."}, "4": {"short": "Flap valves", "text": "Flap valves between the air inlet 2 and the combustion chamber 1. They are what make the operation pulsating: they open to the low-pressure wave travelling back from the cowl, admit a fresh charge, and are slammed shut again by the following compression wave so that combustion takes place against a closed front end. They are uniformly distributed over the cross-section of the air inlet in the known manner."}, "3": {"short": "Injection device", "text": "The fuel injection device, positioned in the centre of the ring of flap valves 4. Fuel is admixed to the incoming air at the same instant the intake occurs, so the charge is already mixed as it enters the combustion chamber."}, "1": {"short": "Combustion chamber", "text": "The combustion chamber. Because combustion happens close to the closed valves, it produces a strong shock wave running toward the open cowl end; the wave reflected back from that end reopens the valves. The compression front arriving on the heels of the low-pressure wave re-ignites the mixture against the residual flames still in the chamber, in a period short enough that combustion is very nearly constant-volume."}, "5": {"short": "Ignition device", "text": "An ignition device used only for starting the power unit. Once the cycle is self-sustaining the residual flames in the combustion chamber re-ignite each charge. The patent notes it &ldquo;may be disposed at a place not further designated in the drawing.&rdquo;"}, "6": {"short": "Combustion cowl", "text": "The combustion cowl, or flame tube, attached to the rear end of the combustion chamber 1 as its axial extension. It is built from three parts: the transition member 6a, the combustion cowl centre piece 6b and the connecting piece 6c. Its job is to reflect the compression waves discharging from the chamber back with the opposite sign and at sufficient intensity, which is only possible if the tube does not simply end in a taper or a nozzle."}, "6b": {"short": "Cowl centre piece", "text": "The combustion cowl centre piece &mdash; the constant-diameter middle section of the cowl. Its diameter is slightly smaller than that of the combustion chamber 1. It is this cross-sectional area that the widened portion 7 must roughly double."}, "14": {"short": "Casing", "text": "The casing, or fairing, enclosing the entire propulsion unit. In the twin-tube embodiment of FIG. 2 the fairing is matched to the elliptical cross-sections of the air inlet 2 and the widened portion 7; FIGS. 3 and 4 are sections through it showing how it wraps the two flame tubes."}, "6a": {"short": "Transition member", "text": "The transition member of the combustion cowl. It compensates for the difference in diameter between the combustion chamber 1 and the narrower combustion cowl centre piece 6b."}, "15": {"short": "Displacing mechanism", "text": "The displacing mechanism that drives the jet needle 9, drawn as a hydraulic operating cylinder purely to make the arrangement easy to follow &mdash; the patent is explicit that other displacing mechanisms would serve. In the twin-tube version it sits between the two combustion cowls (in FIG. 1 it is on the underside of the unit), where the needle can be put in direct operative engagement with it and the lever 11 translation eliminated."}, "6c": {"short": "Connecting piece", "text": "The connecting piece at the end of the combustion cowl centre piece 6b. It is shaped in a diffuser-like manner and is secured to the widened portion 7."}, "10": {"short": "Couple", "text": "The couple &mdash; the connecting link running forward along the unit that ties the lever 11 to the displacing mechanism 15."}, "13": {"short": "Cross-sectional step", "text": "The cross-sectional jump, or step, at the point where the widened portion 7 joins the connecting piece 6c. This step is the heart of the invention: it reflects the compression waves with the correct sign and at sufficient intensity, so the combustion cowl behaves as though it still had an open end even though the unit as a whole now ends in a nozzle. A low-pressure wave running from the widened portion into the cowl intensifies the shock wave, which is then reflected as a low-pressure wave at this step."}, "7": {"short": "Widened portion", "text": "The widened portion &mdash; the additional cowl of larger diameter fitted at the end of the combustion cowl 6, and the improvement the patent claims. Its cross-sectional area is approximately twice that of the combustion cowl centre piece 6b and its length about one-third that of the combustion cowl. Proportioned this way, the waves reflected at the nozzle 8 intensify the processes inside the cowl. Because pressure inside it varies with the dynamic flight pressure once the nozzle chokes, the operation of the flame tube becomes independent of flying speed &mdash; which is what lets the unit work from standstill into the transonic and supersonic range."}, "12": {"short": "Needle guide", "text": "The guide within which the jet needle 9 is axially displaceable."}, "11": {"short": "Lever", "text": "The lever to which the jet needle 9 is hingedly connected at its end; the lever is in turn connected through the couple 10 to the displacing mechanism 15."}, "8": {"short": "Nozzle", "text": "The nozzle mounted in the gas outlet of the widened portion 7. Its surface extension corresponds approximately to a spherical zone &mdash; in the twin-tube arrangement of FIG. 2 this shape prevents the common nozzle from reacting back onto the two tubes, whose cycles run 180&deg; out of phase and would otherwise have one wave intensified and the other cancelled."}, "9": {"short": "Jet needle", "text": "The jet needle, or nozzle pin, sitting in the centre of the nozzle 8 and axially displaceable within the guide 12 to vary the final outlet cross-section. Thrust of a pulsation unit first rises with flying speed as the mixture volume grows, then falls off sharply once the nozzle flow becomes critical; the needle is therefore best moved at precisely the moment the mixture volume peaks, and thereafter set according to flight condition and fuel flow so that the volume drawn in per cycle stays at its optimum."}};
+var tip = document.getElementById('tip');
+var tipH = tip.querySelector('h3'), tipP = tip.querySelector('p');
+var box = document.querySelector('.figbox');
+var scroller = document.querySelector('.figscroll');
+var active = null;
+
+function mark(n, on) {
+  var sel = document.querySelectorAll('[data-n="' + n + '"]');
+  for (var i = 0; i < sel.length; i++) sel[i].classList.toggle('on', on);
+}
+
+function show(btn) {
+  var n = btn.dataset.n, d = DATA[n];
+  if (!d) return;
+  if (active && active !== n) mark(active, false);
+  active = n;
+  mark(n, true);
+  tipH.innerHTML = '<b>' + n + '</b>' + d.short;
+  tipP.innerHTML = d.text;
+  tip.classList.add('show');
+
+  var b = btn.getBoundingClientRect(), f = box.getBoundingClientRect();
+  var w = tip.offsetWidth, h = tip.offsetHeight, pad = 8;
+  var x = b.left - f.left + b.width / 2 - w / 2;
+  x = Math.max(pad, Math.min(x, f.width - w - pad));
+  var y = b.top - f.top - h - 10;
+  if (y < pad) y = b.bottom - f.top + 10;          // flip below
+  y = Math.min(y, f.height - h - pad);
+  tip.style.left = x + 'px';
+  tip.style.top = y + 'px';
+}
+
+function hide() {
+  tip.classList.remove('show');
+  if (active) mark(active, false);
+  active = null;
+}
+
+var hots = document.querySelectorAll('.hot');
+for (var i = 0; i < hots.length; i++) {
+  (function (btn) {
+    btn.addEventListener('mouseenter', function () { show(btn); });
+    btn.addEventListener('focus', function () { show(btn); });
+    btn.addEventListener('mouseleave', hide);
+    btn.addEventListener('blur', hide);
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (active === btn.dataset.n) hide(); else show(btn);
+    });
+  })(hots[i]);
+}
+
+var cards = document.querySelectorAll('.card');
+for (var j = 0; j < cards.length; j++) {
+  (function (card) {
+    card.addEventListener('mouseenter', function () { mark(card.dataset.n, true); });
+    card.addEventListener('mouseleave', function () { mark(card.dataset.n, false); });
+  })(cards[j]);
+}
+
+scroller.addEventListener('scroll', hide);
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+document.addEventListener('click', function (e) { if (!e.target.closest('.hot')) hide(); });
+</script>
+</body>
+</html>
