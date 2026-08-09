@@ -82,6 +82,14 @@ Good series, worth reading, belongs to the genre of yet-another-unspace type spa
 I got through most of the book, but eventually got tired of the dialect. Maybe if there was more of a build up to something I would have stuck with it. It is a good book, though.
 # To Say Nothing of the Dog
 I like connie williams time travelling books, this and the doomsday book. This one is more lighthearted than  the other. References literary tropes in a way that works quite well.
+# The quantum thief
+I had seen this book around quite a few times and avoided it, but finally decided to pick it up. Glad I did, good premise, it's hard to get a book right when it requires you to pick up the mechanisms and world of the book as you go along but this one pulled it off.
+# Greg Egan's clockwork trilogy
+I'm sure this was mathematically coherent, and I sure did hang on for as long as I could, but the details escaped me for sure. Can you really have a set of dimensions like this involving time that doesn't enable paradoxes? Mr Egan thinks you can, but I never got it.
+# Rainbows end
+Good, always interesting to get another datapoint of people prediction for the future on the 2d scatter graph of "available technology" vs "available intelligence". In 2026 we sure do seem to be wayyyyyy off outside the distribution of just about any literature that came before...
+# Pushing Ice
+Read it once a long time ago and listened to the audiobook again recently. Good overall. I don't know about the central conflict between the two main characters though. I would like to see a sequel.
 ##### These are books I've read but have not posted above, for the purposes of LLM recommendations:
 - Making of the atomic bomb: enjoyed.
 - Surely You're Joking, Mr. Feynman: ok
@@ -118,3 +126,5 @@ I like connie williams time travelling books, this and the doomsday book. This o
 - The martian: Good, another one-day read. 
 - Lord of Light: listened to it as an audiobook, pretty good
 - Roadside picnic: Another audiobook. Strange novel, but worth listening to.
+- 
+-
