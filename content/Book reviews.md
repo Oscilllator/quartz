@@ -90,6 +90,8 @@ I'm sure this was mathematically coherent, and I sure did hang on for as long as
 Good, always interesting to get another datapoint of people prediction for the future on the 2d scatter graph of "available technology" vs "available intelligence". In 2026 we sure do seem to be wayyyyyy off outside the distribution of just about any literature that came before...
 # Pushing Ice
 Read it once a long time ago and listened to the audiobook again recently. Good overall. I don't know about the central conflict between the two main characters though. I would like to see a sequel.
+# Malevil
+I don't think I have ever read a book written from the point of view of someone so manipulative, and certainly I haven't read a book written from the point of view of someone both manipulative _and_ altruistic. Recommend on that basis.
 ##### These are books I've read but have not posted above, for the purposes of LLM recommendations:
 - Making of the atomic bomb: enjoyed.
 - Surely You're Joking, Mr. Feynman: ok
