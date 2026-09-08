@@ -92,6 +92,12 @@ Good, always interesting to get another datapoint of people prediction for the f
 Read it once a long time ago and listened to the audiobook again recently. Good overall. I don't know about the central conflict between the two main characters though. I would like to see a sequel.
 # Malevil
 I don't think I have ever read a book written from the point of view of someone so manipulative, and certainly I haven't read a book written from the point of view of someone both manipulative _and_ altruistic. Recommend on that basis.
+# Book of the new sun
+I'm partway through the 4th book in the series. Pretty good, haven't read anything quite like it. Normally I don't like books where improbable coincidences happen repeatedly to the main character but the weird hidden and mysterious nature of the world, how old it is and how much unknowable stuff is left over from eons ago kind of all fits together into something pretty good. Main character is also good.
+# Conquistador by Buddy Levy
+Absolutely fantastic account. Hernan Cortez comes out looking like even more of a diabolical genius than I thought going into it, which says something. I feel like the book perhaps underplayed how the Aztecs nature of warfare helped the Spaniards survive but nonetheless this is a fantastic book. Doesn't exactly make you want to sign up, but I can sure see how people did.
+# Red state mars
+Another good one by Mr Corcoran. Not quite as good as the Aristillus series but still not bad. This is the first post-llm book I've listened to that was written containing AI, and it is notable for that reason. It's an interesting choice for the author to basically keep the current capability levels of an ai except perhaps a tiny bit more, and then just have it well integrated into the rest of society. It's clear though that if the author actually tried to extrapolate forwards 100 years, the plot of the book would not be tenable. I followed the guy on twitter for a bit which I don't believe I've done for any other author and it made the book rather transparent, and not in a good way. 
 ##### These are books I've read but have not posted above, for the purposes of LLM recommendations:
 - Making of the atomic bomb: enjoyed.
 - Surely You're Joking, Mr. Feynman: ok
