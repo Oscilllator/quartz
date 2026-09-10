@@ -60,6 +60,18 @@ This could be either because the narrow jet of air is more turbulent and does a 
 The academic literature generally uses piezo transducers to measure the pressure waves at a number of points across the combustion chamber of a pulse jet. There is a problem with this though:
 - A piezo element is inherently sensitive to vibrations, since as you accelerate it back and forth a force is placed across it
 - The wall of a pulse jet is subject to huge vibrations
-Hence, the piezo element will pick up a large signal that is of the same frequency roughly of what you 
+Hence, the piezo element will pick up a large signal that is of the same frequency of what you are trying to measure. If you aren't careful in isolating and calibrating out the signal you want the results will look quite plausible and be completely wrong. Most pulse jet papers that have a waveform in them of the pressure at various points in the combustion chamber, for example the [german one](https://harrydb.com/heise-pulsejet/index.htm) that is so promising for supersonic operation. But unless they account for this the results will be garbage most likely.
 
+So how about this idea:
 ![[Pasted image 20260909075249.png]]
+
+I feel like this could actually work. Mr claude of course agrees, but I did not find its analysis convincing.
+
+However it does have the problem that you have to make a new one for each new location that you want to measure the pressure at.
+
+### Pressure sensor idea 2
+
+A better idea that was suggested to me would be to have a pressure sensor on the end of a stick, and then sweep the stick down through the pulse jet. The pressure sensor would of course have to be water cooled somehow, but the idea here is that if you put the pressure sensor down the end of a tube with a long enough l/d ratio, then maybe the airflow at the bottom would become stagnant, and so the head transfer into a small sensor at the bottom would not be that bad. Something like this:
+
+![[Pasted image 20260909210507.png]]
+
