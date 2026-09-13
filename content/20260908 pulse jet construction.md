@@ -75,3 +75,12 @@ A better idea that was suggested to me would be to have a pressure sensor on the
 
 ![[Pasted image 20260909210507.png]]
 
+## Pressure sensor idea #3
+
+I buy a noncooled pressure sensor like [this one](https://www.ebay.com/itm/306888344994?utm_source=chatgpt.com), a [XCQ-093-50SG](https://kulite.com/assets/media/2017/06/XCQ-093.pdf?utm_source=chatgpt.com) and stick it in a cooling jacket. Like this:
+
+![[Pasted image 20260913154531.png]]
+
+The orange part above can be printed from stainless steel for cheap, and goes inside two stainless steel pipes. The wire for the sensor will go all the way up the center pipe. At the other end of the pipes I'll 3D print some doodad to enable water in/out + electrical connections. Then, since the whole thing is a 12" rod basically, hopefully it can be swept down the combustion chamber whilst the combustion chamber is monitored and the direct pressure vs axial distance function can be obtained (with the aid of one external microphone to get a phase reference.) 
+
+Provided that the pressure sensor does not interfere with the operation of the pulsejet this will be far superior to the "3-4 monitors going through the case" tactic that most people seem to use.
