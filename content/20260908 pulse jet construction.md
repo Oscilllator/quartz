@@ -89,8 +89,14 @@ Provided that the pressure sensor does not interfere with the operation of the p
 
 I gave the above section alongside the relevant step files to Mr Sol medium and told it to calculate the flow resistance. It came up with [this interactive 3D CFD report](https://harrydb.com/static/water-jacket-cfd.html).
 
+You can see from it that there is a constriction at the three vents that lead to the outer annulus for the return path (point 2) and also at the construction where it has to go around the actual sensor (point 1):
+
+![[Pasted image 20260914073918.png]]
+
 These results actually look pretty good - this is the first time I've gotten useful one-shot CFD results out of a model. You can see that a lot of the pressure is being dropped around the three slots that connect to the outer annulus of fluid, so I increased their size by a lot and put a small taper at the top:
 
 ![[Pasted image 20260913212254.png]]
 
-Re-running the simulation gives [these updated 3D CFD results](https://harrydb.com/static/water-jacket-cfd-widened.html). 
+Re-running the simulation gives [these updated 3D CFD results](https://harrydb.com/static/water-jacket-cfd-widened.html). You can see now that the previous restriction is gone:
+
+![[Pasted image 20260914074026.png]]
