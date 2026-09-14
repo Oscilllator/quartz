@@ -100,3 +100,11 @@ These results actually look pretty good - this is the first time I've gotten use
 Re-running the simulation gives [these updated 3D CFD results](https://harrydb.com/static/water-jacket-cfd-widened.html). You can see now that the previous restriction is gone:
 
 ![[Pasted image 20260914074026.png]]
+
+### Clearance vs press fit
+
+I had originally intended the tubes to be epoxied in place, but perhaps that won't work out for thermal reasons. So I added a variance that does a press fit on the end:
+
+![[Pasted image 20260914075537.png]]
+
+Hopefully we can rescue the design if the gluing doesn't work out.
