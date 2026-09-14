@@ -88,3 +88,9 @@ Provided that the pressure sensor does not interfere with the operation of the p
 ### Simulation
 
 I gave the above section alongside the relevant step files to Mr Sol medium and told it to calculate the flow resistance. It came up with [this interactive 3D CFD report](https://harrydb.com/static/water-jacket-cfd.html).
+
+These results actually look pretty good - this is the first time I've gotten useful one-shot CFD results out of a model. You can see that a lot of the pressure is being dropped around the three slots that connect to the outer annulus of fluid, so I increased their size by a lot and put a small taper at the top:
+
+![[Pasted image 20260913212254.png]]
+
+Re-running the simulation gives [these](chatgpt put link here) results, which  indicate.
