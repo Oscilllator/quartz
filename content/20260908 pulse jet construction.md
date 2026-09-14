@@ -93,4 +93,4 @@ These results actually look pretty good - this is the first time I've gotten use
 
 ![[Pasted image 20260913212254.png]]
 
-Re-running the simulation gives [these](chatgpt put link here) results, which  indicate.
+Re-running the simulation gives [these updated 3D CFD results](https://harrydb.com/static/water-jacket-cfd-widened.html). 
