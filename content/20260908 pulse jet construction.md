@@ -108,3 +108,16 @@ I had originally intended the tubes to be epoxied in place, but perhaps that won
 ![[Pasted image 20260914075537.png]]
 
 Hopefully we can rescue the design if the gluing doesn't work out.
+
+## Experiment jot down.
+
+Some quick experiments we did whilst waiting for the 3d printed parts to arrive.
+
+#### Measure thrust
+Run a strain gauge to try and measure thrust whilst the pulse jet was operating. There was ~0 thrust of course and the web app served by the esp32 was super slow and flaky even after claude worked on it a while trying to get good retransmission and dropout resilience. So I'm switching to a good ol serial port to a computer.
+#### Measure effect on operation with a dummy sensor
+Get a 1/2" rod (the same diameter as the real pressure sensor will be) and stick it gradually down the throat of the pulse jet whilst it was operating, to see if it would affect its operation. It didn't stop it from operating and in fact made it work quite a bit better (or at least louder) in some locations. When you look at the actual construction of the pulse jet:
+![[Pasted image 20260919124242.png]]
+For some reason the outlet is bigger than the inlet. That seems odd and pretty unintuitive to me, but sure enough the [[#Chosen design]] above has that. Worth searching about and seeing why this is the case.
+#### Heat transfer
+We didn't have a proper thermocouple meter, but we did have a thermocouple. Got a 1/2" copper pipe, and put a smaller copper pipe down it with a thermocouple taped to the end. Flowed water down the inner pipe and out the outer pipe. Blasted the engine and tried to measure the thermocouple voltage. Got to about 0.3mV. But the water flowing back out was pretty warm to my hand, probably at least 40C. What does this mean? It means bring a thermocouple reader next time.
