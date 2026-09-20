@@ -16,4 +16,4 @@ Which should be just the ticket. Should be pretty easy to get mr claude to figur
 
 ### Interfacing
 
-[here](https://harrydb.com/static/mdrive23-connectors.html) is what claude came up with for the interface to this thing in terms of connectors and setting up the opto-interruptors as limit switches using the gpio ports on the driver.
+[here](https://harrydb.com/static/mdrive23-connectors.html) is what claude came up with for the interface to this thing in terms of connectors and setting up the opto-interruptors as limit switches using the gpio ports on the driver. Ordered a bunch of stuff off digikey on that basis, let's see how it goes.
