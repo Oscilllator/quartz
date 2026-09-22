@@ -121,3 +121,25 @@ Get a 1/2" rod (the same diameter as the real pressure sensor will be) and stick
 For some reason the outlet is bigger than the inlet. That seems odd and pretty unintuitive to me, but sure enough the [[#Chosen design]] above has that. Worth searching about and seeing why this is the case.
 #### Heat transfer
 We didn't have a proper thermocouple meter, but we did have a thermocouple. Got a 1/2" copper pipe, and put a smaller copper pipe down it with a thermocouple taped to the end. Flowed water down the inner pipe and out the outer pipe. Blasted the engine and tried to measure the thermocouple voltage. Got to about 0.3mV. But the water flowing back out was pretty warm to my hand, probably at least 40C. What does this mean? It means bring a thermocouple reader next time. fwiw mr GPT says that 0.3mV corresponds to 32C, which is in the right ballpark.
+
+# Data collection
+
+## Test setup:
+
+![[Pasted image 20260922123702.png]]
+
+## Data
+
+I ported the previous data collection system from streaming to a web app over the esp32's wifi connection to a serial port. Unsurprisingly this is much more reliable. However, there are still quite a lot of data dropouts when the spark plug is running, visualised here:
+
+![[Pasted image 20260922123237.png]]
+
+Unlike last time though when the spark plug is turned off, data is streamed without loss when the pulse jet is operating (spark plug is only required for startup). So this means that we can finally get a first official measurement of the thrust of the pulse jet:
+
+![[Pasted image 20260922123447.png]]
+
+A whole 80g of thrust! 40% of the thrust in a straight-tube configuration apparently comes out the inlet, so this means that the "gross" thrust is probably `~80*1/(0.8-0.6)` 400g. that's kind of in line with what's plausible.
+
+## Inlet restriction.
+
+You can see from the above test stand photo that there is a threaded rod jammed down the inlet. In fact the threaded rod has a nut+washer on the end of it. If you position it in just the right location (and the fuel line of course) then the jet is able to operate by itself with no compressed air assistance indefinitely, which is the first time we've gotten this far. In hindsight this kind of makese sense because you would think you would want the inlet smaller diameter to the outlet. But hindsight is no basis for an engine program and so I think a good next step here whilst waiting for the water jacket 3D print to arrive is to take a look over the literature and try and find design rules of thumb, debugging techniques, etc to help build intuition as to what design change should be made. Currently we just wiggle the fuel line around until it's just right to get it to operate but I don't think we can do that all the way to a supersonic airplane.
