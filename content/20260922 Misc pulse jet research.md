@@ -19,3 +19,14 @@ In the fuel injector section:
 
 This points further to the fuel injection being the problem! It matches the current issues quite well!
 
+## Injector location
+
+From the 1963 lockwood paper, on position of the inlet within the combustion chamber:
+
+![[Pasted image 20260925082126.png]]
+
+As far as I can tell, "just inside the combustion chamber" seems to be the almost universal recommendation for where to inject the fuel. Injecting closer to the inlet side results in uncombusted fuel being ejected back out the front. In this case though the pulse jet was both quite a lot bigger than our one, and also running on liquid fuel. From page 16:
+
+![[Pasted image 20260925083017.png]]
+
+![[Pasted image 20260925082259.png]]
