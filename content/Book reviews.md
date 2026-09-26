@@ -98,6 +98,8 @@ I'm partway through the 4th book in the series. Pretty good, haven't read anythi
 Absolutely fantastic account. Hernan Cortez comes out looking like even more of a diabolical genius than I thought going into it, which says something. I feel like the book perhaps underplayed how the Aztecs nature of warfare helped the Spaniards survive but nonetheless this is a fantastic book. Doesn't exactly make you want to sign up, but I can sure see how people did.
 # Red state mars
 Another good one by Mr Corcoran. Not quite as good as the Aristillus series but still not bad. This is the first post-llm book I've listened to that was written containing AI, and it is notable for that reason. It's an interesting choice for the author to basically keep the current capability levels of an ai except perhaps a tiny bit more, and then just have it well integrated into the rest of society. It's clear though that if the author actually tried to extrapolate forwards 100 years, the plot of the book would not be tenable. I followed the guy on twitter for a bit which I don't believe I've done for any other author and it made the book rather transparent, and not in a good way. 
+# Natures metropolis: Chicago and the great west
+Great book. Railroads being important are obvious, but grain elevators, grain categorisation, and the proximity of Chicago to both great timber forests and also the prarie were not. Lots of good stuff in it.
 ##### These are books I've read but have not posted above, for the purposes of LLM recommendations:
 - Making of the atomic bomb: enjoyed.
 - Surely You're Joking, Mr. Feynman: ok
@@ -134,5 +136,5 @@ Another good one by Mr Corcoran. Not quite as good as the Aristillus series but 
 - The martian: Good, another one-day read. 
 - Lord of Light: listened to it as an audiobook, pretty good
 - Roadside picnic: Another audiobook. Strange novel, but worth listening to.
-- 
+- The Path Between the Seas: I think this is the panama canal book I listened to. If so, fantastic.
 -
