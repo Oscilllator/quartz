@@ -36,3 +36,11 @@ This is cheapo chip and was suggested by mr claude as a good way to apply a 10vp
 
 
 
+# Putting it all together
+
+![[Pasted image 20261001205055.png]]
+
+Here is what the control interface looks like, which is a pyqt app:
+
+![[Pasted image 20261001205632.png]]
+
