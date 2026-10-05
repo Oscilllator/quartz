@@ -143,3 +143,45 @@ A whole 80g of thrust! 40% of the thrust in a straight-tube configuration appare
 ## Inlet restriction.
 
 You can see from the above test stand photo that there is a threaded rod jammed down the inlet. In fact the threaded rod has a nut+washer on the end of it. If you position it in just the right location (and the fuel line of course) then the jet is able to operate by itself with no compressed air assistance indefinitely, which is the first time we've gotten this far. In hindsight this kind of makese sense because you would think you would want the inlet smaller diameter to the outlet. But hindsight is no basis for an engine program and so I think a good next step here whilst waiting for the water jacket 3D print to arrive is to take a look over the literature and try and find design rules of thumb, debugging techniques, etc to help build intuition as to what design change should be made. Currently we just wiggle the fuel line around until it's just right to get it to operate but I don't think we can do that all the way to a supersonic airplane.
+
+# Water jacket preliminary results
+
+## 3D printed endcap
+The prints came back, and they look pretty good:
+
+There are some parts of the model that didn't quite meed the design rules of jlcpcb, but everything looked fine when I got it.
+
+## Delivering the water.
+
+Here is the print for delivering the water down the jacket
+![[Pasted image 20261004182352.png]]
+
+The cold side of the water loop is delivered to the outside jacket, which is a bit unintuitive because that's the side that is exposed to the flames of the combustion chamber. But, a) This means I don't have to seal around the pressure sensor cable on the high pressure side, and b) Probably since the incoming and outgoing streams are in such good contact, they end up at thermal equilibrium by the time they get to the tip anyway.
+
+Here it is in the real world:
+
+![[Pasted image 20261004184550.png]]
+
+The only problem with this kind of print is that FDM printing is not watertight at all, so the setup is a bit drippy. But that's OK, it does not affect the actual operation.
+### Cooling loop test
+
+Instead of sticking the expensive and irreplaceable pressure sensor in the end of the [[20260908 pulse jet construction#Pressure sensor idea 3|probe]] per the final design intent and having it immediately burn up, I figured I would stick a thermocouple where the sensor is supposed to go like this:
+
+![[Pasted image 20261004180716.png]]
+
+In the above diagram there is an extra sleeve that goes between the pressure sensor and the 3D print. This is because the tolerances that were listed on the JLCPCB website were 0.3mm for this type of 3D print, and I wanted to ensure a clearance fit for the 2.4mm diameter pressure sensor so I opted for a 3mm hole. This was in retrospect silly. I should have put a 2mm hole in the design and simply drilled it out to the right dimensions when it came in.
+
+The thermocouple-in-place-of-pressure-sensor experiment is a conservative one, I think. Since the thermocouple is sitting inside of regular epoxy, the thermal resistance to the case is quite high, or higher than you would expect for the actual pressure sensor which is predominantly metal and silicon.
+
+Regardless, the test was a complete success. Operating in the heart of the combustion chamber, whilst the pulse jet was glowing red hot, the thermocouple got to around ~105C. The outside looks a little toasty but that's fine:
+
+![[Pasted image 20261004183054.png]]
+
+### Assembly of the jacket.
+
+In the above [[[20260908 pulse jet construction#Cooling loop test|diagram]] you can see the press fit in the CAD, the small red triangles. I had one part printed like that and two printed straight with the 0.3mm clearance fit. With the arbor press though combined with gripping the pipe with 
+
+
+## Measuring the temperature using the pressure sensor directly.
+
+Apparently the overall resistance of the kulite pressure sensor changes quite a lot with temperature, so for a known drive voltage if the current going through it is measured this can be used to calculate what temperature it's at. Presumably this will need to be calibrated, but that's fine. Even if the measurement isn't super great this is still a good way to know how close to the limit the sensor is operating.
