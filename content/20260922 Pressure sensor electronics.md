@@ -44,3 +44,36 @@ Here is what the control interface looks like, which is a pyqt app:
 
 ![[Pasted image 20261001205632.png]]
 
+
+# Temperature measurement
+Continuing per the idea [[20260908 pulse jet construction#Measuring the temperature using the pressure sensor directly.|here]], let's try to measure the temperature of the pressure sensor using the pressure sensor itself. The top signal is the current drawn by the pressure sensor overall, as measured by a 50R termination in thescope. the middle signal is from a thermocouple zip tied to the pressure sensor:
+
+![[Pasted image 20261008130952.png]]
+
+The bottom signal is the pressure sensor current pre-demodulation, and the blue highlight is what is being averaged over.
+![[Pasted image 20261008121038.png]]
+
+There is clearly a lot of noise in the top signal but it's nonetheless working. Here is a scatter plot of the correlation between the current draw and the temperature, over the full range. It's kind of hard to see on this plot but the different time constants of the thermocouple and the pressure sensor are just visible, as the temperature is increasing the scatter plot is above the fit line and as it's decreasing it's below the fit line. 
+![[Pasted image 20261008121051.png]]
+
+## Noise
+
+Here is a pure time series plot of the current drawn, at constant temperature, and of the supply rail:
+
+![[Pasted image 20261008123139.png]]
+
+What's up with that? ~20Hz doesn't really sound like a frequency that I'm using anywhere in the system. Turns out it was that I had the AD620 amplifier plugged in, but not powered on. Powering it on gives this:
+
+![[Pasted image 20261008124529.png]]
+
+(note the y axis scale change)
+
+Now I get this with a pressure sweep:
+
+![[Pasted image 20261008130829.png]]
+
+Way less noise! The different thermal time constants of the thermocouple and temperature sensor are also visible as my little temperature chamber heats up and cools down:
+
+![[Pasted image 20261008130922.png]]
+
+So we can now say with confidence that the pressure sensor temperature can be measured quite accurately - to probably just the same level as the thermocouple itself.
