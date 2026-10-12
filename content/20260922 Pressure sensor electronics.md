@@ -77,3 +77,22 @@ Way less noise! The different thermal time constants of the thermocouple and tem
 ![[Pasted image 20261008130922.png]]
 
 So we can now say with confidence that the pressure sensor temperature can be measured quite accurately - to probably just the same level as the thermocouple itself.
+
+# Insides of the XCQ-093-50SG pressure sensor
+
+Whilst trying to jam this thing into a ~2.39mm hole (The diameter of the sensor is 2.4mm) I accidentally popped the cap off this thing, and immediately destroyed it. Anyway, this affords an opportunity to look inside it, the silicon die of the sensor can be seen clearly:
+
+![[Pasted image 20261011092854.png]]
+
+The epoxy was extremely floppy and didn't really adhere to much. I guess this is so it can transmit pressure waves through losslessly.
+
+![[Pasted image 20261011093058.png]]
+
+I didn't realise that the inside of the pressure sensor was mostly plastic. This is not a good sign as it means that the sensor at the tip will be quite isolated thermally from the body of the sensor, reducing the effect of the water cooling. Oh well, nothing to do but to push on.
+
+## Kulite on their ruggedised sensors.
+I wondered how the above sensor might differ from one of the ones that Kulite water cools and sells for high temperature operation, over and above just the water cooling jacket. Apparently the above gold bond wires [are removed](https://kulite.com/assets/media/2023/11/section2.pdf):
+
+![[Pasted image 20261011112953.png]]
+
+Another group has done basically the same thing as me in "WATER-COOLED FAST-RESPONSE WALL-STATIC PRESSURE PROBES FOR HARSH COMBUSTOR ENVIRONMENT APPLICATIONS" 
