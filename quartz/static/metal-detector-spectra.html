@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gold, Iron and Ground Spectra</title>
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface-1: #fcfcfb;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11,11,11,0.10);
+  --iron: #2a78d6;
+  --gold: #eb6834;
+  --soil: #1baf7a;
+  --coil: #008300;
+  --fluxgate: #6250d6;
+  --ink-mark: #0b0b0b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface-1: #1a1a19;
+    --text-primary: #f0efec;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255,255,255,0.10);
+    --iron: #3987e5;
+    --gold: #d95926;
+    --soil: #199e70;
+    --coil: #008300;
+    --fluxgate: #9085e9;
+    --ink-mark: #f0efec;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d;
+  --surface-1: #1a1a19;
+  --text-primary: #f0efec;
+  --text-secondary: #c3c2b7;
+  --text-muted: #898781;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --border: rgba(255,255,255,0.10);
+  --iron: #3987e5;
+  --gold: #d95926;
+  --soil: #199e70;
+  --coil: #008300;
+  --fluxgate: #9085e9;
+  --ink-mark: #f0efec;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--page); color: var(--text-primary);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 26px; margin: 0 0 6px; font-weight: 650; }
+h2 { font-size: 18px; margin: 0 0 4px; font-weight: 620; }
+h3 { font-size: 14px; margin: 14px 0 6px; font-weight: 620; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; }
+p { margin: 0 0 10px; color: var(--text-secondary); max-width: 75ch; }
+.lede { font-size: 16px; }
+.layout { display: grid; grid-template-columns: 300px minmax(0,1fr); gap: 20px; margin-top: 18px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: minmax(0,1fr); } }
+aside {
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 14px 16px; position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto;
+}
+@media (max-width: 900px) { aside { position: static; max-height: none; } }
+.ctl { margin: 8px 0 10px; }
+.ctl label { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+.ctl label b { font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctl input[type=range] { width: 100%; margin: 4px 0 0; accent-color: var(--text-secondary); }
+.ctl .def { font-size: 12px; color: var(--text-muted); line-height: 1.35; margin-top: 2px; }
+.seg { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 6px 0; }
+.seg button { flex: 1; border: 0; background: transparent; color: var(--text-secondary); padding: 6px 4px; font: inherit; font-size: 13px; cursor: pointer; }
+.seg button[aria-pressed=true] { background: var(--grid); color: var(--text-primary); font-weight: 600; }
+.charts { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; }
+@media (max-width: 1100px) { .charts { grid-template-columns: minmax(0,1fr); } }
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 14px 14px 10px; position: relative; min-width: 0; }
+.card.wide { grid-column: 1 / -1; }
+.card p { font-size: 13.5px; }
+svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+svg text { fill: var(--text-muted); font-size: 11px; font-family: inherit; }
+svg .axlabel { fill: var(--text-secondary); font-size: 12px; }
+svg .dlabel { fill: var(--text-primary); font-size: 11.5px; font-weight: 600; paint-order: stroke; stroke: var(--surface-1); stroke-width: 3px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 6px 0 2px; font-size: 13px; color: var(--text-secondary); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.key { display: inline-block; width: 18px; height: 0; border-top: 2px solid; }
+.key.dash { border-top-style: dashed; }
+.key.dot { width: 9px; height: 9px; border-radius: 50%; border: 0; }
+.tip {
+  position: absolute; pointer-events: none; background: var(--surface-1); border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 9px; font-size: 12px; color: var(--text-primary); box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  display: none; z-index: 5; white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.tip .r { display: flex; align-items: center; gap: 6px; }
+.readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; margin: 8px 0 4px; }
+.stat { border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; }
+.stat .l { font-size: 12px; color: var(--text-secondary); }
+.stat .v { font-size: 18px; font-weight: 620; }
+.stat .s { font-size: 12px; color: var(--text-muted); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--grid); }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--text-secondary); font-weight: 600; }
+.swatch { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+details { margin-top: 18px; }
+summary { cursor: pointer; font-weight: 600; }
+.defs { font-size: 13.5px; color: var(--text-secondary); columns: 2 340px; column-gap: 28px; }
+.defs div { break-inside: avoid; margin-bottom: 6px; }
+code { font-size: 12.5px; }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin: 10px 0 16px; flex-wrap: wrap; }
+.tabs button { border: 1px solid transparent; border-bottom: 0; background: transparent; color: var(--text-secondary); font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 8px 8px 0 0; cursor: pointer; margin-bottom: -1px; }
+.tabs button[aria-selected=true] { background: var(--surface-1); border-color: var(--border); color: var(--text-primary); font-weight: 600; }
+.est { max-width: 900px; }
+.est .card { margin-bottom: 16px; }
+.est h3 { text-transform: none; letter-spacing: 0; font-size: 16px; color: var(--text-primary); margin-top: 0; }
+.est table.cmp td:not(:first-child) { font-size: 14px; font-weight: 400; }
+.steps { margin: 0 0 10px; padding-left: 22px; color: var(--text-secondary); font-size: 13.5px; max-width: 80ch; }
+.steps li { margin-bottom: 4px; }
+table.cmp { margin: 6px 0 12px; max-width: 760px; }
+table.cmp td, table.cmp th { vertical-align: top; }
+table.cmp .big { font-size: 17px; font-weight: 620; }
+table.cmp .sub { font-size: 12px; color: var(--text-muted); font-weight: 400; line-height: 1.35; margin-top: 2px; }
+table.cmp span { font-size: 12px; font-weight: 400; color: var(--text-muted); }
+.gloss { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; margin-top: 14px; }
+.gloss dl { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: 6px 18px; margin: 10px 0 4px; font-size: 13.5px; }
+.gloss dt { font-weight: 600; color: var(--text-primary); }
+.gloss dd { margin: 0; color: var(--text-secondary); max-width: 90ch; }
+.zrefs { display: block; margin-top: 3px; font-size: 12.5px; color: var(--text-muted); }
+a.zref { color: var(--text-secondary); text-decoration: underline; text-decoration-color: var(--axis); text-underline-offset: 2px; }
+a.zref:hover { color: var(--text-primary); text-decoration-color: currentColor; }
+.zrefs a.zpdf { margin-left: 4px; font-size: 11px; color: var(--text-muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; text-decoration: none; }
+.zrefs a.zpdf:hover { color: var(--text-primary); }
+@media (max-width: 640px) { .gloss dl { grid-template-columns: minmax(0, 1fr); gap: 2px; } .gloss dd { margin-bottom: 8px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>What a metal detector hears, 10 Hz to 1 MHz</h1>
+  <div class="tabs" role="tablist" aria-label="Page sections">
+    <button role="tab" id="tb-explainer" aria-selected="true" aria-controls="tab-explainer">Interactive explainer</button>
+    <button role="tab" id="tb-estimate" aria-selected="false" aria-controls="tab-estimate">Estimate: gain in Australian goldfields</button>
+  </div>
+  <div id="tab-explainer" role="tabpanel" aria-labelledby="tb-explainer">
+  <p class="lede">Response of a gold nugget, an iron sphere and magnetic, viscous, slightly salty ground across frequency. Below that, the noise floor of an air-cored coil versus a fluxgate. Drag the sliders. Hover any chart for values.</p>
+  <p>The quantity plotted is the <b>response ratio</b>: the field returned by the object, averaged over the receive coil, divided by the transmitter's own field at the coil centre, in parts per million (ppm). <b>In-phase</b> (I) is the part in step with the transmit current. <b>Quadrature</b> (Q) is the part lagging 90°; a lossy (resistive) response is plotted as positive Q. <b>Phase</b> φ = atan2(Q, I), in degrees.</p>
+
+<p style="font-size:13px">Book links open your saved Zotero PDF at the right page in a new browser tab. Ripka = <i>Magnetic Sensors and Magnetometers</i> (2001); Overton = Overton &amp; Moreland, <i>Inside the Metal Detector</i>. Page numbers in the link text are the printed book pages.</p>
+  <details class="gloss" open>
+    <summary>Glossary: read this first</summary>
+    <dl>
+      <dt>Primary field</dt><dd>The magnetic field made by the detector's own transmit coil, B<sub>p</sub> (tesla, T). <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=64" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, §5 Induction, p.47</a> · <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=66" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Induction balance, p.49</a></span></dd>
+      <dt>Secondary field</dt><dd>The field that objects in the ground send back in response to the primary. This is the only thing the detector actually wants to hear. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=67" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Eddy currents, p.50</a></span></dd>
+      <dt>ppm</dt><dd>Parts per million: secondary field ÷ primary field at the receive coil, × 10⁶. A 1.3 g nugget whose centre is 15 cm below a 30 cm coil is roughly 0.2 ppm; the soil under it is thousands of ppm.</dd>
+      <dt>In-phase (I)</dt><dd>The part of the secondary field that rises and falls exactly in step with the transmit current. A magnetic material (pulls field in) gives positive I. A good conductor (pushes field out) gives negative I. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=87" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Phase demodulation (X/R channels), p.70</a></span></dd>
+      <dt>Quadrature (Q)</dt><dd>The part that lags the transmit current by a quarter cycle (90°). It comes from energy loss: resistance in eddy currents, or magnetisation that can't keep up. Plotted here as positive for lossy responses. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=87" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Phase demodulation, p.70</a></span></dd>
+      <dt>Phase φ</dt><dd>The angle of the response, φ = atan2(Q, I), in degrees. 0° = purely magnetic, 90° = purely lossy, 180° = perfect conductor pushing field out. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=86" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Ch.7 Target discrimination, p.69</a></span></dd>
+      <dt>Phasor</dt><dd>A single frequency's response drawn as an arrow from the origin to the point (I, Q). Its length is the amplitude; its angle is the phase.</dd>
+      <dt>Response size |M|</dt><dd>How big an object's response is at one frequency, regardless of phase: the length of its phasor, |M| = √(I² + Q²), in ppm. (M is the object's complex response, holding I and Q together.)</dd>
+      <dt>Eddy currents</dt><dd>Loops of current induced in a piece of metal by a changing field. The changing field (∝ frequency) drives them; the metal's resistance limits them. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=67" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Eddy currents, p.50</a></span></dd>
+      <dt>Time constant τ and corner frequency f<sub>c</sub></dt><dd>τ (seconds) is how long eddy currents in an object take to die away after the field stops. For a non-magnetic sphere of radius a (m) and conductivity σ (siemens per metre, S/m), τ = μ₀σa²/π², where μ₀ = 4π×10⁻⁷ H/m. A magnetic sphere (relative permeability μ<sub>r</sub>) holds its currents longer: τ = μ₀μ<sub>r</sub>σa²/q², with q between π and 4.49 (see the definitions at the bottom). The corner frequency f<sub>c</sub> = 1/(2πτ) (Hz) is where the quadrature response peaks. Far below f<sub>c</sub> the object is nearly invisible. Far above it the response is flat and says nothing about the material. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=163" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, PI target response, p.146</a></span></dd>
+      <dt>Magnetic susceptibility χ</dt><dd>How strongly a material magnetises in an applied field (dimensionless, SI units). Air is ~0, quartz sand ~10⁻⁵, iron-rich soil 10⁻³ to 10⁻², pure magnetite ~3. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=20" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §1.1.2 Field and matter, p.4</a></span></dd>
+      <dt>Magnetite, maghemite</dt><dd>Magnetic iron oxide minerals. Maghemite forms when iron-rich soil weathers in hot climates, and it is what makes Australian goldfield soil "hot". <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=77" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Mineralization effects, p.60</a></span></dd>
+      <dt>Laterite, ironstone, hot rock</dt><dd>Laterite is deeply weathered, iron-rich soil. Ironstone is a rock cemented by iron oxides. A hot rock is a lump whose magnetic response differs from the surrounding soil, so the detector beeps on it as if it were metal. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=77" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Mineralization effects, p.60</a></span></dd>
+      <dt>Superparamagnetic grains</dt><dd>Magnetic grains so small (about 10–30 nm) that ordinary room-temperature thermal jiggling is enough to flip their magnetisation back and forth. Each grain flips on its own characteristic timescale, its relaxation time τ<sub>N</sub> (s). <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=27" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §1.2.2 Ferromagnetism, p.11 (one-line mention only)</a></span></dd>
+      <dt>VRM (viscous remanent magnetisation)</dt><dd>In detector usage: the soil's <i>sluggish</i> magnetic response from superparamagnetic grains. When the field changes, the soil's magnetisation doesn't jump to its new value. It creeps there over microseconds to seconds, because different grains relax at very different speeds. "Viscous" means lagging, like syrup. In a frequency-domain detector this shows up as χ dropping slightly as frequency rises, plus a small constant quadrature. In a pulse detector it shows up as a slow 1/t decay that mimics a target. (The term is borrowed from rock magnetism, where it strictly means magnetisation slowly acquired over geological time. Detector engineers use it for the same relaxation physics on short timescales.) <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=191" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, PI ground balance: "magnetic viscosity", 1/t, p.174</a> · <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=172" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, PI for nugget hunting, p.155</a></span></dd>
+      <dt>FD (frequency dependence)</dt><dd>How much the soil's susceptibility drops per tenfold (one decade) increase in frequency, in %. A practical measure of how much VRM the soil has. Ordinary soil is ~0–2 %; soil rich in fine maghemite is ~5–15 %. <span class="zrefs">Neither Zotero textbook covers frequency-dependent susceptibility of soils.</span></dd>
+      <dt>Ground conductivity σ<sub>g</sub></dt><dd>How well the soil carries current (S/m). Dry soil is ~0.001–0.01; salty groundwater is 1–5. Conductive ground behaves like a huge, weak conductor, so its quadrature rises steadily with frequency. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=210" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Multi-frequency: notching out salt, p.193</a></span></dd>
+      <dt>Clutter vs noise</dt><dd><b>Clutter</b> is unwanted signal caused by the transmitter itself, here mainly soil the detector failed to cancel. It grows with transmit power exactly as the gold does, so more power never helps against it. <b>Additive noise</b> exists whether or not you transmit: coil thermal noise, amplifier noise, mains hum, lightning. More power or more averaging time does help against it.</dd>
+      <dt>Soil patchiness v and model error ε</dt><dd>Sweeping the coil removes the steady soil background, so only <b>variation</b> in the soil across a target-sized patch can mimic a target. v (%) is how much each soil ingredient varies over that distance. ε (%) is the share of that variation that follows none of the model's soil shapes. Neither is known for real goldfield soil, and your library has no numbers for them; they have to be measured.</dd>
+      <dt>Depth falloff (1/z⁶)</dt><dd>The transmit field reaching a target falls as 1/z³ with distance z (m), and the field the target sends back falls as 1/z³ again, so the signal falls as 1/z⁶ once z is larger than the coil radius R. Doubling the depth costs 64×. Detection depth for a coin-sized target is roughly the coil diameter, and for a target at depth z the best coil radius is about R ≈ z. A bigger coil sees deeper but small targets less well. <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=213" target="_blank" rel="noopener">Overton, Coil sensitivity, p.196–197</a></dd>
+      <dt>Ground balance</dt><dd>What a single-frequency detector does to ignore soil: it measures only the part of the response perpendicular to the soil's phasor. This fails when the soil's mix (and so its phase) changes from place to place. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=104" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, VLF detector with ground exclusion balance, p.87</a> · <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=191" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, PI ground balance, p.174</a></span></dd>
+      <dt>Probe frequency</dt><dd>One frequency you pick with the slider (Hz). It stands for what a classic single-frequency detector running at that frequency would see. It sets the solid "probe" line on the charts, the dots in the phasor plane, the table, the two "Single tone" boxes and the sensor ratio box. The multi-tone fit does not use it.</dd>
+      <dt>Tone</dt><dd>One transmit frequency. A multi-tone detector sends several at once and measures I and Q at each. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=210" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Multi-frequency design, p.193</a></span></dd>
+      <dt>Least-squares soil fit</dt><dd>Find the amounts of the three soil ingredients (χ, the VRM slope Δχ, σ<sub>g</sub>) that best explain the readings at all tones. Whatever is left over (the residual) is signal the soil can't explain, which is a target. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=210" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Multi-frequency subtraction, p.193</a></span></dd>
+      <dt>Noise density (T/√Hz)</dt><dd>A sensor's random noise expressed as an equivalent magnetic field per square root of measurement bandwidth. For example, 10 pT/√Hz averaged over 100 Hz bandwidth gives 10 × √100 = 100 pT rms. 1 pT = 10⁻¹² T; 1 fT = 10⁻¹⁵ T. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=57" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §1.4.4 Noise, p.41</a></span></dd>
+      <dt>Air-cored coil</dt><dd>A loop of wire. Its output voltage is V = ω·N<sub>c</sub>·A·B, where ω = 2πf (rad/s), N<sub>c</sub> is the number of turns, A the loop area (m²) and B the field (T). The output grows with frequency. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=64" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §2.1 Air coils, p.48</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=67" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §2.1.1 Voltage sensitivity, p.51</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=68" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §2.1.2 Thermal noise, p.52</a></span></dd>
+      <dt>Self-resonance</dt><dd>The coil's own inductance L (henries, H) and stray self-capacitance C<sub>s</sub> (farads, F) form a resonant circuit at f = 1/(2π√(LC<sub>s</sub>)). Just below it the coil gets a free boost; above it the coil stops working. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=69" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §2.1.3 Parasitic capacitances, p.53</a> · <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=224" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, App. A Air-cored coil calculator, p.207</a></span></dd>
+      <dt>Fluxgate</dt><dd>A sensor that drives a magnetic core in and out of saturation at the excitation frequency f<sub>exc</sub> (Hz) and reads the external field from the asymmetry. It measures B directly, down to DC, but can only follow fields slower than about f<sub>exc</sub>/10. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=91" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, Ch.3 Fluxgate sensors, p.75</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=104" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, Sensitivity rules, p.88</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=114" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, Tuned output, p.98</a></span></dd>
+      <dt>White floor, 1/f noise</dt><dd>White floor: noise density that is the same at all frequencies. 1/f noise: extra noise that grows at low frequencies, below the corner frequency f<sub>k</sub> (Hz). <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=57" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §1.4.4 Noise, p.41</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=121" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §3.9 Fluxgate noise, p.105</a></span></dd>
+    </dl>
+  </details>
+
+  <div class="layout">
+    <aside id="controls" aria-label="Model parameters">
+      <h3>Display</h3>
+      <div class="seg" role="group" aria-label="Y scale">
+        <button id="mShape" aria-pressed="true">Shape (each normalised)</button>
+        <button id="mAmp" aria-pressed="false">Amplitude (ppm)</button>
+      </div>
+      <div id="ctlbox"></div>
+    </aside>
+
+    <div>
+      <div class="charts">
+        <div class="card wide" id="normNote"></div>
+        <div class="card"><h2>In-phase I(f)</h2>
+          <p>Positive means magnetic (pulls field in). Negative means eddy currents push field out. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=86" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Ch.7 Target discrimination, p.69</a></span></p>
+          <div class="legend" data-legend="targets"></div>
+          <svg class="chart" id="cI"></svg><div class="tip"></div></div>
+        <div class="card"><h2>Quadrature Q(f)</h2>
+          <p>A conductor peaks at its corner frequency f<sub>c</sub>. Viscous magnetic soil (VRM) gives a small constant quadrature. Salty, conductive ground rises in proportion to f. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=163" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, PI target response, p.146</a> · <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=210" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Multi-frequency, p.193</a></span></p>
+          <div class="legend" data-legend="targets"></div>
+          <svg class="chart" id="cQ"></svg><div class="tip"></div></div>
+        <div class="card"><h2>Phase φ(f)</h2>
+          <p>Ground sits near 0° at every frequency. Gold sweeps 90°→180°. Iron starts near 0° (magnetic) and only swings towards 180° far above its corner frequency; for a solid steel sphere that is above 1 MHz. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=87" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Table of target phase angles, p.70</a></span></p>
+          <div class="legend" data-legend="targets-solid"></div>
+          <svg class="chart" id="cP"></svg><div class="tip"></div></div>
+        <div class="card"><h2>Phasor plane at the probe frequency</h2>
+          <p>Loci traced as f sweeps 10 Hz → 1 MHz, each normalised to its own largest magnitude. Dots mark the probe frequency. The three soil arrows show how the ground phasor moves when soil content changes. <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=77" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Mineralization effects, p.60</a></span></p>
+          <div class="legend" data-legend="targets-solid"></div>
+          <svg class="chart" id="cA"></svg><div class="tip"></div></div>
+
+        <div class="card wide"><h2>Can a multi-frequency detector subtract the soil without subtracting the gold?</h2>
+          <p><b>The problem.</b> Over a nugget the detector measures <i>soil + gold</i>. The soil part is thousands of times bigger, and how much soil there is (and of which kind) changes from spot to spot, so it can't be measured once and subtracted forever. It has to be estimated from the same measurement that contains the gold. The danger is that the estimate absorbs the gold too: if some mix of soil could produce exactly the gold's signal, the detector subtracts it as soil and the nugget vanishes.</p>
+          <p><b>What this panel simulates.</b></p>
+          <ol class="steps">
+            <li>The detector transmits <b>N tones</b> (frequencies) spread evenly on a log scale across the shaded band, and measures I and Q at each: 2N numbers per spot.</li>
+            <li>It models the soil as a mix of three known shapes: magnetic (χ, flat in-phase), viscous VRM (Δχ, sloping in-phase + flat quadrature), and salt (σ<sub>g</sub>, quadrature rising with f). See the glossary. Two assumptions are compared. <b>Mix known:</b> the proportions of the three are known (from ground-balancing somewhere nearby) and only the total amount of soil under the coil is unknown, so there is 1 unknown. This is what a classic ground balance assumes. <b>Mix unknown:</b> all three amounts are free, so there are 3 unknowns. This is the honest case on patchy goldfield soil and hot rocks.</li>
+            <li>It finds the soil amounts that best explain the 2N numbers (a least-squares fit) and subtracts that soil estimate.</li>
+            <li>What remains is the <b>residual</b>: the part of the gold's signal that no mix of soil could imitate. That is all the detector can still see.</li>
+          </ol>
+          <p>For the dots, the soil is assumed to follow the three shapes exactly and there is no noise, so only the gold needs to be fed through the fit: the dots show what of the gold survives the soil subtraction. The table below then adds back what this hides: the soil's departure from the model (clutter) and sensor noise.</p>
+          <p><b>How to read the chart.</b> Orange lines: the gold's true in-phase (solid) and quadrature (dashed) response, scaled so gold's peak size is 1. Shaded band: where the tones are; the probe tone is added to them. Black dots: what is left at each tone after subtracting the fitted soil, under the assumption picked with the buttons (filled = in-phase, hollow = quadrature). Dots sitting on the orange lines would mean nothing was lost. Dots at zero mean the nugget is invisible.</p>
+          <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=210" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, Multi-frequency design, p.193</a> · <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=191" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Overton, PI ground balance, p.174</a></span>
+          <p><b>The comparison table.</b> Each cell is a ratio: the gold signal left after the soil fit, divided by whatever is left that could be mistaken for gold. Two things can be left:</p>
+          <ul class="steps">
+            <li><b>Soil clutter:</b> the detector sweeps and subtracts the running background ("motion mode", <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=109" target="_blank" rel="noopener">Overton p.92</a>), so uniform soil cancels however badly it is modelled. What can hide a nugget is how the soil <i>varies</i> across a target-sized patch, set by "Soil patchiness v". The fit removes whatever part of that variation it can describe with its soil shapes. With the mix known, only a change in the <i>amount</i> of the same soil is removable, and any change in the mix leaks through. A further fraction ε of the variation follows no model shape at all. The detector compares what is left against the expected gold shape (a matched filter), so only clutter that resembles gold counts. The mix leak has a known shape and its resemblance is computed exactly. The unmodelled part ε has an unknown shape: by default it is treated as random, which over 2N measurements resembles gold by about 1/√(2N). The toggle switches to the worst case, where it is shaped exactly like gold. All of this is a response to the transmitter, like the gold, so <b>transmit power cancels out</b> of signal-to-clutter.</li>
+            <li><b>Additive noise:</b> coil and amplifier noise from the sensor panel, averaged over the dwell time T. This does not scale with the transmitter, so more ampere-turns help here. Total transmit power is fixed and shared across the tones. Interference (mains, lightning, VLF stations) is also additive but is not modelled.</li>
+          </ul>
+          <p>The big number combines both, 1/√(1/SCR² + 1/SNR²). The line underneath says which one limits. With the default settings soil clutter is the limit by a wide margin, so detection barely depends on power. In deep-target cases noise can take over: try a 0.5 m target with a small coil. Read <b>down a column</b> to compare one tone with many under the same soil assumption, and <b>across a row</b> to see what not knowing the soil mix costs.</p>
+          <div id="fitCompare"></div>
+          <div class="seg" role="group" aria-label="Clutter shape" style="max-width:520px">
+            <button id="cmTyp" aria-pressed="true">Unmodelled soil error: typical shape</button>
+            <button id="cmWorst" aria-pressed="false">Worst case (shaped like gold)</button>
+          </div>
+          <div class="readout" id="fitStats"></div>
+          <div class="seg" role="group" aria-label="Soil assumption for the chart" style="max-width:420px">
+            <button id="fmFree" aria-pressed="true">Chart: mix unknown (3)</button>
+            <button id="fmKnown" aria-pressed="false">Chart: mix known (1)</button>
+          </div>
+          <div class="legend">
+            <span><i class="key" style="border-color:var(--gold)"></i>gold in-phase (true)</span>
+            <span><i class="key dash" style="border-color:var(--gold)"></i>gold quadrature (true)</span>
+            <span><i class="key dot" style="background:var(--ink-mark)"></i>in-phase left after soil subtraction</span>
+            <span><i class="key dot" style="background:transparent;border:2px solid var(--ink-mark);width:10px;height:10px"></i>quadrature left after soil subtraction</span>
+          </div>
+          <svg class="chart" id="cF"></svg><div class="tip"></div>
+          <p><b>Things to try.</b></p>
+          <ul class="steps">
+            <li><b>Number of tones = 1.</b> Nothing survives. One tone gives 2 numbers (I and Q) but the soil has 3 unknown amounts, so some soil mix can always match the reading exactly. A single-frequency detector can't tell gold from a change in the soil without extra assumptions.</li>
+            <li><b>Shrink the nugget</b> until its corner f<sub>c</sub> is above the band. Inside the band its quadrature then rises with frequency, just like salt, and it gets absorbed.</li>
+            <li><b>Grow the nugget</b> until f<sub>c</sub> is below the band. It then looks like flat negative in-phase, the same as slightly less magnetic soil, and it gets absorbed.</li>
+            <li><b>Conclusion:</b> gold survives when the band brackets its f<sub>c</sub>, because only there does it show its peak, which no soil shape has. Wider bands keep more sizes of nugget visible.</li>
+          </ul>
+          <p><b>Why "mix known" is a trap.</b> With the mix known, even one tone keeps most of the gold. But that rests on the soil's proportions being exactly right under the coil. The last box above shows how small an error in the soil's phase produces a fake signal as large as the nugget. On the defaults it's a few hundredths of a degree. Real soil varies far more than that from spot to spot, which is why single-frequency detectors chatter on mineralised ground. In the "mix unknown" column one tone gives nothing (2 numbers can't pin down 3 unknowns), while many tones still recover the gold, without needing the soil to stay the same.</p>
+          <p><b>Why adding tones stops helping.</b> The clutter and the gold are both measured on the same tones, so adding tones grows both together. Signal-to-clutter depends only on <i>shapes</i>: how unlike any soil mix the gold looks across the band (the "share" box), and how big the soil error is. Extra tones help only until the band brackets the gold's corner frequency and the soil shapes are pinned down; after that the limit is ε.</p>
+        </div>
+
+        <div class="card wide"><h2>Sensor noise floor: field-equivalent noise B<sub>n</sub>(f)</h2>
+          <p>Lower is better. A coil's output is V = ω·N·A·B, so its noise referred to field falls as 1/f until the coil's self-resonance, then rises steeply. A fluxgate measures B directly with a flat floor down to near DC, but its bandwidth is borrowed from its excitation (≈ f<sub>exc</sub>/10). <span class="zrefs">Read: <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=67" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §2.1.1 Coil sensitivity, p.51</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=69" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §2.1.3 Coil parasitic capacitance, p.53</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=121" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §3.9 Fluxgate noise, p.105</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=396" target="_blank" rel="noopener" title="Open the PDF at this page in a new tab">Ripka, §10.3.1 UXO, p.380</a></span></p>
+          <div class="readout" id="senStats"></div>
+          <div class="legend">
+            <span><i class="key" style="border-color:var(--coil)"></i>air-cored coil (same radius as the search coil)</span>
+            <span><i class="key" style="border-color:var(--fluxgate)"></i>fluxgate</span>
+            <span><i class="key dot" style="background:var(--coil)"></i>published air coil</span>
+            <span><i class="key dot" style="background:transparent;border:2px solid var(--coil);width:10px;height:10px"></i>published cored induction coils</span>
+            <span><i class="key dot" style="background:var(--fluxgate)"></i>published best fluxgates</span>
+          </div>
+          <svg class="chart" id="cS"></svg><div class="tip"></div>
+          <p><b>Where the comparison comes from.</b> The dots are published measurements; the lines are this page's model.
+          Air coil: the MEDA ACM-1 (45 cm diameter, voltage noise 0.32 pT/√Hz at 20 Hz and 0.1 pT/√Hz at 100 Hz). <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=82" target="_blank" rel="noopener">Ripka Table 2.2, p.66</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=64" target="_blank" rel="noopener">p.48</a>.
+          Ferromagnetic-cored induction coils: 10–20 fT/√Hz at 1 kHz, 4 fT/√Hz at 10 kHz, 2 fT/√Hz at 50 kHz. <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=82" target="_blank" rel="noopener">Table 2.2, p.66</a> · <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=81" target="_blank" rel="noopener">Fig. 2.10, p.65</a>.
+          Best fluxgates: 4.2 pT/√Hz at 1 Hz (17 mm amorphous ring core) and 8–11 pT rms below 10 Hz. <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=105" target="_blank" rel="noopener">Ripka §3.4, p.89–90</a>.
+          Ripka's own summary is that fluxgates win at ultralow frequency or where size is limited. <a class="zref" href="file:///home/harry/Zotero/storage/GHGR6HWQ/Magnetic%20Sensors%20and%20Magnetometers%20%28Pavel%20Ripka%29%20%28Z-Library%29.pdf#page=81" target="_blank" rel="noopener">p.65</a>.</p>
+          <p><b>Limits of this evidence.</b> No source here gives fluxgate noise above about 10 Hz, so the flat fluxgate floor out to f<sub>exc</sub>/10 is an assumption, and probably a generous one. The published coils are optimised instruments, mostly with ferromagnetic cores, not detector search coils. Read the gap as "hundreds to a thousand times at kHz", not as the model's exact ratio. Also, in a detector neither floor is the limit: ground and interference are thousands of times larger. In your own bench test at 8.5 kHz the coil's SNR (signal-to-noise ratio) was only 20× better, because interference, not sensor noise, set the floor.</p>
+        </div>
+
+        <div class="card wide"><h2>Table at the probe frequency</h2>
+          <div id="tbl"></div>
+        </div>
+      </div>
+
+      <details open>
+        <summary>Model and variable definitions</summary>
+        <div class="defs">
+          <div><b>f</b>: frequency (Hz). <b>ω</b> = 2πf: angular frequency (rad/s). <b>μ₀</b> = 4π×10⁻⁷ H/m: permeability of free space.</div>
+          <div><b>Sphere response</b> M(ω) (dimensionless), from Wait's (1951) conducting, permeable sphere: M = ½·[2μ<sub>r</sub>(T−α) + (α²T − α + T)] / [μ<sub>r</sub>(T−α) − (α²T − α + T)], with α = a·√(iωμ₀μ<sub>r</sub>σ) and T = tanh α. Limits: M → (μ<sub>r</sub>−1)/(μ<sub>r</sub>+2) at low f and −½ at high f.</div>
+          <div><b>a</b>: sphere radius (m). <b>σ</b>: conductivity (S/m). <b>μ<sub>r</sub></b>: relative permeability (dimensionless, 1 for gold).</div>
+          <div><b>τ</b> = μ₀μ<sub>r</sub>σa²/q²: fundamental eddy-current decay time constant (s) of a sphere, where q solves tan q = (μ<sub>r</sub>−1)q/(μ<sub>r</sub>−1+q²): q = π for non-magnetic metal (gold), rising to 4.49 for μ<sub>r</sub> ≫ 1. <b>f<sub>c</sub></b> = 1/(2πτ): corner frequency (Hz).</div>
+          <div><b>R</b>: search-coil radius (m). <b>h</b>: coil height above ground (m). <b>d</b>: target depth below the surface (m). <b>Response ratio</b>: the secondary field averaged over the receive-loop area, divided by the primary field at the loop centre B<sub>p</sub> = μ₀NI/(2R), where NI is transmit ampere-turns (A). For a sphere on the axis at distance z = h + d: ratio = 2·M·(a/R)³·[1+(z/R)²]⁻³. This is exact for a small sphere (a ≪ z) under a single coincident transmit/receive loop; real detectors use separate, often double-D, coils.</div>
+          <div><b>χ</b>: soil volume magnetic susceptibility at 1 kHz (SI, dimensionless). <b>FD</b>: frequency dependence, the fractional drop in χ per decade of f (%). Δχ = χ·FD/ln 10: drop per natural-log unit.</div>
+          <div><b>VRM soil</b> (log-uniform relaxation times): χ′(f) = χ − Δχ·ln(f/1 kHz), χ″ = (π/2)·Δχ (constant). Valid while the band sits well inside the grains' range of relaxation times. <b>Magnetic ground</b>: a uniform permeable half-space acts exactly (quasi-statically) like an image of the coil at distance 2h with strength χ/(2+χ), so ratio = χ/(2+χ)·M<sub>12</sub>(2h)·2/(μ₀πR), where M<sub>12</sub>(2h) is the mutual inductance (H) of two coaxial loops of radius R a distance 2h apart (Maxwell's elliptic-integral formula). Real ground is layered and lumpy.</div>
+          <div><b>σ<sub>g</sub></b>: ground conductivity (S/m); salt water is ~1–5 S/m. <b>Conductive ground</b>, to first order in σ<sub>g</sub>: the coil's vector potential A<sub>φ</sub> drives ring currents J = −iωσ<sub>g</sub>A<sub>φ</sub> in the ground, and their flux back through the coil gives Q = ωσ<sub>g</sub>·K<sub>salt</sub>, with K<sub>salt</sub> = 2/(μ₀πR)·∬M<sub>12</sub>(R,ρ,h−z)²/(2πρ) dρ dz over the ground, integrated numerically (checked to ~1.5%). Valid while the skin depth δ = √(2/(ωμ₀σ<sub>g</sub>)) (m) is much larger than R + h.</div>
+          <div><b>N<sub>c</sub></b>: coil turns. <b>d<sub>w</sub></b> = 0.4 mm: wire diameter. <b>R<sub>dc</sub></b> = N<sub>c</sub>·2πR·ρ<sub>Cu</sub>/(π d<sub>w</sub>²/4) (Ω), with ρ<sub>Cu</sub> = 1.72×10⁻⁸ Ω·m. <b>L</b> ≈ μ₀N<sub>c</sub>²R[ln(8R/r<sub>b</sub>)−2] (H), with bundle radius r<sub>b</sub> = (d<sub>w</sub>/2)√N<sub>c</sub>. <b>C<sub>s</sub></b>: self-capacitance (F).</div>
+          <div><b>Coil noise</b>: B<sub>n</sub> = √(e<sub>n</sub>² + (i<sub>n</sub>|Z|)² + 4k<sub>B</sub>T<sub>K</sub>R<sub>ac</sub>|H|²) / (ω·N<sub>c</sub>·πR²·|H|) (T/√Hz). H = 1/(1 − ω²LC<sub>s</sub> + iωR<sub>ac</sub>C<sub>s</sub>) is the self-resonance transfer function and Z = (R<sub>ac</sub> + iωL)·H the coil impedance seen by the amplifier (Ω). e<sub>n</sub> is amplifier voltage noise (V/√Hz) and i<sub>n</sub> amplifier current noise (A/√Hz). k<sub>B</sub> = 1.38×10⁻²³ J/K, T<sub>K</sub> = 300 K. R<sub>ac</sub> is R<sub>dc</sub> raised by skin effect in the wire; proximity effect between turns, which makes real multilayer coils worse at high frequency, is ignored.</div>
+          <div><b>Fluxgate noise</b>: B<sub>n</sub> = B<sub>w</sub>·√(1 + f<sub>k</sub>/f)·√(1 + (f/f<sub>bw</sub>)⁴), where B<sub>w</sub> is the white floor (T/√Hz), f<sub>k</sub> the 1/f corner (Hz) and f<sub>bw</sub> = f<sub>exc</sub>/10 the usable bandwidth (Hz) for excitation frequency f<sub>exc</sub> (Hz).</div>
+          <div><b>Signal-to-clutter</b> SCR = |r<sub>gold</sub>| / C, where r<sub>gold</sub> is the gold signal left after the soil fit, r̂ = r<sub>gold</sub>/|r<sub>gold</sub>|, and C the clutter seen by a matched filter: C² = Σ<sub>k</sub>(r̂·fit residual of v·S<sub>k</sub>)² + (ε·o)²·Σ<sub>k</sub>|v·S<sub>k</sub>|², with overlap o = 1/√(2N) for a random-shaped error ("typical") or 1 with the residuals' full size ("worst case"). Here S<sub>k</sub> is the k-th soil ingredient (magnetic, VRM, salt) on the same tones, v the patchiness and ε the model error. This assumes motion filtering has removed the uniform background. <b>Signal-to-noise</b> SNR: the same residual against coil noise averaged over dwell time T, with total transmit power shared across tones. Combined: 1/√(1/SCR² + 1/SNR²).</div>
+          <div>Models are idealised: spheres on the coil axis, a uniform half-space, no interaction between target and soil, no interference. Real nuggets are irregular, so treat f<sub>c</sub> as ±3×.</div>
+        </div>
+      </details>
+    </div>
+  </div>
+  </div>
+  <div id="tab-estimate" role="tabpanel" aria-labelledby="tb-estimate" hidden>
+    <div class="est">
+    <h2>How much better could a wideband, position-tracked detector be in hot Australian ground?</h2>
+    <p class="lede">An order-of-magnitude estimate, made 2026-10-13. Every number depends on the assumptions listed below. Some are informed by published soil data and some are guesses, and each is marked.</p>
+
+    <div class="card">
+      <h3>Answer</h3>
+      <p><b>About one order of magnitude</b> (~10×, plausible range 5–50×) in signal-to-clutter over current two-frequency or pulse-type gold detectors, and <b>about two orders</b> (~100×, range 20–1000×) over a classic single-frequency detector using motion mode.</p>
+      <p><b>Signal-to-clutter</b> (SCR, dimensionless) is the gold signal divided by the soil signal that survives the detector's soil cancelling. In this ground it, not electronic noise, limits detection. An SCR gain G therefore translates directly into smaller or deeper nuggets:</p>
+      <table class="cmp">
+        <thead><tr><th>SCR gain G</th><th>Smallest detectable mass at the same depth</th><th>Depth for the same nugget ≈ G<sup>1/6</sup></th></tr></thead>
+        <tbody>
+          <tr><td>10×</td><td>~10× lighter</td><td>~1.5× deeper</td></tr>
+          <tr><td>100×</td><td>~100× lighter</td><td>~2.2× deeper</td></tr>
+          <tr><td>1000×</td><td>~1000× lighter</td><td>~3.2× deeper</td></tr>
+        </tbody>
+      </table>
+      <p>Mass scales because a nugget's signal is proportional to its volume (radius a³), as long as its corner frequency stays inside the band. Depth scales weakly because the signal falls as 1/z⁶, where z (m) is the distance from coil to target, once z exceeds the coil radius. <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=213" target="_blank" rel="noopener">Overton, Coil sensitivity, p.196–197</a></p>
+    </div>
+
+    <div class="card">
+      <h3>The two improvements</h3>
+      <p><b>1. Spectral: many tones and a three-part soil fit.</b> 16 tones log-spaced from 100 Hz to 300 kHz. The soil fit solves for susceptibility χ, the VRM slope and ground conductivity at every spot (see the explainer tab). Computed with this page's models:</p>
+      <table class="cmp">
+        <thead><tr><th>Compared with</th><th>SCR gain</th><th>Varies with</th></tr></thead>
+        <tbody>
+          <tr><td>Best single-frequency detector with ground balance (frequency chosen between 3 and 70 kHz)</td><td>9–20× at ε = 2%<br>35–90× at ε = 0.5%</td><td>larger for smaller nuggets</td></tr>
+          <tr><td>"Modern" stand-in: best pair of frequencies with a two-part (χ + VRM) soil cancel</td><td>3–7× typical, up to 14×</td><td>largest for tiny gold in salty ground</td></tr>
+        </tbody>
+      </table>
+      <p>ε (%) is the share of the soil's spatial variation that follows none of the three model shapes. Roughly, the gain is (how much the soil's <i>mix</i> varies) ÷ ε.</p>
+      <p><b>2. Spatial: track the coil's position and use a matched filter.</b> The comparison is against the motion-mode filter in Overton's design: a time-domain differentiator with a 7.2 Hz break and 15.4 Hz cut-off (<a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=109" target="_blank" rel="noopener">p.92–93</a>). That filter acts on the ground at a spatial scale set by the sweep speed u (m/s). With position known, the map can be filtered with the target's own expected bump shape, regardless of speed. The soil was modelled as a random field with correlation length ℓ (m) between 5 and 30 cm. The baseline was given its best sweep speed (0.5–1.5 m/s) and best number of differentiator stages (1 or 2):</p>
+      <table class="cmp">
+        <thead><tr><th>Target depth</th><th>Gain along one sweep</th><th>Extra from a 2D map of all passes</th></tr></thead>
+        <tbody>
+          <tr><td>10 cm</td><td>1.7–3.3×</td><td>~1–1.2×</td></tr>
+          <tr><td>25 cm</td><td>2.3–6×</td><td>~1.1–1.4×</td></tr>
+          <tr><td>50 cm</td><td>3.7–13×</td><td>~1–1.7×</td></tr>
+        </tbody>
+      </table>
+      <p>The gain grows with depth because the differentiator favours bumps about 10 cm wide, while a deep target's bump is 35–60 cm wide. It is also larger when the soil varies on short scales (ℓ = 5 cm) than long ones (30 cm). <b>Height sensing:</b> in this model the multi-tone fit already absorbs coil-height wobble, because height changes the soil's amount, not its shape. A height sensor adds little to the spectral gain. It matters for single-frequency detectors and for keeping maps consistent between passes.</p>
+      <p><b>Combined:</b> against classic single-frequency motion mode, (10–90×) × (2–13×) ≈ 20–1000×, centred on ~100×. Against modern detectors, (4–7×) × (2–5×) ≈ 10–30×. The spatial factor is discounted here because commercial filtering is surely better than Overton's analog circuit.</p>
+    </div>
+
+    <div class="card">
+      <h3>Assumptions</h3>
+      <p><b>Soil: informed by published data, but not goldfield measurements</b></p>
+      <ul class="steps">
+        <li><b>A1. Susceptibility χ = 1×10⁻² SI ("severe") and 3×10⁻² SI ("very severe").</b> These follow the metal-detector soil classes of Preetz et al. (neutral &lt; 50×10⁻⁵ SI, moderate 50–500, severe 500–2000, very severe &gt; 2000; taken from a secondary summary). Yilgarn regolith reports describe "highly magnetic" maghemite-rich nodules and pisolites, and at Gourdis/Empire those ferruginous gravels are the gold ore. I found no measured χ for these goldfields.</li>
+        <li><b>A2. Frequency dependence 8–10 % per decade.</b> Lateritic profiles in India and other tropical soils measure 0–14%.</li>
+        <li><b>A3. Ground conductivity σ<sub>g</sub> = 0.01–0.5 S/m.</b> A guess for saline goldfield ground, not sourced.</li>
+      </ul>
+      <p><b>Clutter: guesses, and the result is sensitive to these</b></p>
+      <ul class="steps">
+        <li><b>A4.</b> After the steady background is removed, each soil ingredient varies independently by v = 30% over a target-sized patch, and coil height wobbles by 3 mm rms. ε = 0.5–2%. The log-linear in-phase plus constant-quadrature soil model was found "very effective" at Kaho'olawe (Pasion et al. 2007), which suggests a small ε, but no number was given.</li>
+        <li><b>A5. Only ratios are trusted.</b> With A4, the absolute SCR comes out far below 1 for every design, even for 10 g at 10 cm. That contradicts real finds, so A4 is too harsh in absolute terms. It is assumed to be wrong by the same factor for every design. If the soil's mix varies much less than its amount (both are probably set by the same maghemite population), the spectral gain shrinks in proportion, towards the low end of each range.</li>
+      </ul>
+      <p><b>Targets and geometry</b></p>
+      <ul class="steps">
+        <li><b>A6.</b> Gold spheres of 0.1, 1 and 10 g with conductivity 15 MS/m, 10–25 cm deep, directly under a 30 cm coil held 5 cm above the ground.</li>
+        <li><b>A7.</b> No interaction between target and soil (Kingdon et al. 2009 found it minimal in highly magnetic Kaho'olawe soil). Electronic noise and interference do not limit detection.</li>
+      </ul>
+      <p><b>Spatial filtering</b></p>
+      <ul class="steps">
+        <li><b>A8.</b> Soil clutter is a stationary Gaussian random field with exponential correlation. Discrete hot rocks are not Gaussian and would behave worse.</li>
+        <li><b>A9.</b> The matched filter knows the clutter statistics and the target's bump shape. In practice it must search over depth, at a small cost.</li>
+        <li><b>A10.</b> The target's bump shape along a sweep is a crude approximation, treated as symmetric around the coil axis.</li>
+        <li><b>A11.</b> The motion-mode baseline is Overton's analog design, not any commercial detector's processing.</li>
+        <li><b>A12.</b> The 2D-map extra is the least certain number: the 1D and 2D clutter models are not strictly comparable.</li>
+      </ul>
+      <p><b>Not modelled:</b> commercial detectors' actual processing (the "modern" baseline is a stand-in, not a model of any specific detector), irregular nuggets, and coil motion through Earth's field.</p>
+    </div>
+
+    <div class="card">
+      <h3>What would turn this into a measurement</h3>
+      <p>The answer swings on two unknowns: ε, and how much the soil's mix (as opposed to its amount) varies from spot to spot. A logging rig would measure both. It needs:</p>
+      <ul class="steps">
+        <li>multi-tone in-phase and quadrature data from the coil;</li>
+        <li>coil height from a downward-looking radar or time-of-flight sensor, to mm level;</li>
+        <li>coil position from optical flow or an IMU, to cm level.</li>
+      </ul>
+      <p>Swept over real goldfield ground, this would replace "~1 order of magnitude (5–50×)" with a measured number.</p>
+    </div>
+
+    <div class="card">
+      <h3>Sources</h3>
+      <ul class="steps">
+        <li><a class="zref ext" href="https://acsess.onlinelibrary.wiley.com/doi/10.2136/sssaj2007.0065" target="_blank" rel="noopener">Preetz et al., Tropical soils and landmine detection, SSSAJ 2008</a></li>
+        <li><a class="zref ext" href="https://www.researchgate.net/publication/238109197_Classification_of_soil_magnetic_susceptibility_and_prediction_of_metal_detector_performance_case_study_of_Angola" target="_blank" rel="noopener">Preetz et al., soil susceptibility classification and detector performance, Angola</a></li>
+        <li><a class="zref ext" href="https://www.sciencedirect.com/topics/earth-and-planetary-sciences/landmine" target="_blank" rel="noopener">ScienceDirect overview listing the four severity classes</a></li>
+        <li><a class="zref ext" href="https://researcher.manipal.edu/en/publications/mineral-magnetic-properties-of-ultisol-profiles-from-tropical-sou/" target="_blank" rel="noopener">Mineral magnetism of lateritic ultisol profiles (χfd 0.15–14%)</a></li>
+        <li><a class="zref ext" href="https://dspace.lib.cranfield.ac.uk/handle/1826/12270" target="_blank" rel="noopener">Magnetic properties and weathering of tropical soils (Cranfield)</a></li>
+        <li><a class="zref ext" href="https://crcleme.org.au/RegLandEvol/Gourdis_and_Empire.PDF" target="_blank" rel="noopener">CRC LEME: Gourdis and Empire laterite gold deposits</a> · <a class="zref ext" href="https://crcleme.org.au/RegLandEvol/Lawlers.PDF" target="_blank" rel="noopener">CRC LEME: Lawlers</a> · <a class="zref ext" href="https://www.earthdoc.org/content/journals/10.1071/EG997199" target="_blank" rel="noopener">maghemite pisolites in Yilgarn aeromagnetics</a></li>
+        <li><a class="zref ext" href="https://remotesensing.spiedigitallibrary.org/conference-proceedings-of-spie/6553/655326/Soil-compensation-techniques-for-the-detection-of-buried-metallic-objects/10.1117/12.728483.full" target="_blank" rel="noopener">Pasion et al. 2007, soil compensation for buried metal detection</a></li>
+        <li><a class="zref ext" href="https://proceedings.spiedigitallibrary.org/conference-proceedings-of-spie/7303/73030Q/Investigating-the-effects-of-soils-with-complex-magnetic-susceptibility-on/10.1117/12.818662.full" target="_blank" rel="noopener">Kingdon, Pasion &amp; Oldenburg 2009, soils with complex susceptibility</a></li>
+        <li><a class="zref ext" href="https://www.sciencedirect.com/science/article/abs/pii/S0012825219301333" target="_blank" rel="noopener">Continental-scale magnetic properties of Australian soils (2019)</a></li>
+        <li>Overton &amp; Moreland, <i>Inside the Metal Detector</i>: <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=109" target="_blank" rel="noopener">motion-mode differentiator, p.92–93</a> · <a class="zref" href="file:///home/harry/Zotero/storage/FPCK49XI/Overton%20and%20Moreland%20-%202015%20-%20Inside%20the%20metal%20detector.pdf#page=213" target="_blank" rel="noopener">1/z⁶ falloff and coil size, p.196–197</a></li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</main>
+
+<script>
+"use strict";
+const logspace = (a, b, n) => Array.from({ length: n }, (_, i) => Math.pow(10, a + (b - a) * i / (n - 1)));
+/* ---------- physics ---------- */
+const MU0 = 4e-7 * Math.PI, RHO_AU = 19300, KB = 1.380649e-23, RHO_CU = 1.72e-8, DW = 0.4e-3, TK = 300;
+const C = (re, im = 0) => ({ re, im });
+const add = (a, b) => C(a.re + b.re, a.im + b.im);
+const sub = (a, b) => C(a.re - b.re, a.im - b.im);
+const mul = (a, b) => C(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re);
+const scl = (a, s) => C(a.re * s, a.im * s);
+const div = (a, b) => { const d = b.re * b.re + b.im * b.im; return C((a.re * b.re + a.im * b.im) / d, (a.im * b.re - a.re * b.im) / d); };
+function tanhC(z) {
+  if (Math.abs(z.re) > 20) return C(Math.sign(z.re), 0);
+  const d = Math.cosh(2 * z.re) + Math.cos(2 * z.im);
+  return C(Math.sinh(2 * z.re) / d, Math.sin(2 * z.im) / d);
+}
+/* Wait (1951) sphere; returns {I, Q} with Q = -Im(M) so lossy is positive */
+function sphereM(f, a, sigma, mur) {
+  const k = Math.sqrt(2 * Math.PI * f * MU0 * mur * sigma) * a;
+  const al = C(k / Math.SQRT2, k / Math.SQRT2);
+  let P, X;
+  if (k < 0.05) { // series, alpha^3 factored out of both
+    const a2 = mul(al, al), a4 = mul(a2, a2);
+    P = add(add(C(-1 / 3), scl(a2, 2 / 15)), scl(a4, -17 / 315));
+    X = add(add(C(2 / 3), scl(a2, -1 / 5)), scl(a4, 5 / 63));
+  } else {
+    const T = tanhC(al);
+    P = sub(T, al);
+    X = add(sub(mul(mul(al, al), T), al), T);
+  }
+  const M = scl(div(add(scl(P, 2 * mur), X), sub(scl(P, mur), X)), 0.5);
+  return { I: M.re, Q: -M.im };
+}
+/* Complete elliptic integrals K(m), E(m), parameter m = k², by the arithmetic-geometric mean */
+function ellipKE(m) {
+  let a = 1, b = Math.sqrt(1 - m), c = Math.sqrt(m), sum = c * c / 2, pow = 0.5;
+  for (let i = 0; i < 30 && Math.abs(c) > 1e-15; i++) {
+    const an = (a + b) / 2; c = (a - b) / 2; b = Math.sqrt(a * b); a = an;
+    pow *= 2; sum += pow * c * c;
+  }
+  const K = Math.PI / (2 * a);
+  return { K, E: K * (1 - sum) };
+}
+/* Mutual inductance (H) of two coaxial circular loops, radii r1, r2 (m), axial separation d (m) - Maxwell's formula */
+function mutualCoax(r1, r2, d) {
+  const m = 4 * r1 * r2 / ((r1 + r2) ** 2 + d * d);
+  if (m < 1e-6) return MU0 * Math.PI * r1 * r1 * r2 * r2 / (2 * Math.pow(r1 * r1 + d * d, 1.5)); // dipole limit
+  const k = Math.sqrt(m), { K, E } = ellipKE(m);
+  return MU0 * Math.sqrt(r1 * r2) * ((2 / k - k) * K - (2 / k) * E);
+}
+/* Response ratio definition used everywhere: secondary field averaged over the receive loop area
+   divided by the primary field at the loop centre, B_p = μ0·N·I/(2R). */
+/* Sphere on the coil axis at distance z = h + d below the coil: ratio = 2·M·(a/R)³·(1 + z²/R²)⁻³ */
+const targetGeo = (a, R, h, d) => 2 * Math.pow(a / R, 3) * Math.pow(1 + ((h + d) / R) ** 2, -3);
+/* Uniform permeable half-space: exact quasi-static image loop at distance 2h with strength χ/(2+χ).
+   Ratio = χ/(2+χ) · gS, gS = M(R,R,2h)·2/(μ0·π·R). */
+const soilGeoCache = {};
+function soilGeo(R, h) {
+  const key = R + "|" + h;
+  if (!(key in soilGeoCache)) soilGeoCache[key] = mutualCoax(R, R, 2 * h) * 2 / (MU0 * Math.PI * R);
+  return soilGeoCache[key];
+}
+/* Conductive half-space, first order in σ (valid while the skin depth is much larger than R + h):
+   induced ring currents J = -iωσA_φ, flux back into the loop. Ratio Q = ω·σ_g·saltK,
+   saltK = 2/(μ0·π·R) · ∫∫ M(R,ρ,h−z)² / (2πρ) dρ dz over the ground (z < 0). Computed numerically. */
+const saltCache = {};
+function saltK(R, h) {
+  const key = R + "|" + h;
+  if (key in saltCache) return saltCache[key];
+  const hr = h / R;
+  const us = [...new Set([...logspace(-3, 2.3, 260), ...Array.from({ length: 160 }, (_, i) => 1 - 6 * hr + 12 * hr * i / 159)]
+    .filter(u => u > 0).map(u => +u.toPrecision(8)))].sort((x, y) => x - y);
+  const vs = [0, ...logspace(Math.log10(hr * 0.02), 2.3, 220)];
+  const f = (u, v) => { const Mx = mutualCoax(R, u * R, (hr + v) * R); return Mx * Mx / (2 * Math.PI * u * R); };
+  let J = 0;
+  for (let i = 1; i < us.length; i++) for (let j = 1; j < vs.length; j++) {
+    const du = (us[i] - us[i - 1]) * R, dv = (vs[j] - vs[j - 1]) * R;
+    J += 0.25 * du * dv * (f(us[i], vs[j]) + f(us[i - 1], vs[j]) + f(us[i], vs[j - 1]) + f(us[i - 1], vs[j - 1]));
+  }
+  return (saltCache[key] = 2 * J / (MU0 * Math.PI * R));
+}
+function soilResp(f, p) {
+  const dchi = p.chi * p.fd / 100 / Math.LN10;           // drop in χ per natural-log unit of f
+  const chiC = C(p.chi - dchi * Math.log(f / 1000), -(Math.PI / 2) * dchi); // χ' − iχ''
+  const fac = div(chiC, add(C(2), chiC));                  // image strength (μr−1)/(μr+1) = χ/(2+χ)
+  const gS = soilGeo(p.R, p.h);
+  return { I: gS * fac.re, Q: -gS * fac.im + 2 * Math.PI * f * p.sg * saltK(p.R, p.h) };
+}
+/* Fundamental eddy-current decay of a conducting, permeable sphere: τ = μ0·μr·σ·a²/q²,
+   q solves tan q = (μr−1)q/(μr−1+q²) on [π, 3π/2); q = π for μr = 1, → 4.49 for μr ≫ 1. */
+function sphereQ(mur) {
+  if (mur <= 1) return Math.PI;
+  const g = q => Math.sin(q) * (mur - 1 + q * q) - (mur - 1) * q * Math.cos(q);
+  let lo = Math.PI, hi = 1.5 * Math.PI - 1e-9;
+  for (let i = 0; i < 80; i++) { const mid = (lo + hi) / 2; if (g(mid) > 0) lo = mid; else hi = mid; }
+  return (lo + hi) / 2;
+}
+const tauOf = (a, sigma, mur = 1) => MU0 * mur * sigma * a * a / sphereQ(mur) ** 2;
+const fcOf = (a, sigma, mur = 1) => 1 / (2 * Math.PI * tauOf(a, sigma, mur));
+
+/* Receive coil noise referred to field. Includes winding thermal noise (with skin effect),
+   amplifier voltage noise e_n and current noise i_n flowing through the coil impedance. Proximity effect ignored. */
+function coilNoise(f, p) {
+  const w = 2 * Math.PI * f, R = p.R, N = p.Nc;
+  const Rdc = N * 2 * Math.PI * R * RHO_CU / (Math.PI * DW * DW / 4);
+  const delta = Math.sqrt(2 * RHO_CU / (w * MU0)), x = (DW / 2) / delta;
+  const Rac = Rdc * Math.max(1 + x ** 4 / 48, x / 2 + 0.25);
+  const rb = Math.max(DW / 2 * Math.sqrt(N), DW / 2);
+  const L = MU0 * N * N * R * Math.max(Math.log(8 * R / rb) - 2, 0.2);
+  const Cs = p.Cs * 1e-12;
+  const den = C(1 - w * w * L * Cs, w * Rac * Cs);
+  const H = div(C(1), den);
+  const Z = div(C(Rac, w * L), den);
+  const Hm = Math.hypot(H.re, H.im), Zm = Math.hypot(Z.re, Z.im);
+  const en = p.en * 1e-9, inn = p.inoise * 1e-12;
+  const vn = Math.sqrt(en * en + (inn * Zm) ** 2 + 4 * KB * TK * Rac * Hm * Hm);
+  return { Bn: vn / (w * N * Math.PI * R * R * Hm), Rdc, L, fsrf: 1 / (2 * Math.PI * Math.sqrt(L * Cs)) };
+}
+function fgNoise(f, p) {
+  const fbw = p.fexc * 1e3 / 10;
+  return p.Bw * 1e-12 * Math.sqrt(1 + p.fk / f) * Math.sqrt(1 + (f / fbw) ** 4);
+}
+
+/* ---------- parameters ---------- */
+const PARAMS = [
+  { g: "Geometry" },
+  { id: "R", lab: "Coil radius R", unit: "m", min: 0.05, max: 0.5, v: 0.15, log: true, def: "Radius of the search coil, transmit and receive (m)." },
+  { id: "h", lab: "Coil height h", unit: "m", min: 0.01, max: 0.3, v: 0.05, log: true, def: "Height of the coil above the ground surface (m)." },
+  { id: "d", lab: "Target depth d", unit: "m", min: 0.02, max: 1, v: 0.1, log: true, def: "Depth of the target centre below the surface (m). Signal falls as 1/z⁶ once the distance z = h + d is larger than the coil radius; the best coil radius for depth z is about R ≈ z." },
+  { g: "Gold nugget (sphere)" },
+  { id: "aAu", lab: "Radius a", unit: "mm", min: 0.3, max: 30, v: 2.5, log: true, def: "Nugget radius (mm). Mass shown assumes ρ = 19,300 kg/m³." },
+  { id: "sAu", lab: "Conductivity σ", unit: "MS/m", min: 3, max: 45, v: 15, log: true, def: "Pure gold is 41 MS/m. Natural nuggets contain silver, which lowers σ (default 15 is an assumed alloy value)." },
+  { g: "Iron sphere" },
+  { id: "aFe", lab: "Radius a", unit: "mm", min: 0.5, max: 50, v: 5, log: true, def: "Radius of the iron sphere (mm)." },
+  { id: "mFe", lab: "Permeability μr", unit: "", min: 1, max: 2000, v: 100, log: true, def: "Relative permeability: how much more easily the metal carries magnetic flux than air (dimensionless; air = 1, gold = 1). Mild steel is roughly 50–500." },
+  { id: "sFe", lab: "Conductivity σ", unit: "MS/m", min: 1, max: 10, v: 5, log: true, def: "Iron/steel is roughly 2–10 MS/m." },
+  { g: "Ground" },
+  { id: "chi", lab: "Susceptibility χ", unit: "SI", min: 1e-5, max: 5e-2, v: 2e-3, log: true, def: "How strongly the soil magnetises, measured at 1 kHz (dimensionless, SI). Quartz sand ~10⁻⁵; iron-rich (lateritic) goldfield soil 10⁻³ to above 10⁻²; ironstone higher." },
+  { id: "fd", lab: "Viscous fraction FD (VRM)", unit: "% /decade", min: 0, max: 15, v: 6, log: false, step: 0.5, def: "Frequency dependence: how much χ drops per tenfold rise in frequency. Measures how much slow-relaxing superparamagnetic grain content (VRM) the soil has. 0–2 % ordinary soil, 5–15 % maghemite-rich soil." },
+  { id: "sg", lab: "Ground conductivity σg", unit: "S/m", min: 1e-3, max: 5, v: 0.1, log: true, def: "How well the ground conducts electricity (S/m). Dry soil ~0.001–0.01, saline ground 0.1–1, salt water ~5." },
+  { g: "Probe and tones" },
+  { id: "fp", lab: "Probe frequency", unit: "Hz", min: 10, max: 1e6, v: 1e4, log: true, def: "One chosen frequency (Hz). The phasor plane, the table and the ground-balance readout show what a single-frequency detector at this frequency would see." },
+  { id: "nT", lab: "Number of tones N", unit: "", min: 1, max: 40, v: 8, log: false, step: 1, def: "Tones transmitted at once, spaced logarithmically between the band edges." },
+  { id: "fLo", lab: "Band low edge", unit: "Hz", min: 10, max: 1e5, v: 100, log: true, def: "Lowest tone (Hz)." },
+  { id: "fHi", lab: "Band high edge", unit: "Hz", min: 100, max: 1e6, v: 1e5, log: true, def: "Highest tone (Hz)." },
+  { g: "Clutter and noise" },
+  { id: "patch", lab: "Soil patchiness v", unit: "%", min: 0.1, max: 100, v: 10, log: true, def: "How much each soil ingredient (χ, VRM, salt) varies across a target-sized patch of ground (%). Sweeping removes the steady background; only this variation can hide a target. Hot rocks are patches with v of 100% or more." },
+  { id: "eps", lab: "Soil model error ε", unit: "%", min: 0.01, max: 30, v: 1, log: true, def: "The fraction of that variation that follows none of the three model shapes (%). The toggle in the fit panel sets whether its shape is random (typical) or exactly gold-like (worst case). Unknown for real soil; measuring it is the key experiment." },
+  { id: "NI", lab: "Transmit ampere-turns NI", unit: "A", min: 0.1, max: 100, v: 3, log: true, def: "RMS transmit current × turns, shared across all tones (A). Sets the primary field B_p = μ0·NI/(2R) at the coil centre. Only matters against additive noise." },
+  { id: "Tdw", lab: "Dwell time T", unit: "s", min: 0.01, max: 3, v: 0.1, log: true, def: "Time the coil spends over the target per pass (s). Noise averages down as 1/√T." },
+  { g: "Coil receiver" },
+  { id: "Nc", lab: "Turns Nc", unit: "", min: 1, max: 1000, v: 30, log: true, step: 1, def: "Receive-coil turns of 0.4 mm wire on radius R." },
+  { id: "en", lab: "Amp noise en", unit: "nV/√Hz", min: 0.3, max: 20, v: 1, log: true, def: "Random voltage noise of the amplifier after the coil, per root hertz (nV/√Hz, 1 nV = 10⁻⁹ V)." },
+  { id: "inoise", lab: "Amp current noise in", unit: "pA/√Hz", min: 0.01, max: 100, v: 1, log: true, def: "Random current noise of the amplifier input (pA/√Hz). It flows through the coil's impedance, which rises with frequency." },
+  { id: "Cs", lab: "Self-capacitance Cs", unit: "pF", min: 5, max: 2000, v: 100, log: true, def: "Stray capacitance between the coil's own windings plus its cable (pF, 1 pF = 10⁻¹² F). Together with the coil inductance it sets the self-resonant frequency." },
+  { g: "Fluxgate receiver" },
+  { id: "Bw", lab: "White floor Bw", unit: "pT/√Hz", min: 1, max: 1000, v: 10, log: true, def: "The fluxgate's noise density at mid frequencies (pT/√Hz, 1 pT = 10⁻¹² T). The best low-noise fluxgates reach a few pT/√Hz; a hand-made core is far worse." },
+  { id: "fk", lab: "1/f corner fk", unit: "Hz", min: 0.1, max: 100, v: 1, log: true, def: "Frequency (Hz) below which extra low-frequency (1/f) noise takes over and the noise density rises as 1/√f." },
+  { id: "fexc", lab: "Excitation f_exc", unit: "kHz", min: 5, max: 1000, v: 50, log: true, def: "How fast the fluxgate core is driven in and out of saturation (kHz). It can only follow fields slower than about f_exc/10." },
+];
+const P = {};
+const SL = 1000;
+function fmt(v, unit) {
+  if (unit === "Hz") return fmtHz(v);
+  const a = Math.abs(v);
+  let s;
+  if (a !== 0 && (a < 0.01 || a >= 1e4)) s = v.toExponential(1).replace("e", "×10^").replace(/\^\+?(-?\d+)/, (m, e) => sup(e));
+  else s = a < 1 ? v.toPrecision(2) : a < 100 ? (+v.toPrecision(3)).toString() : Math.round(v).toString();
+  return unit ? s + " " + unit : s;
+}
+function fmtHz(f) {
+  if (f >= 1e6) return +(f / 1e6).toPrecision(3) + " MHz";
+  if (f >= 1e3) return +(f / 1e3).toPrecision(3) + " kHz";
+  return +f.toPrecision(3) + " Hz";
+}
+const SUP = { "-": "⁻", "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹" };
+const sup = s => String(s).split("").map(c => SUP[c] || c).join("");
+
+function buildControls() {
+  const box = document.getElementById("ctlbox");
+  for (const p of PARAMS) {
+    if (p.g) { const h = document.createElement("h3"); h.textContent = p.g; box.appendChild(h); continue; }
+    P[p.id] = p.v;
+    const d = document.createElement("div"); d.className = "ctl";
+    const toS = v => p.log ? Math.round(SL * Math.log(v / p.min) / Math.log(p.max / p.min)) : v;
+    const fromS = s => p.log ? p.min * Math.pow(p.max / p.min, s / SL) : +s;
+    d.innerHTML = `<label for="s_${p.id}">${p.lab}<b id="v_${p.id}"></b></label>
+      <input type="range" id="s_${p.id}" min="${p.log ? 0 : p.min}" max="${p.log ? SL : p.max}" step="${p.log ? 1 : (p.step || 0.01)}" value="${toS(p.v)}">
+      <div class="def">${p.def}</div>`;
+    box.appendChild(d);
+    const inp = d.querySelector("input"), out = d.querySelector("b");
+    const upd = () => { P[p.id] = fromS(inp.value); if (p.step === 1) P[p.id] = Math.round(P[p.id]); out.textContent = fmt(P[p.id], p.unit); };
+    upd();
+    inp.addEventListener("input", () => { upd(); schedule(); });
+  }
+}
+
+/* ---------- SVG plotting ---------- */
+const NS = "http://www.w3.org/2000/svg";
+const H = 300, M = { l: 62, r: 16, t: 12, b: 40 };
+const widthOf = svg => Math.max(340, Math.round(svg.getBoundingClientRect().width || 640));
+function el(tag, attrs, parent) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+function decadeLabel(e) {
+  const v = Math.pow(10, e);
+  return null;
+}
+function hzTick(f) { return f >= 1e6 ? f / 1e6 + "M" : f >= 1e3 ? f / 1e3 + "k" : String(f); }
+
+/* opts: {xmin,xmax, ylog, ymin, ymax, xlabel, ylabel, series:[{name,color,x[],y[],dash,negDash,markers,hollow,width}], vlines:[{x,label}], yfmt} */
+function plot(svgId, o) {
+  const svg = document.getElementById(svgId);
+  svg.removeAttribute("viewBox");
+  const W = widthOf(svg);
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.innerHTML = "";
+  const pw = W - M.l - M.r, ph = H - M.t - M.b;
+  const lx0 = Math.log10(o.xmin), lx1 = Math.log10(o.xmax);
+  const X = f => M.l + (Math.log10(f) - lx0) / (lx1 - lx0) * pw;
+  const Xinv = px => Math.pow(10, lx0 + (px - M.l) / pw * (lx1 - lx0));
+  const Y = o.ylog
+    ? v => M.t + (1 - (Math.log10(Math.max(v, o.ymin * 1e-3)) - Math.log10(o.ymin)) / (Math.log10(o.ymax) - Math.log10(o.ymin))) * ph
+    : v => M.t + (1 - (v - o.ymin) / (o.ymax - o.ymin)) * ph;
+  const grid = css("--grid"), axis = css("--axis");
+  const defs = el("defs", {}, svg);
+  const cp = el("clipPath", { id: svgId + "clip" }, defs);
+  el("rect", { x: M.l, y: M.t - 2, width: pw, height: ph + 4 }, cp);
+  // x grid: decades
+  for (let e = Math.ceil(lx0); e <= Math.floor(lx1); e++) {
+    const x = X(Math.pow(10, e));
+    el("line", { x1: x, x2: x, y1: M.t, y2: M.t + ph, stroke: grid, "stroke-width": 1 }, svg);
+    const t = el("text", { x, y: M.t + ph + 16, "text-anchor": "middle" }, svg); t.textContent = hzTick(Math.pow(10, e));
+  }
+  // y grid
+  if (o.ylog) {
+    const e0 = Math.ceil(Math.log10(o.ymin)), e1 = Math.floor(Math.log10(o.ymax));
+    const stepE = Math.max(1, Math.ceil((e1 - e0) / 7));
+    for (let e = e0; e <= e1; e += stepE) {
+      const y = Y(Math.pow(10, e));
+      el("line", { x1: M.l, x2: M.l + pw, y1: y, y2: y, stroke: grid, "stroke-width": 1 }, svg);
+      const t = el("text", { x: M.l - 6, y: y + 4, "text-anchor": "end" }, svg); t.textContent = (o.yfmtLog || (e => "10" + sup(e)))(e);
+    }
+  } else {
+    const ticks = o.yticks || niceTicks(o.ymin, o.ymax, 6);
+    for (const v of ticks) {
+      const y = Y(v);
+      el("line", { x1: M.l, x2: M.l + pw, y1: y, y2: y, stroke: v === 0 ? axis : grid, "stroke-width": 1 }, svg);
+      const t = el("text", { x: M.l - 6, y: y + 4, "text-anchor": "end" }, svg); t.textContent = o.yfmt ? o.yfmt(v) : (+v.toPrecision(3)).toString();
+    }
+  }
+  el("line", { x1: M.l, x2: M.l + pw, y1: M.t + ph, y2: M.t + ph, stroke: axis, "stroke-width": 1 }, svg);
+  const xl = el("text", { x: M.l + pw / 2, y: H - 4, "text-anchor": "middle", class: "axlabel" }, svg); xl.textContent = o.xlabel || "frequency f (Hz)";
+  const yl = el("text", { x: 14, y: M.t + ph / 2, "text-anchor": "middle", class: "axlabel", transform: `rotate(-90 14 ${M.t + ph / 2})` }, svg); yl.textContent = o.ylabel;
+  // shaded bands
+  for (const b of o.bands || []) {
+    el("rect", { x: X(b.x0), width: Math.max(0, X(b.x1) - X(b.x0)), y: M.t, height: ph, fill: css("--text-muted"), opacity: 0.08 }, svg);
+  }
+  // vlines
+  for (const v of o.vlines || []) {
+    if (v.x < o.xmin || v.x > o.xmax) continue;
+    const x = X(v.x);
+    el("line", { x1: x, x2: x, y1: M.t, y2: M.t + ph, stroke: v.color || css("--text-muted"), "stroke-width": 1, "stroke-dasharray": v.solid ? null : "3 3" }, svg);
+    if (v.label) { const right = x > M.l + pw * 0.8; const t = el("text", { x: right ? x - 4 : x + 4, y: M.t + 12 + (v.row || 0) * 14, "text-anchor": right ? "end" : "start", class: "dlabel" }, svg); t.textContent = v.label; }
+  }
+  const g = el("g", { "clip-path": `url(#${svgId}clip)` }, svg);
+  for (const s of o.series) {
+    const col = s.color;
+    if (!s.markers) {
+      // split by sign when log-y and negDash
+      let segs = [], cur = null;
+      for (let i = 0; i < s.x.length; i++) {
+        const v = s.y[i]; if (!isFinite(v)) { cur = null; continue; }
+        const neg = o.ylog && v < 0;
+        if (!cur || cur.neg !== neg) { if (cur && cur.pts.length) { cur.pts.push([s.x[i], v]); } cur = { neg, pts: [] }; segs.push(cur); }
+        cur.pts.push([s.x[i], v]);
+      }
+      for (const sg of segs) {
+        if (sg.pts.length < 2) continue;
+        const d = sg.pts.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + " " + Y(o.ylog ? Math.abs(p[1]) : p[1]).toFixed(1)).join("");
+        el("path", { d, fill: "none", stroke: col, "stroke-width": s.width || 2, "stroke-linejoin": "round", "stroke-linecap": "round", "stroke-dasharray": (s.dash || sg.neg) ? "6 4" : null }, g);
+      }
+    } else {
+      for (let i = 0; i < s.x.length; i++) {
+        const v = s.y[i]; if (!isFinite(v)) continue;
+        el("circle", { cx: X(s.x[i]), cy: Y(o.ylog ? Math.abs(v) : v), r: 4.5, fill: s.hollow ? css("--surface-1") : col, stroke: s.hollow ? col : css("--surface-1"), "stroke-width": 2 }, g);
+      }
+    }
+  }
+  // direct end labels (selective)
+  for (const s of o.series) {
+    if (!s.label) continue;
+    const i = s.labelAt != null ? s.labelAt : s.x.length - 1;
+    const v = s.y[i]; if (!isFinite(v)) continue;
+    const t = el("text", { x: X(s.x[i]) - 4, y: Y(o.ylog ? Math.abs(v) : v) - 7, "text-anchor": "end", class: "dlabel" }, svg); t.textContent = s.label;
+  }
+  // hover
+  const cross = el("line", { y1: M.t, y2: M.t + ph, stroke: css("--text-secondary"), "stroke-width": 1, visibility: "hidden" }, svg);
+  const hit = el("rect", { x: M.l, y: M.t, width: pw, height: ph, fill: "transparent" }, svg);
+  const tip = svg.nextElementSibling;
+  const move = ev => {
+    const r = svg.getBoundingClientRect();
+    const px = (ev.clientX - r.left) / r.width * W;
+    const f = Xinv(Math.min(Math.max(px, M.l), M.l + pw));
+    cross.setAttribute("x1", X(f)); cross.setAttribute("x2", X(f)); cross.setAttribute("visibility", "visible");
+    let html = `<div><b>${fmtHz(f)}</b></div>`;
+    for (const s of o.series) {
+      if (s.noTip) continue;
+      let j = 0, best = Infinity;
+      for (let i = 0; i < s.x.length; i++) { const dd = Math.abs(Math.log(s.x[i] / f)); if (dd < best) { best = dd; j = i; } }
+      if (s.markers && best > 0.15) continue;
+      const shape = s.markers ? `border-radius:50%;width:8px;height:8px;${s.hollow ? "border:2px solid " + s.color : "background:" + s.color}` : `width:14px;border-top:2px ${s.dash ? "dashed" : "solid"} ${s.color}`;
+      html += `<div class="r"><i style="display:inline-block;${shape}"></i>${s.name}: <b>${(o.tipfmt || (v => fmt(v)))(s.y[j])}</b></div>`;
+    }
+    tip.innerHTML = html; tip.style.display = "block";
+    const card = svg.parentElement.getBoundingClientRect();
+    let left = ev.clientX - card.left + 14, top = ev.clientY - card.top + 10;
+    if (left + tip.offsetWidth > card.width - 4) left = ev.clientX - card.left - tip.offsetWidth - 14;
+    tip.style.left = Math.max(4, left) + "px"; tip.style.top = top + "px";
+  };
+  hit.addEventListener("pointermove", move);
+  hit.addEventListener("pointerleave", () => { tip.style.display = "none"; cross.setAttribute("visibility", "hidden"); });
+}
+function niceTicks(a, b, n) {
+  const span = b - a, step0 = span / n, mag = Math.pow(10, Math.floor(Math.log10(step0)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= step0);
+  const out = []; for (let v = Math.ceil(a / step) * step; v <= b + 1e-9; v += step) out.push(+v.toPrecision(6)); return out;
+}
+
+/* ---------- phasor plane (linear x/y) ---------- */
+function phasorPlot(L, probe, soilArrows) {
+  const svg = document.getElementById("cA");
+  svg.removeAttribute("viewBox");
+  const W = widthOf(svg);
+  const lim = 1.1;
+  const xmin = -lim, xmax = lim, ymin = -0.15, ymax = lim * 0.75;
+  const pw = W - M.l - M.r;
+  const Hh = Math.round(M.t + M.b + pw * (ymax - ymin) / (xmax - xmin));
+  const ph = Hh - M.t - M.b;
+  svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`); svg.innerHTML = "";
+  // keep equal aspect: fit into box
+  const sx = pw / (xmax - xmin), sy = ph / (ymax - ymin), s = Math.min(sx, sy);
+  const ox = M.l + (pw - s * (xmax - xmin)) / 2, oy = M.t + (ph - s * (ymax - ymin)) / 2;
+  const X = v => ox + (v - xmin) * s, Y = v => oy + (ymax - v) * s;
+  const grid = css("--grid"), axis = css("--axis");
+  for (let v = -1; v <= 1.001; v += 0.5) {
+    el("line", { x1: X(v), x2: X(v), y1: Y(ymin), y2: Y(ymax), stroke: v === 0 ? axis : grid }, svg);
+    const t = el("text", { x: X(v), y: Y(ymin) + 16, "text-anchor": "middle" }, svg); t.textContent = v;
+  }
+  for (let v = 0; v <= ymax; v += 0.25) {
+    el("line", { x1: X(xmin), x2: X(xmax), y1: Y(v), y2: Y(v), stroke: v === 0 ? axis : grid }, svg);
+    const t = el("text", { x: X(xmin) - 6, y: Y(v) + 4, "text-anchor": "end" }, svg); t.textContent = v;
+  }
+  const xl = el("text", { x: (X(xmin) + X(xmax)) / 2, y: Hh - 4, "text-anchor": "middle", class: "axlabel" }, svg); xl.textContent = "in-phase I (normalised)";
+  const yl = el("text", { x: 14, y: (Y(ymin) + Y(ymax)) / 2, "text-anchor": "middle", class: "axlabel", transform: `rotate(-90 14 ${(Y(ymin) + Y(ymax)) / 2})` }, svg); yl.textContent = "quadrature Q (normalised)";
+  const cpp = el("clipPath", { id: "cAclip" }, el("defs", {}, svg));
+  el("rect", { x: X(xmin), y: Y(ymax), width: X(xmax) - X(xmin), height: Y(ymin) - Y(ymax) }, cpp);
+  const gl = el("g", { "clip-path": "url(#cAclip)" }, svg);
+  for (const c of L) {
+    const d = c.I.map((v, i) => (i ? "L" : "M") + X(v).toFixed(1) + " " + Y(c.Q[i]).toFixed(1)).join("");
+    el("path", { d, fill: "none", stroke: c.color, "stroke-width": 2, "stroke-linejoin": "round" }, gl);
+  }
+  // soil variation arrows
+  const mk = el("marker", { id: "arrow", viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse" }, el("defs", {}, svg));
+  el("path", { d: "M0 0L10 5L0 10z", fill: css("--text-secondary") }, mk);
+  for (const a of soilArrows) {
+    el("line", { x1: X(a.x0), y1: Y(a.y0), x2: X(a.x0 + a.dx), y2: Y(a.y0 + a.dy), stroke: css("--text-secondary"), "stroke-width": 1.5, "marker-end": "url(#arrow)" }, svg);
+    const t = el("text", { x: X(a.x0 + a.dx) + (a.dx < 0 ? -6 : 6), y: Y(a.y0 + a.dy) + (a.dy > 0 ? -4 : 12), "text-anchor": a.dx < 0 ? "end" : "start", class: "dlabel" }, svg); t.textContent = a.label;
+  }
+  for (const p of probe) {
+    el("circle", { cx: X(p.I), cy: Y(p.Q), r: 6, fill: p.color, stroke: css("--surface-1"), "stroke-width": 2 }, svg);
+    const t = el("text", { x: X(p.I) + (p.I > 0.6 ? -10 : 10), y: Y(p.Q) - 9, "text-anchor": p.I > 0.6 ? "end" : "start", class: "dlabel" }, svg); t.textContent = p.name;
+  }
+  // tooltip on hover near probe dots
+  const tip = svg.nextElementSibling;
+  svg.onpointermove = ev => {
+    const r = svg.getBoundingClientRect();
+    const px = (ev.clientX - r.left) / r.width * W, py = (ev.clientY - r.top) / r.height * Hh;
+    let best = null, bd = 1e9;
+    for (const p of probe) { const dd = Math.hypot(X(p.I) - px, Y(p.Q) - py); if (dd < bd) { bd = dd; best = p; } }
+    if (!best || bd > 28) { tip.style.display = "none"; return; }
+    tip.innerHTML = `<div><b>${best.name}</b> at ${fmtHz(P.fp)}</div><div>I = ${best.I.toFixed(3)}, Q = ${best.Q.toFixed(3)} (normalised)</div><div>φ = ${(Math.atan2(best.Q, best.I) * 180 / Math.PI).toFixed(1)}°</div>`;
+    tip.style.display = "block";
+    const card = svg.parentElement.getBoundingClientRect();
+    let left = ev.clientX - card.left + 14; if (left + tip.offsetWidth > card.width - 4) left = ev.clientX - card.left - tip.offsetWidth - 14;
+    tip.style.left = Math.max(4, left) + "px"; tip.style.top = (ev.clientY - card.top + 10) + "px";
+  };
+  svg.onpointerleave = () => { tip.style.display = "none"; };
+}
+
+/* ---------- least-squares soil fit ---------- */
+const scaleIQ = (q, k) => ({ I: q.I * k, Q: q.Q * k });
+function soilBasis(f, p) {
+  // the three soil shapes, linearised in χ (χ/(2+χ) ≈ χ/2); unknown amounts: χ, Δχ, σ_g
+  const gS = soilGeo(p.R, p.h);
+  return [
+    { I: gS / 2, Q: 0 },                                          // magnetic: flat in-phase
+    { I: -gS / 2 * Math.log(f / 1000), Q: gS / 2 * Math.PI / 2 }, // VRM: log slope + constant quadrature
+    { I: 0, Q: 2 * Math.PI * f * saltK(p.R, p.h) }                 // salt: quadrature ∝ f
+  ];
+}
+/* least squares: remove the best fit of the given soil columns from the gold signal.
+   basisAt(f) returns the soil shapes at f as [{I,Q}, ...]; returns the residual vector [I0,Q0,I1,Q1,...]. */
+function fitResidual(tones, gold, basisAt) {
+  const A = [], y = [];
+  tones.forEach((f, i) => {
+    const b = basisAt(f);
+    A.push(b.map(c => c.I)); y.push(gold[i].I);
+    A.push(b.map(c => c.Q)); y.push(gold[i].Q);
+  });
+  const k = A[0].length;
+  if (y.length <= k) return { r: y.map(() => 0), under: true };
+  const sc = A[0].map((_, j) => Math.sqrt(A.reduce((s, r) => s + r[j] * r[j], 0)) || 1);
+  const As = A.map(r => r.map((v, j) => v / sc[j]));
+  const N = sc.map((_, i) => sc.map((_, j) => As.reduce((s, r) => s + r[i] * r[j], 0)));
+  const rhs = sc.map((_, i) => As.reduce((s, r, m) => s + r[i] * y[m], 0));
+  const x = solveN(N, rhs);
+  return { r: y.map((v, m) => v - As[m].reduce((s, a, j) => s + a * x[j], 0)), under: false };
+}
+function solveN(A, b) {
+  const n = b.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) {
+    let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r;
+    [M[c], M[p]] = [M[p], M[c]];
+    if (Math.abs(M[c][c]) < 1e-14) return new Array(n).fill(0);
+    for (let r = 0; r < n; r++) if (r !== c) { const f = M[r][c] / M[c][c]; for (let j = c; j <= n; j++) M[r][j] -= f * M[c][j]; }
+  }
+  return M.map((r, i) => r[n] / r[i]);
+}
+/* ---------- main render ---------- */
+let mode = "shape";
+let fitMode = "free";
+let clutterMode = "typical";
+const F = logspace(1, 6, 400);
+let pending = false;
+function schedule() { if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; render(); }); } }
+
+function render() {
+  const col = { iron: css("--iron"), gold: css("--gold"), soil: css("--soil"), coil: css("--coil"), fg: css("--fluxgate"), ink: css("--ink-mark") };
+  const aAu = P.aAu * 1e-3, sAu = P.sAu * 1e6, aFe = P.aFe * 1e-3, sFe = P.sFe * 1e6;
+  const gG = targetGeo(aAu, P.R, P.h, P.d), gF = targetGeo(aFe, P.R, P.h, P.d);
+  const gold = F.map(f => { const m = sphereM(f, aAu, sAu, 1); return { I: m.I * gG, Q: m.Q * gG }; });
+  const iron = F.map(f => { const m = sphereM(f, aFe, sFe, P.mFe); return { I: m.I * gF, Q: m.Q * gF }; });
+  const soil = F.map(f => soilResp(f, P));
+  const fcAu = fcOf(aAu, sAu), fcFe = fcOf(aFe, sFe, P.mFe);
+  const massAu = 4 / 3 * Math.PI * aAu ** 3 * RHO_AU;
+  const sets = [
+    { key: "iron", name: "iron", color: col.iron, d: iron },
+    { key: "gold", name: "gold", color: col.gold, d: gold },
+    { key: "soil", name: "ground", color: col.soil, d: soil },
+  ];
+  const maxMag = s => Math.max(...s.d.map(p => Math.hypot(p.I, p.Q)));
+  const norms = Object.fromEntries(sets.map(s => [s.key, maxMag(s)]));
+  const vlines = [
+    { x: fcAu, label: "gold f꜀ " + fmtHz(fcAu), row: 0 },
+    { x: P.fp, label: "probe (single-frequency detector)", row: 1, solid: true },
+  ];
+  // legends
+  document.querySelectorAll('[data-legend]').forEach(L => {
+    const solidOnly = L.dataset.legend === "targets-solid";
+    L.innerHTML = sets.map(s => `<span><i class="key" style="border-color:${s.color}"></i>${s.name}</span>`).join("") +
+      (mode === "amp" && !solidOnly ? `<span style="color:var(--text-muted)">dashed = negative value</span>` : "");
+  });
+  document.getElementById("normNote").innerHTML = mode === "shape"
+    ? `<h2>Reading the in-phase and quadrature charts</h2>
+       <p>Every object's response at a frequency has two parts. The <b>in-phase</b> part (I, left chart) moves in step with the transmitter; the <b>quadrature</b> part (Q, right chart) lags a quarter cycle. Together they make the response, whose size is |M| = √(I² + Q²).</p>
+       <p><b>Shape mode</b> (current): the three objects differ in strength by factors of thousands, so each one is rescaled to fit. For each object, its largest size |M| at any frequency is set to 1, and <i>both</i> its I and its Q are divided by that same number. That means the two charts share one scale per object. Example, with the default settings: gold at 1 MHz reads I = −1, Q ≈ 0.08, so at that frequency gold is almost all in-phase. Only shapes can be compared <i>between</i> objects; switch to <b>Amplitude</b> to see real sizes in ppm.</p>`
+    : `<h2>Reading the in-phase and quadrature charts</h2>
+       <p>Every object's response at a frequency has two parts. The <b>in-phase</b> part (I, left chart) moves in step with the transmitter; the <b>quadrature</b> part (Q, right chart) lags a quarter cycle. Together they make the response, whose size is |M| = √(I² + Q²).</p>
+       <p><b>Amplitude mode</b> (current): true size in ppm of the primary field at the receive coil, on a log scale, so all three objects are directly comparable. A log scale can't show sign, so a <b>dashed</b> line means the value is negative (for I: field pushed out by eddy currents). Note how far the ground sits above gold.</p>`;
+  for (const comp of ["I", "Q"]) {
+    let series, opts;
+    if (mode === "shape") {
+      series = sets.map(s => ({ name: s.name, color: s.color, x: F, y: s.d.map(p => p[comp] / norms[s.key]), label: s.name, labelAt: comp === "I" ? 30 : F.length - 1 }));
+      opts = { ymin: comp === "I" ? -1.1 : -0.1, ymax: comp === "I" ? 1.1 : 1.1, ylabel: comp === "I" ? "in-phase I (normalised)" : "quadrature Q (normalised)", tipfmt: v => v.toFixed(3) };
+    } else {
+      series = sets.map(s => ({ name: s.name, color: s.color, x: F, y: s.d.map(p => p[comp] * 1e6), label: s.name, labelAt: 30 }));
+      const mx = Math.max(...series.flatMap(s => s.y.map(Math.abs)));
+      const ymax = Math.pow(10, Math.ceil(Math.log10(mx)));
+      opts = { ylog: true, ymin: ymax / 1e8, ymax, ylabel: comp === "I" ? "|in-phase I| (ppm of primary)" : "|quadrature Q| (ppm of primary)", tipfmt: v => fmt(v, "ppm") };
+    }
+    plot(comp === "I" ? "cI" : "cQ", { xmin: 10, xmax: 1e6, series, vlines, ...opts });
+  }
+  // phase
+  plot("cP", {
+    xmin: 10, xmax: 1e6, ymin: -30, ymax: 190, yticks: [0, 45, 90, 135, 180], yfmt: v => v + "°", ylabel: "phase φ (degrees)",
+    series: sets.map(s => ({ name: s.name, color: s.color, x: F, y: s.d.map(p => Math.atan2(p.Q, p.I) * 180 / Math.PI), label: s.name, labelAt: 60 })),
+    vlines, tipfmt: v => v.toFixed(1) + "°"
+  });
+
+  // phasor plane
+  const ip = F.reduce((b, f, i) => Math.abs(Math.log(f / P.fp)) < Math.abs(Math.log(F[b] / P.fp)) ? i : b, 0);
+  const loci = sets.map(s => ({ color: s.color, I: s.d.map(p => p.I / norms[s.key]), Q: s.d.map(p => p.Q / norms[s.key]) }));
+  const probe = sets.map((s, k) => ({ name: s.name, color: s.color, I: loci[k].I[ip], Q: loci[k].Q[ip] }));
+  const sp = probe[2], ns = norms.soil;
+  const bas = soilBasis(F[ip], P);
+  const mkArrow = (b, scale, label) => { const m = Math.hypot(b.I, b.Q) / ns || 1; const L = 0.28; return { x0: sp.I, y0: sp.Q, dx: b.I / ns / m * L, dy: b.Q / ns / m * L, label }; };
+  phasorPlot(loci, probe, [mkArrow(bas[0], 1, "+χ"), mkArrow(bas[1], 1, "+VRM"), mkArrow(bas[2], 1, "+salt")]);
+
+  // ground balance readout at probe
+  const S = soil[ip], G = gold[ip];
+  const Sm = Math.hypot(S.I, S.Q), Gm = Math.hypot(G.I, G.Q);
+  const Gperp = Math.abs(G.I * S.Q - G.Q * S.I) / Sm;
+  const dth = Gperp / Sm;
+
+  // tone fit: compare one tone vs N tones under the same assumption about the soil
+  const nT = Math.round(P.nT);
+  const lo = Math.min(P.fLo, P.fHi), hi = Math.max(P.fLo, P.fHi);
+  const band = nT === 1 ? [Math.sqrt(lo * hi)] : logspace(Math.log10(lo), Math.log10(hi), nT);
+  // the probe tone is always one of the N tones, so "N tones" contains "one tone" as a special case
+  const tones = band.some(f => Math.abs(Math.log(f / P.fp)) < 1e-6) ? band : [...band, P.fp].sort((x, y) => x - y);
+  const goldAt = f => { const m = sphereM(f, aAu, sAu, 1); return { I: m.I * gG, Q: m.Q * gG }; };
+  const gT = tones.map(goldAt), gP = [goldAt(P.fp)];
+  const knownMix = f => [soilResp(f, P)];        // 1 unknown: how much soil, mix fixed
+  const freeMix = f => soilBasis(f, P);            // 3 unknowns: chi, VRM, salt independently
+  const norm = r => Math.sqrt(r.reduce((s, v) => s + v * v, 0));
+  const GpMag = Math.hypot(gP[0].I, gP[0].Q);
+  // Each cell: gold left after the soil fit, compared with (a) clutter = soil the model gets wrong,
+  // which scales with transmit power exactly like the gold, and (b) additive noise, which doesn't.
+  const Bp = MU0 * P.NI / (2 * P.R);                 // primary field at the coil centre (T), total rms
+  const eps = P.eps / 100;
+  // Clutter model. Sweeping the coil and subtracting the running background removes uniform soil
+  // (Overton "motion mode"), so what's left is the soil's VARIATION across the target's footprint:
+  // each of the three soil ingredients varies independently by a fraction v (patchiness). The fit then
+  // removes whatever part of that variation it can describe; the rest is clutter. On top, a fraction ε of
+  // the variation follows no model shape at all, taken in its most gold-like shape (worst case).
+  const vP = P.patch / 100;
+  const soilParts = f => { const b = soilBasis(f, P), dchi = P.chi * P.fd / 100 / Math.LN10;
+    return [scaleIQ(b[0], P.chi), scaleIQ(b[1], dchi), scaleIQ(b[2], P.sg)]; };
+  const cell = (t, g, basis) => {
+    const fr = fitResidual(t, g, basis), r = fr.r;
+    const rn = norm(r);
+    // A detector compares the leftover against the expected gold shape (matched filter, unit vector rHat),
+    // so only clutter along rHat matters. Leak from mix changes has a known shape: project it exactly.
+    // The unmodelled part ε has an unknown shape: "typical" = random direction (overlap ~ 1/√(2N));
+    // "worst" = lined up with the gold.
+    const rHat = rn > 0 ? r.map(v => v / rn) : r.map(() => 0);
+    let leak2 = 0, var2 = 0;
+    for (let k = 0; k < 3; k++) {
+      const dS = t.map(f => scaleIQ(soilParts(f)[k], vP));
+      var2 += norm(dS.flatMap(q => [q.I, q.Q])) ** 2;
+      const res = fitResidual(t, dS, basis).r;              // variation the fit can't absorb
+      leak2 += clutterMode === "worst" ? norm(res) ** 2 : res.reduce((sum, v, m) => sum + v * rHat[m], 0) ** 2;
+    }
+    const overlap = clutterMode === "worst" ? 1 : 1 / Math.sqrt(2 * t.length);
+    const clutter = Math.sqrt(leak2 + (eps * overlap) ** 2 * var2);
+    const SCR = clutter > 0 ? rn / clutter : Infinity;
+    const perTone = Bp / Math.sqrt(t.length);          // fixed total power shared across the tones
+    let snr2 = 0;
+    t.forEach((f, i) => { const sig = coilNoise(f, P).Bn / Math.sqrt(P.Tdw); snr2 += ((r[2 * i] ** 2 + r[2 * i + 1] ** 2) * perTone * perTone) / (sig * sig); });
+    const SNR = Math.sqrt(snr2);
+    const both = rn === 0 ? 0 : 1 / Math.sqrt(1 / (SCR * SCR) + 1 / (SNR * SNR));
+    return { SCR, SNR, both, n: t.length, zero: rn < 1e-30 || fr.under, leak: Math.sqrt(leak2), modelErr: eps * Math.sqrt(var2) };
+  };
+  const c1k = cell([P.fp], gP, knownMix), c1f = cell([P.fp], gP, freeMix);
+  const cNk = cell(tones, gT, knownMix), cNf = cell(tones, gT, freeMix);
+  const frPlot = fitResidual(tones, gT, fitMode === "known" ? knownMix : freeMix);
+  const rI = tones.map((_, i) => frPlot.r[2 * i]), rQ = tones.map((_, i) => frPlot.r[2 * i + 1]);
+  const shapeLeft = norm(fitResidual(tones, gT, freeMix).r) / norm(gT.flatMap(q => [q.I, q.Q]));
+  const gmax = Math.max(...gold.map(p => Math.hypot(p.I, p.Q)));
+  plot("cF", {
+    xmin: 10, xmax: 1e6, ymin: -1.1, ymax: 0.8, ylabel: "gold signal (1 = gold's peak)",
+    bands: [{ x0: lo, x1: hi }],
+    vlines: [{ x: fcAu, label: "gold f꜀", row: 0 }, { x: P.fp, label: "probe tone", row: 1, solid: true }],
+    series: [
+      { name: "gold I", color: col.gold, x: F, y: gold.map(p => p.I / gmax) },
+      { name: "gold Q", color: col.gold, dash: true, x: F, y: gold.map(p => p.Q / gmax) },
+      { name: "I left", color: col.ink, markers: true, x: tones, y: rI.map(v => v / gmax) },
+      { name: "Q left", color: col.ink, markers: true, hollow: true, x: tones, y: rQ.map(v => v / gmax) },
+    ], tipfmt: v => v.toFixed(3)
+  });
+  const fmtR = v => v >= 100 ? Math.round(v).toLocaleString() : v >= 10 ? v.toFixed(0) : v.toFixed(2);
+  const show = c => c.zero
+    ? `<div class="big">0 (invisible)</div><div class="sub">soil can imitate the whole reading</div>`
+    : `<div class="big">${fmtR(c.both)}</div><div class="sub">limited by ${c.SCR < c.SNR ? "<b>soil clutter</b>" : "<b>noise</b>"}<br>signal-to-clutter ${fmtR(c.SCR)} · signal-to-noise ${fmtR(c.SNR)}</div>`;
+  document.getElementById("fitCompare").innerHTML = `<table class="cmp">
+    <thead><tr><th>Gold ÷ what's left to confuse it with<br><span>detectable if ≳ 3–5</span></th><th>Soil mix known<br><span>1 unknown: amount of soil</span></th><th>Soil mix unknown<br><span>3 unknowns: χ, VRM, salt</span></th></tr></thead>
+    <tbody>
+      <tr><td>One tone at the probe frequency (${fmtHz(P.fp)})<br><span>a classic single-frequency detector</span></td><td>${show(c1k)}</td><td>${show(c1f)}</td></tr>
+      <tr><td>${tones.length} tones (the band plus the probe tone)<br><span>same total transmit power, shared</span></td><td>${show(cNk)}</td><td>${show(cNf)}</td></tr>
+    </tbody></table>`;
+  document.getElementById("fitStats").innerHTML = [
+    stat("Gold corner frequency f꜀", fmtHz(fcAu), `nugget ${fmtMass(massAu)}; tones span ${fmtHz(lo)}–${fmtHz(hi)}` + (fcAu < lo ? " (f꜀ below band)" : fcAu > hi ? " (f꜀ above band)" : " (f꜀ inside band)")),
+    stat("Share of the gold's spectrum that soil can't imitate", (shapeLeft * 100).toFixed(0) + "%", `over these ${tones.length} tones, 3 soil unknowns. Depends on the shapes, not on N, which is why it barely moves as you add tones`),
+    stat("One tone, mix known: soil phase error that fakes this nugget", fmtDeg(dth), `soil is ${fmt(Sm / Gm)}× bigger than the gold at ${fmtHz(P.fp)}`),
+  ].join("");
+
+  // sensors
+  const FS = logspace(-1, 6, 500);
+  const cn = FS.map(f => coilNoise(f, P)), fgn = FS.map(f => fgNoise(f, P));
+  const c0 = cn[0];
+  let cross = null; for (let i = 1; i < FS.length; i++) if (cn[i].Bn < fgn[i] && cn[i - 1].Bn >= fgn[i - 1]) { cross = FS[i]; break; }
+  const allv = [...cn.map(c => c.Bn), ...fgn].filter(isFinite);
+  const ymin = Math.pow(10, Math.floor(Math.log10(Math.min(...allv)))), ymax = Math.min(Math.pow(10, Math.ceil(Math.log10(Math.max(...allv)))), ymin * 1e9);
+  plot("cS", {
+    xmin: 0.1, xmax: 1e6, ylog: true, ymin, ymax, ylabel: "B noise (T/√Hz)",
+    yfmtLog: e => fieldLabel(Math.pow(10, e)),
+    series: [
+      { name: "coil", color: col.coil, x: FS, y: cn.map(c => c.Bn), label: "coil", labelAt: 330 },
+      { name: "fluxgate", color: col.fg, x: FS, y: fgn, label: "fluxgate", labelAt: 120 },
+      { name: "air coil, MEDA ACM-1 (45 cm)", color: col.coil, markers: true, x: [20, 100], y: [0.32e-12, 0.1e-12] },
+      { name: "cored coils (Ripka Table 2.2)", color: col.coil, markers: true, hollow: true, x: [1, 1e3, 5e4, 1e3, 1e4], y: [0.1e-12, 10e-15, 2e-15, 20e-15, 4e-15] },
+      { name: "best ring-core fluxgate", color: col.fg, markers: true, x: [1], y: [4.2e-12] },
+    ],
+    vlines: [
+      { x: c0.fsrf, label: "coil self-resonance", row: 0 },
+      { x: P.fexc * 1e3 / 10, label: "fluxgate f_exc/10", row: 1 },
+      ...(cross ? [{ x: cross, label: "crossover", row: 2, solid: true }] : []),
+    ],
+    tipfmt: v => fieldLabel(v) + "/√Hz"
+  });
+  const iP = FS.reduce((b, f, i) => Math.abs(Math.log(f / P.fp)) < Math.abs(Math.log(FS[b] / P.fp)) ? i : b, 0);
+  document.getElementById("senStats").innerHTML = [
+    stat("Coil beats fluxgate above", cross ? fmtHz(cross) : "never in range", "where the curves cross"),
+    stat("At the probe frequency", fmt(fgn[iP] / cn[iP].Bn) + "×", `fluxgate / coil noise at ${fmtHz(P.fp)}` + (P.fp > P.fexc * 100 ? " (includes the fluxgate's bandwidth roll-off)" : "")),
+    stat("Coil R_dc, L", `${fmt(c0.Rdc, "Ω")}, ${fmtL(c0.L)}`, `self-resonance ${fmtHz(c0.fsrf)}`),
+  ].join("");
+
+  // table
+  const rows = sets.map(s => {
+    const p = s.d[ip];
+    return `<tr><td><span class="swatch" style="background:${s.color}"></span>${s.name}</td><td>${fmt(p.I * 1e6)}</td><td>${fmt(p.Q * 1e6)}</td><td>${fmt(Math.hypot(p.I, p.Q) * 1e6)}</td><td>${(Math.atan2(p.Q, p.I) * 180 / Math.PI).toFixed(1)}°</td></tr>`;
+  }).join("");
+  document.getElementById("tbl").innerHTML = `<table><thead><tr><th>at ${fmtHz(F[ip])}</th><th>I (ppm)</th><th>Q (ppm)</th><th>|M| (ppm)</th><th>φ</th></tr></thead><tbody>${rows}</tbody></table>
+    <p style="margin-top:8px;font-size:13px">Gold: radius ${fmt(P.aAu, "mm")}, ${fmtMass(massAu)}, f꜀ = ${fmtHz(fcAu)}. Iron: radius ${fmt(P.aFe, "mm")}, μr = ${fmt(P.mFe)}, fundamental decay corner f꜀ = ${fmtHz(fcFe)} (from τ = μ0·μr·σ·a²/q² with q = ${sphereQ(P.mFe).toFixed(2)}).</p>`;
+}
+function stat(l, v, s) { return `<div class="stat"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div>`; }
+function fmtMass(kg) { const g = kg * 1000; return g >= 1000 ? (g / 1000).toPrecision(3) + " kg" : g >= 1 ? g.toPrecision(3) + " g" : (g * 1000).toPrecision(3) + " mg"; }
+function fmtDeg(rad) { const d = rad * 180 / Math.PI; return d >= 1 ? d.toFixed(1) + "°" : d >= 0.01 ? d.toFixed(3) + "°" : d.toExponential(1) + "°"; }
+function fmtL(L) { return L >= 1e-3 ? (L * 1e3).toPrecision(3) + " mH" : (L * 1e6).toPrecision(3) + " µH"; }
+function fieldLabel(v) {
+  const u = [[1e-3, "mT"], [1e-6, "µT"], [1e-9, "nT"], [1e-12, "pT"], [1e-15, "fT"], [1e-18, "aT"]];
+  for (const [s, n] of u) if (v >= s * 0.999) return +(v / s).toPrecision(3) + " " + n;
+  return v.toExponential(1) + " T";
+}
+
+document.getElementById("mShape").onclick = () => { mode = "shape"; document.getElementById("mShape").setAttribute("aria-pressed", "true"); document.getElementById("mAmp").setAttribute("aria-pressed", "false"); render(); };
+document.getElementById("mAmp").onclick = () => { mode = "amp"; document.getElementById("mAmp").setAttribute("aria-pressed", "true"); document.getElementById("mShape").setAttribute("aria-pressed", "false"); render(); };
+for (const [id, m] of [["fmFree", "free"], ["fmKnown", "known"]]) document.getElementById(id).onclick = () => {
+  fitMode = m; document.getElementById("fmFree").setAttribute("aria-pressed", m === "free"); document.getElementById("fmKnown").setAttribute("aria-pressed", m === "known"); render();
+};
+for (const [id, m] of [["cmTyp", "typical"], ["cmWorst", "worst"]]) document.getElementById(id).onclick = () => {
+  clutterMode = m; document.getElementById("cmTyp").setAttribute("aria-pressed", m === "typical"); document.getElementById("cmWorst").setAttribute("aria-pressed", m === "worst"); render();
+};
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+function showTab(name) {
+  for (const t of ["explainer", "estimate"]) {
+    document.getElementById("tb-" + t).setAttribute("aria-selected", t === name);
+    document.getElementById("tab-" + t).hidden = t !== name;
+  }
+  try { localStorage.setItem("mdTab", name); } catch (e) {}
+  if (name === "explainer") render();
+}
+document.getElementById("tb-explainer").onclick = () => showTab("explainer");
+document.getElementById("tb-estimate").onclick = () => showTab("estimate");
+buildControls();
+if (location.protocol !== "file:") {
+  // Book links point at PDFs on the author's own disk; on the web show them as plain citations
+  document.querySelectorAll('a.zref[href^="file:"]').forEach(a => { const sp = document.createElement("span"); sp.textContent = a.textContent; a.replaceWith(sp); });
+  document.querySelectorAll("p").forEach(p => { if (p.textContent.startsWith("Book links open your saved Zotero PDF")) p.textContent = "Book references: Ripka = Magnetic Sensors and Magnetometers (2001); Overton = Overton & Moreland, Inside the Metal Detector. Page numbers are the printed book pages."; });
+}
+render();
+try { if (localStorage.getItem("mdTab") === "estimate") showTab("estimate"); } catch (e) {}
+window.addEventListener("resize", schedule);
+</script>
+</body>
+</html>

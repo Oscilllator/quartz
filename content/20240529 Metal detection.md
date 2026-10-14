@@ -55,3 +55,8 @@ Wait what. That's just the coil that switched polarity! (a + b) - (a - b) = 2b, 
 Here I have balanced things down to the difference in the second harmonic coming from the signal generator:
 
 ![[Pasted image 20240601152200.png]]
+
+
+# 2026 follow up
+
+[here](https://harrydb.com/static/metal-detector-spectra.html) is a link to Claudes explanation of how the "ground" or "clutter" to noise ratio changes as a function of various metal detecting parameters, like what frequency range is being operated over, fluxgate magnetometer vs coil, etc.

@@ -33,3 +33,18 @@ And here it is when the force is swung in the other direction and is on net pull
 
 These curling pressure pulses look real but not really related to how a pulse jet would work in normal operation, where the jets of gas don't hit a plate. I don't really understand how this method of measuring thrust used by the lockwood paper is valid.
 
+# Optimisation of current pulse jet, HH-M2
+
+This is claudes best guess of what the simulation should look like with the pulse jet that I've actually built, and which is called HH-M2 in the lockwood papers.
+
+![[pulsejet_hhm2hard_start_long_p_43-53ms.webp]]
+
+This is the temperature layer:
+
+![[pulsejet_hhm2hard_start_long_T_30-40ms.webp]]
+
+The CO2 layer actually also looks pretty good, but something here is a bit off, the CO2 seems to diffuse away into nothing in the exhaust. I feel like that wouldn't actually happen: 
+
+![[pulsejet_hhm2hard_start_long_CO2_20-29ms.webp]]
+
+Actually, why am I pasting gifs? claude, paste the whole app [here](https://harrydb.com/static/pulsejet-hhm2-optimisation.html).
