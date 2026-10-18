@@ -96,3 +96,4 @@ I wondered how the above sensor might differ from one of the ones that Kulite wa
 ![[Pasted image 20261011112953.png]]
 
 Another group has done basically the same thing as me in "WATER-COOLED FAST-RESPONSE WALL-STATIC PRESSURE PROBES FOR HARSH COMBUSTOR ENVIRONMENT APPLICATIONS" 
+

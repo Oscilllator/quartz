@@ -185,3 +185,30 @@ In the above [[[20260908 pulse jet construction#Cooling loop test|diagram]] you 
 ## Measuring the temperature using the pressure sensor directly.
 
 Apparently the overall resistance of the kulite pressure sensor changes quite a lot with temperature, so for a known drive voltage if the current going through it is measured this can be used to calculate what temperature it's at. Presumably this will need to be calibrated, but that's fine. Even if the measurement isn't super great this is still a good way to know how close to the limit the sensor is operating.
+
+
+# Final assmbly
+
+Since the thermocouple-only test went well and I now have a reasonably good (to a few deg C) temperature measurement of the pressure sensor using the sensor itself, it's now time to put it together. I took advantage of the fact that the hold in the 3D print was 3mm and the sensor was only 2.4mm in diameter to put in a shim sleeve of stainless to offset the tip of the sensor inside the water cooling loop:
+
+![[Pasted image 20261017213849.png]]
+
+As with quite a few other things, I should of course have done this to begin with. For this print it also pushes the sensor up into the water exit area, restricting the water flow quite a bit but there was also quite a lot of margin there in the earlier simulations so hopefully this is OK.
+
+## Assembly
+
+Per the results [[20260922 Pressure sensor electronics#Insides of the XCQ-093-50SG pressure sensor|here]] the end of this sensor is actually a cap. I don't want water to get all up inside it, so epoxying past this line seemed like the right move.
+
+![[Pasted image 20261017214321.png]]
+
+
+![[Pasted image 20261017214452.png]]
+
+![[Pasted image 20261017214515.png]]
+
+### Press fit comes apart
+Somehow the inner tube fell off the 3D print, even though it was pressed on there pretty good. I think this was because the water block print on the end actually allowed the inner tube to wiggle back and forth, which of course has a huge moment arm. So the 0.2mm nozzle on the printer was used to put this in:
+
+![[Pasted image 20261017214159.png]]
+
+Which effectively prevents side fumbling.
