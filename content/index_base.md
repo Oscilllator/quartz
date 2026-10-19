@@ -4,6 +4,14 @@ enableToc: false
 ---
 
 # Topics
+## Pulse jet
+- [[20260729 Pulse jet]]
+- [[20260807 Pulse jet simulation]]
+- [[20260908 pulse jet construction]]
+- [[20260919 Linear rail pressure sensor construction]]
+- [[20260922 Misc pulse jet research]]
+- [[20260922 Pressure sensor electronics]]
+- [[20261018 Pulse jet pressure sensor results]]
 ## Waveform generator
 Most importantly: kicad design files, RTL for the fpga, and python interface available [here](https://github.com/Oscilllator/waveform-generator). Also there are of course notes:
 - [[20240902 A good waveform generator]]

@@ -1,6 +1,19 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
+// Explorer: folders first, then notes newest-first. Dashed dates (2026-04-27) are
+// normalised to 20260427 so they sort alongside the YYYYMMDD notes.
+// Must be self-contained: Quartz serialises it to the client with toString().
+const explorerOptions = {
+  sortFn: (a: any, b: any) => {
+    if (a.isFolder !== b.isFolder) return a.isFolder ? -1 : 1
+    const date = /^(\d{4})-(\d{2})-(\d{2})/
+    const ka = a.displayName.replace(date, "$1$2$3")
+    const kb = b.displayName.replace(date, "$1$2$3")
+    return kb.localeCompare(ka, undefined, { numeric: true, sensitivity: "base" })
+  },
+}
+
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
@@ -37,7 +50,7 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer(explorerOptions),
   ],
   right: [
     Component.Graph(),
@@ -61,7 +74,7 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer(explorerOptions),
   ],
   right: [],
 }
