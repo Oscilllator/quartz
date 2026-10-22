@@ -21,7 +21,10 @@ Now the thing about the bottom plot is: for a completely linear combustion chamb
 
 # Overall data
 
-Looks good
+One run in particular is reasonably good, you can resolve both the pressure and the reference piezo waveform:
+
+![[Pasted image 20261021210305.png]]
+
 ### Odd pressure spikiness
 
 Throughout parts of the run, this weird stuff happens:
