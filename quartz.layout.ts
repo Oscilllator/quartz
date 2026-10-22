@@ -1,7 +1,7 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
-// Explorer: folders first, then notes newest-first. Dashed dates (2026-04-27) are
+// Explorer: folders first, then notes newest-first, then undated pages. Dashed dates (2026-04-27) are
 // normalised to 20260427 so they sort alongside the YYYYMMDD notes.
 // Must be self-contained: Quartz serialises it to the client with toString().
 const explorerOptions = {
@@ -10,6 +10,10 @@ const explorerOptions = {
     const date = /^(\d{4})-(\d{2})-(\d{2})/
     const ka = a.displayName.replace(date, "$1$2$3")
     const kb = b.displayName.replace(date, "$1$2$3")
+    // Undated pages (e.g. Book reviews) go below all the dated notes
+    const da = /^\d{8}/.test(ka)
+    const db = /^\d{8}/.test(kb)
+    if (da !== db) return da ? -1 : 1
     return kb.localeCompare(ka, undefined, { numeric: true, sensitivity: "base" })
   },
 }
