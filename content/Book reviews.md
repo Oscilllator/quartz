@@ -137,4 +137,5 @@ Great book. Railroads being important are obvious, but grain elevators, grain ca
 - Lord of Light: listened to it as an audiobook, pretty good
 - Roadside picnic: Another audiobook. Strange novel, but worth listening to.
 - The Path Between the Seas: I think this is the panama canal book I listened to. If so, fantastic.
+- tau zero: Quite poor. seems to be about 80% random romantic stuff and 20% 'we are going faster'. Only got 31% of the way through the audiobook
 -
