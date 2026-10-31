@@ -6,6 +6,10 @@ The cogging with this linear rail is extremely severe. the motor jerks is extrem
 
 <object type="image/svg+xml" data="/static/plots/odesc-cogging-sweep.svg" style="display:block;width:100%;height:auto;aspect-ratio:1000 / 560"><img src="/static/plots/odesc-cogging-sweep.svg"></object>
 
+Here is a video showing the incredibly jerky motion:
 
+![[PXL_20261029_044217965.LS.mp4]]
 
+## Smoothing
 
+Now the motor has a quite excellent encoder on it. So it should be possible to build a lookup table where you have an fft of the motor position and measure all the different components from the cogging, slots, pulley teeth, pulley eccentricity etc. Then iteratively measure -> compensate->measure again 
