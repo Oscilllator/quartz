@@ -10,6 +10,19 @@ Here is a video showing the incredibly jerky motion:
 
 ![[PXL_20261029_044217965.LS.mp4]]
 
-## Smoothing
+## Jerkiness compensation
 
-Now the motor has a quite excellent encoder on it. So it should be possible to build a lookup table where you have an fft of the motor position and measure all the different components from the cogging, slots, pulley teeth, pulley eccentricity etc. Then iteratively measure -> compensate->measure again 
+Now the motor has a quite excellent encoder on it. So it should be possible to build a lookup table where you have an fft of the motor position and measure all the different components from the cogging, slots, pulley teeth, pulley eccentricity etc. Then iteratively measure -> compensate->measure again, until the error is quite small.
+
+I asked Mr claude to perform this compensation:
+### Results
+
+![[PXL_20261030_035844175.LS.mp4]]
+
+Here is an FFT showing the amount of reduction:
+
+![[Pasted image 20261101082944.png]]
+
+Or, as a time series:
+
+![[judder_time_0-3.4s.png]]
