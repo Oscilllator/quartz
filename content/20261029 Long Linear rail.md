@@ -26,3 +26,8 @@ Here is an FFT showing the amount of reduction:
 Or, as a time series:
 
 ![[judder_time_0-3.4s.png]]
+
+### SNR of audio amp
+top: 2Mhz adc of the teensy. Bottom: 48kHz audio ADC. the latter has about 20x higher snr apparently, but also quite a bit lower sampling rate. Looks like the rise time is still pretty good though.
+
+![[Pasted image 20261101214504.png]]
