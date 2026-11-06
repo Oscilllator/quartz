@@ -31,3 +31,11 @@ Or, as a time series:
 top: 2Mhz adc of the teensy. Bottom: 48kHz audio ADC. the latter has about 20x higher snr apparently, but also quite a bit lower sampling rate. Looks like the rise time is still pretty good though.
 
 ![[Pasted image 20261101214504.png]]
+
+### New temp cal
+
+The new PCB has a modulation voltage of 10V. This actually heats up the sensor quite a lot, so this time I requested that the temp cal app only operate the sensor at a 1% duty cycle, which is just fine for measuring the temperature. Here is the data used for calibration, it only takes a few points as the sensor is very linear:
+
+![[used.png]]
+
+In fact, according to this calibration, when operated with no water in the cooling channels the pressure sensor sits at 72.5C, which it reaches within ~10s of being plugged in.
