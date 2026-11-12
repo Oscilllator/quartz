@@ -27,6 +27,8 @@ And a single such burst:
 
 I'm not sure what's going on here. Presumably there is some stability criteria for engine oscillation that's not being reached. You can see though that the amplitude builds for a couple cycles. So the positive feedback required for oscillation works for some short period of time, then something causes it to fade. This is not what you would expect from an 'underdamped' system where you would have one big pulse and then either a decay (overdamped) or a bunch of trailing oscillations with gain <1. 
 
+Alternatively, it also kind of looks like a high frequency signal being modulated by a lower frequency signal. I'm not too sure what would cause that, though.
+
 ### Reference instability
 Last time the plain old SNR of the piezo measurement was poor. This time it's reasonably good, I think, but nonetheless the variability in the mic measurement is far higher than that of the pressure measurement. Here is an example:
 
