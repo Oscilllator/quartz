@@ -42,3 +42,34 @@ The pressure waves are reasonably consistent. but for whatever reason the microp
 ![[Pasted image 20261109075646.png]]
 
 This is a bit better, but still not great.
+
+
+
+# Checklist
+todo
+- [] Adapt relay board to battery.
+- [] put terminal block in
+- [] wire up pwm control for dyson compressor
+- [] print dyson tube duct mount
+- [] print adapter for the exit line of the water cooling block
+- [] swap the water cooling block over to the resin printed version
+- [] attach the new kulite pressure sensor to the combustion chamber
+- [] print a mount for the water pumps
+- [] wire in the pumps to the relay block
+- [] State management for the control software
+-   - idle mode that runs water pumps and monitors temperature
+-   - High temp detection that runs retraction at high speed and current
+-   - measurement mode that scans back and forth
+-   - easy way to set the forward and reverse limits
+
+Before leaving
+ - Pulse jet
+ - linear stage
+ - fire extinguisher
+ - laptop with charged battery
+ - fire extinguisher
+ - bundle of zip ties
+ - micro usb cable 
+ - usb extension cable
+ - water hoses.
+ - 
