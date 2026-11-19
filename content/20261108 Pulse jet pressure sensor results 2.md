@@ -47,8 +47,8 @@ This is a bit better, but still not great.
 
 # Checklist
 todo
-- [] Adapt relay board to battery.
-- [] put terminal block in
+- [x] Adapt relay board to battery.
+- [x] put terminal block in
 - [] wire up pwm control for dyson compressor
 - [] print dyson tube duct mount
 - [] print adapter for the exit line of the water cooling block
