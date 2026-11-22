@@ -61,6 +61,13 @@ todo
 -   - High temp detection that runs retraction at high speed and current
 -   - measurement mode that scans back and forth
 -   - easy way to set the forward and reverse limits
+### Combustion chamber reference sensor
+ - Weld compression fitting to combustion chamber
+ - create sleeve to adapt 2.4mm pressure sensor to 3mm hole in water jacket
+ - epoxy the two water pipes onto the 3d printed water jacket block.
+ - buy a bunch of hosing for the water cooling. 
+
+![[Pasted image 20261121130139.png]]
 
 Before leaving
  - Pulse jet
